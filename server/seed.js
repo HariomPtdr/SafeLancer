@@ -30,25 +30,34 @@ async function seed() {
   console.log('Users created');
 
   // Create portfolios
+  // Completion formula: client = 20 base + 20*bio + 20*company + 20*industry + 20*linkedin = 100 max
+  //                     freelancer = 20 base + 15*bio + 15*skills + 10*rate + 10*github + 5*linkedin + 5*portfolio + 10*samples + 10*resume = 100 max
   await Portfolio.create([
     {
-      user: admin._id, role: 'client', bio: 'Platform Admin', completionPercent: 100
+      // admin: role=client, bio only → 20+20=40 (admin banner is hidden, so value doesn't matter)
+      user: admin._id, role: 'client',
+      bio: 'Platform Admin',
+      completionPercent: 40
     },
     {
+      // client: bio+company+industry+linkedin → 20+20+20+20+20 = 100
       user: client._id, role: 'client',
       bio: 'We build fintech and e-commerce products.',
       companyName: 'TechStart Ltd',
-      projectsPosted: 12, projectsCompleted: 8,
-      paymentVerified: true, completionPercent: 85
+      industry: 'Technology',
+      linkedinUrl: 'https://linkedin.com/company/techstart',
+      paymentVerified: true,
+      completionPercent: 100
     },
     {
+      // freelancer: bio+skills+rate+github → 20+15+15+10+10 = 70
       user: freelancer._id, role: 'freelancer',
       bio: 'Full-stack developer with 4 years experience in React, Node.js, and MongoDB.',
       skills: ['React', 'Node.js', 'MongoDB', 'Express', 'Tailwind CSS'],
       githubUrl: 'https://github.com/samdev',
       hourlyRate: 500,
       availability: 'full-time',
-      completionPercent: 95
+      completionPercent: 70
     }
   ]);
   console.log('Portfolios created');

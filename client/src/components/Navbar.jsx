@@ -7,7 +7,7 @@ export default function Navbar() {
   const [profileCompletion, setProfileCompletion] = useState(
     parseInt(localStorage.getItem('profileCompletion') || '0', 10)
   )
-  const showBanner = user && profileCompletion < 100
+  const showBanner = user && user.role !== 'admin' && profileCompletion < 100
 
   // Re-sync whenever ProfileSetup or Login writes a new value
   useEffect(() => {

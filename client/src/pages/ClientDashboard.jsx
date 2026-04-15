@@ -27,16 +27,12 @@ export default function ClientDashboard() {
   }, [])
 
   const allBids = jobs.flatMap(j => (j.bids || []).map(b => ({ ...b, job: j })))
-
   const interviewsToday = allBids.filter(b => {
     if (b.status !== 'interview_scheduled' || !b.interviewScheduledAt) return false
     const d = new Date(b.interviewScheduledAt)
-    const now = new Date()
-    return d.toDateString() === now.toDateString()
+    return d.toDateString() === new Date().toDateString()
   })
-
   const awaitingDecision = allBids.filter(b => b.status === 'interviewed')
-
   const activeContracts = contracts.filter(c => c.status === 'active')
   const totalValue = contracts.reduce((sum, c) => sum + (c.amount || 0), 0)
   const openJobs = jobs.filter(j => j.status === 'open')
@@ -47,14 +43,8 @@ export default function ClientDashboard() {
     setActionLoading(bidId + endpoint)
     try {
       const { data } = await api.patch(`/api/jobs/${jobId}/applications/${bidId}/${endpoint}`)
-      if (endpoint === 'negotiate') {
-        navigate(`/negotiations/${data.negotiationId}`)
-        return
-      }
-      setJobs(prev => prev.map(j => {
-        if (j._id !== jobId) return j
-        return data.job || data
-      }))
+      if (endpoint === 'negotiate') { navigate(`/negotiations/${data.negotiationId}`); return }
+      setJobs(prev => prev.map(j => j._id !== jobId ? j : (data.job || data)))
       toast.success('Done')
     } catch (err) {
       toast.error(err.response?.data?.message || 'Action failed')
@@ -62,28 +52,29 @@ export default function ClientDashboard() {
   }
 
   if (loading) return (
-    <div className="min-h-screen bg-slate-50"><Navbar />
+    <div className="min-h-screen bg-zinc-100"><Navbar />
       <div className="flex items-center justify-center h-64">
-        <div className="animate-spin h-8 w-8 border-4 border-indigo-600 border-t-transparent rounded-full" />
+        <div className="animate-spin h-6 w-6 border-2 border-zinc-900 border-t-transparent rounded-full" />
       </div>
     </div>
   )
 
   return (
-    <div className="min-h-screen bg-slate-50">
+    <div className="min-h-screen bg-zinc-100">
       <Toaster />
       <Navbar />
       <div className="max-w-5xl mx-auto p-6">
+        {/* Header */}
         <div className="flex items-center justify-between mb-6">
           <div>
-            <h1 className="text-2xl font-bold text-slate-800">Welcome, {user.name}</h1>
-            <p className="text-slate-500 text-sm">Manage your contracts and jobs</p>
+            <h1 className="text-xl font-semibold text-zinc-900">Welcome, {user.name}</h1>
+            <p className="text-zinc-500 text-sm">Manage your contracts and jobs</p>
           </div>
           <div className="flex gap-2">
-            <Link to="/freelancers" className="border border-indigo-600 text-indigo-600 hover:bg-indigo-50 px-4 py-2 rounded-lg font-medium text-sm transition-colors">
+            <Link to="/freelancers" className="border border-zinc-200 bg-white text-zinc-700 hover:bg-zinc-50 px-4 py-2 rounded-lg font-medium text-sm transition-colors">
               Find Talent
             </Link>
-            <Link to="/jobs/post" className="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-lg font-medium text-sm transition-colors">
+            <Link to="/jobs/post" className="bg-zinc-900 hover:bg-zinc-800 text-white px-4 py-2 rounded-lg font-medium text-sm transition-colors">
               + Post Job
             </Link>
           </div>
@@ -92,15 +83,15 @@ export default function ClientDashboard() {
         {/* Stats */}
         <div className="grid grid-cols-5 gap-3 mb-6">
           {[
-            { label: 'Active Contracts', value: activeContracts.length, color: 'text-indigo-600' },
-            { label: 'Total Value', value: `₹${totalValue.toLocaleString()}`, color: 'text-emerald-600' },
-            { label: 'Open Jobs', value: openJobs.length, color: 'text-orange-600' },
-            { label: 'Pending Interviews', value: pendingInterviews, color: 'text-yellow-600' },
-            { label: 'To Review', value: toReview, color: 'text-purple-600' },
+            { label: 'Active Contracts', value: activeContracts.length },
+            { label: 'Total Value', value: `₹${totalValue.toLocaleString()}` },
+            { label: 'Open Jobs', value: openJobs.length },
+            { label: 'Interviews', value: pendingInterviews },
+            { label: 'To Review', value: toReview },
           ].map(s => (
-            <div key={s.label} className="bg-white rounded-xl border border-slate-200 p-4">
-              <div className={`text-2xl font-bold ${s.color}`}>{s.value}</div>
-              <div className="text-slate-500 text-xs mt-0.5">{s.label}</div>
+            <div key={s.label} className="bg-white rounded-xl border border-zinc-200 p-4">
+              <div className="text-2xl font-bold text-zinc-900">{s.value}</div>
+              <div className="text-zinc-500 text-xs mt-0.5">{s.label}</div>
             </div>
           ))}
         </div>
@@ -108,18 +99,18 @@ export default function ClientDashboard() {
         {/* Interviews Today */}
         {interviewsToday.length > 0 && (
           <section className="mb-6">
-            <h2 className="text-lg font-bold text-slate-800 mb-3">Interviews Scheduled Today</h2>
+            <h2 className="text-xs font-semibold uppercase tracking-wider text-zinc-400 mb-3">Interviews Today</h2>
             {interviewsToday.map(b => (
-              <div key={b._id} className="bg-yellow-50 rounded-xl border border-yellow-200 p-4 mb-3 flex items-center justify-between">
+              <div key={b._id} className="bg-white rounded-xl border border-amber-200 p-4 mb-2 flex items-center justify-between">
                 <div>
-                  <div className="font-semibold text-slate-800">{b.freelancer?.name}</div>
-                  <div className="text-sm text-slate-500">
+                  <div className="font-medium text-zinc-900">{b.freelancer?.name}</div>
+                  <div className="text-sm text-zinc-500">
                     {b.job.title} · {new Date(b.interviewScheduledAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                   </div>
                 </div>
                 <Link
                   to={`/interview/${b.meetingRoomId}?job=${encodeURIComponent(b.job.title)}&jobId=${b.job._id}&bidId=${b._id}`}
-                  className="bg-yellow-500 hover:bg-yellow-600 text-white px-4 py-1.5 rounded-lg text-sm font-medium transition-colors"
+                  className="bg-amber-500 hover:bg-amber-600 text-white px-4 py-1.5 rounded-lg text-sm font-medium transition-colors"
                 >
                   Join Interview
                 </Link>
@@ -131,30 +122,30 @@ export default function ClientDashboard() {
         {/* Awaiting Decision */}
         {awaitingDecision.length > 0 && (
           <section className="mb-6">
-            <h2 className="text-lg font-bold text-slate-800 mb-3">Awaiting Your Decision</h2>
+            <h2 className="text-xs font-semibold uppercase tracking-wider text-zinc-400 mb-3">Awaiting Your Decision</h2>
             {awaitingDecision.map(b => {
               const isLoading = (suf) => actionLoading === b._id + suf
               return (
-                <div key={b._id} className="bg-white rounded-xl border border-purple-200 p-4 mb-3">
+                <div key={b._id} className="bg-white rounded-xl border border-zinc-200 p-4 mb-2">
                   <div className="flex items-start justify-between gap-3">
                     <div>
-                      <div className="font-semibold text-slate-800">{b.freelancer?.name}</div>
-                      <div className="text-sm text-slate-500">{b.job.title} · ₹{b.job.budget?.toLocaleString()}</div>
+                      <div className="font-medium text-zinc-900">{b.freelancer?.name}</div>
+                      <div className="text-sm text-zinc-500">{b.job.title} · ₹{b.job.budget?.toLocaleString()}</div>
                       {b.freelancer?.rating > 0 && (
-                        <div className="text-yellow-600 text-xs mt-0.5">★ {b.freelancer.rating} · {b.freelancer.totalJobsCompleted} jobs</div>
+                        <div className="text-amber-600 text-xs mt-0.5">★ {b.freelancer.rating} · {b.freelancer.totalJobsCompleted} jobs</div>
                       )}
                     </div>
                     <div className="flex gap-2 flex-shrink-0">
                       <button onClick={() => quickAction(b.job._id, b._id, 'hire')} disabled={isLoading('hire')}
-                        className="bg-green-600 hover:bg-green-700 text-white px-3 py-1.5 rounded-lg text-sm font-medium disabled:opacity-50">
+                        className="bg-emerald-600 hover:bg-emerald-700 text-white px-3 py-1.5 rounded-lg text-sm font-medium disabled:opacity-50">
                         {isLoading('hire') ? '...' : 'Hire'}
                       </button>
                       <button onClick={() => quickAction(b.job._id, b._id, 'negotiate')} disabled={isLoading('negotiate')}
-                        className="bg-orange-500 hover:bg-orange-600 text-white px-3 py-1.5 rounded-lg text-sm font-medium disabled:opacity-50">
+                        className="border border-zinc-200 bg-white hover:bg-zinc-50 text-zinc-700 px-3 py-1.5 rounded-lg text-sm font-medium disabled:opacity-50">
                         {isLoading('negotiate') ? '...' : 'Negotiate'}
                       </button>
                       <button onClick={() => quickAction(b.job._id, b._id, 'reject')} disabled={isLoading('reject')}
-                        className="bg-slate-100 hover:bg-slate-200 text-slate-700 px-3 py-1.5 rounded-lg text-sm font-medium disabled:opacity-50">
+                        className="border border-zinc-200 bg-white hover:bg-zinc-50 text-zinc-500 px-3 py-1.5 rounded-lg text-sm font-medium disabled:opacity-50">
                         Reject
                       </button>
                     </div>
@@ -167,16 +158,16 @@ export default function ClientDashboard() {
 
         {/* Active Contracts */}
         <section className="mb-6">
-          <h2 className="text-lg font-bold text-slate-800 mb-3">Active Contracts</h2>
+          <h2 className="text-xs font-semibold uppercase tracking-wider text-zinc-400 mb-3">Active Contracts</h2>
           {activeContracts.length === 0
-            ? <div className="bg-white rounded-xl border border-slate-200 p-6 text-center text-slate-400">No active contracts yet</div>
+            ? <div className="bg-white rounded-xl border border-zinc-200 p-6 text-center text-zinc-400 text-sm">No active contracts yet</div>
             : activeContracts.map(c => (
-              <div key={c._id} className="bg-white rounded-xl border border-slate-200 p-4 mb-3 flex items-center justify-between">
+              <div key={c._id} className="bg-white rounded-xl border border-zinc-200 p-4 mb-2 flex items-center justify-between">
                 <div>
-                  <div className="font-semibold text-slate-800">{c.job?.title || 'Contract'}</div>
-                  <div className="text-sm text-slate-500">with {c.freelancer?.name} · ₹{c.amount?.toLocaleString()} · {c.milestoneCount} phases</div>
+                  <div className="font-medium text-zinc-900">{c.job?.title || 'Contract'}</div>
+                  <div className="text-sm text-zinc-500">with {c.freelancer?.name} · ₹{c.amount?.toLocaleString()} · {c.milestoneCount} phases</div>
                 </div>
-                <Link to={`/contracts/${c._id}`} className="bg-indigo-50 text-indigo-700 hover:bg-indigo-100 px-4 py-1.5 rounded-lg text-sm font-medium transition-colors">
+                <Link to={`/contracts/${c._id}`} className="border border-zinc-200 bg-white hover:bg-zinc-50 text-zinc-700 px-4 py-1.5 rounded-lg text-sm font-medium transition-colors">
                   View Contract
                 </Link>
               </div>
@@ -187,14 +178,14 @@ export default function ClientDashboard() {
         {/* Open Negotiations */}
         {negotiations.length > 0 && (
           <section className="mb-6">
-            <h2 className="text-lg font-bold text-slate-800 mb-3">Open Negotiations</h2>
+            <h2 className="text-xs font-semibold uppercase tracking-wider text-zinc-400 mb-3">Open Negotiations</h2>
             {negotiations.map(n => (
-              <div key={n._id} className="bg-white rounded-xl border border-orange-200 p-4 mb-3 flex items-center justify-between">
+              <div key={n._id} className="bg-white rounded-xl border border-zinc-200 p-4 mb-2 flex items-center justify-between">
                 <div>
-                  <div className="font-semibold text-slate-800">{n.job?.title}</div>
-                  <div className="text-sm text-slate-500">Round {n.currentRound}/{n.maxRounds} · with {n.freelancer?.name}</div>
+                  <div className="font-medium text-zinc-900">{n.job?.title}</div>
+                  <div className="text-sm text-zinc-500">Round {n.currentRound}/{n.maxRounds} · with {n.freelancer?.name}</div>
                 </div>
-                <Link to={`/negotiations/${n._id}`} className="bg-orange-50 text-orange-700 hover:bg-orange-100 px-4 py-1.5 rounded-lg text-sm font-medium transition-colors">
+                <Link to={`/negotiations/${n._id}`} className="border border-zinc-200 bg-white hover:bg-zinc-50 text-zinc-700 px-4 py-1.5 rounded-lg text-sm font-medium transition-colors">
                   View
                 </Link>
               </div>
@@ -202,12 +193,13 @@ export default function ClientDashboard() {
           </section>
         )}
 
-        {/* Jobs with pipeline counts */}
+        {/* Posted Jobs */}
         <section>
-          <h2 className="text-lg font-bold text-slate-800 mb-3">My Posted Jobs</h2>
+          <h2 className="text-xs font-semibold uppercase tracking-wider text-zinc-400 mb-3">My Posted Jobs</h2>
           {jobs.length === 0
-            ? <div className="bg-white rounded-xl border border-slate-200 p-6 text-center text-slate-400">
-                No jobs yet. <Link to="/jobs/post" className="text-indigo-600">Post your first job</Link>
+            ? <div className="bg-white rounded-xl border border-zinc-200 p-6 text-center text-zinc-400 text-sm">
+                No jobs yet.{' '}
+                <Link to="/jobs/post" className="text-zinc-900 font-medium underline underline-offset-2">Post your first job</Link>
               </div>
             : jobs.map(j => {
               const bids = j.bids || []
@@ -218,21 +210,21 @@ export default function ClientDashboard() {
                 hired: bids.filter(b => b.status === 'hired').length,
               }
               return (
-                <div key={j._id} className="bg-white rounded-xl border border-slate-200 p-4 mb-3">
+                <div key={j._id} className="bg-white rounded-xl border border-zinc-200 p-4 mb-2">
                   <div className="flex items-start justify-between">
                     <div>
-                      <div className="font-semibold text-slate-800">{j.title}</div>
-                      <div className="text-sm text-slate-500 mt-0.5">₹{j.budget?.toLocaleString()} · <span className="capitalize">{j.status}</span></div>
-                      <div className="flex gap-3 mt-2 text-xs text-slate-500">
+                      <div className="font-medium text-zinc-900">{j.title}</div>
+                      <div className="text-sm text-zinc-500 mt-0.5">₹{j.budget?.toLocaleString()} · <span className="capitalize">{j.status}</span></div>
+                      <div className="flex gap-3 mt-1.5 text-xs text-zinc-400">
                         {counts.applied > 0 && <span>{counts.applied} applied</span>}
-                        {counts.shortlisted > 0 && <span className="text-indigo-600">{counts.shortlisted} shortlisted</span>}
-                        {counts.interview > 0 && <span className="text-yellow-600">{counts.interview} interview today</span>}
-                        {counts.hired > 0 && <span className="text-green-600">{counts.hired} hired</span>}
+                        {counts.shortlisted > 0 && <span className="text-zinc-600">{counts.shortlisted} shortlisted</span>}
+                        {counts.interview > 0 && <span className="text-amber-600">{counts.interview} interview</span>}
+                        {counts.hired > 0 && <span className="text-emerald-600">{counts.hired} hired</span>}
                         {bids.length === 0 && <span>No applications yet</span>}
                       </div>
                     </div>
-                    <Link to={`/jobs/${j._id}`} className="bg-slate-100 text-slate-700 hover:bg-slate-200 px-4 py-1.5 rounded-lg text-sm font-medium transition-colors flex-shrink-0">
-                      Manage Applications
+                    <Link to={`/jobs/${j._id}`} className="border border-zinc-200 bg-white hover:bg-zinc-50 text-zinc-700 px-4 py-1.5 rounded-lg text-sm font-medium transition-colors flex-shrink-0">
+                      Manage
                     </Link>
                   </div>
                 </div>

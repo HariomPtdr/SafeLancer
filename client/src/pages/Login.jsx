@@ -16,8 +16,6 @@ export default function Login() {
       const { data } = await api.post('/api/auth/login', form)
       localStorage.setItem('token', data.token)
       localStorage.setItem('user', JSON.stringify(data.user))
-
-      // Fetch portfolio to store completion % for the navbar banner
       try {
         const { data: meData } = await api.get('/api/auth/me', {
           headers: { Authorization: `Bearer ${data.token}` }
@@ -28,7 +26,6 @@ export default function Login() {
         localStorage.setItem('profileCompletion', '20')
       }
       window.dispatchEvent(new Event('profileUpdated'))
-
       toast.success(`Welcome back, ${data.user.name}!`)
       setTimeout(() => {
         if (data.user.role === 'client') navigate('/dashboard/client')
@@ -43,42 +40,46 @@ export default function Login() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-indigo-50 to-slate-100 flex items-center justify-center p-4">
+    <div className="min-h-screen bg-zinc-100 flex flex-col items-center justify-center p-4">
       <Toaster />
-      <div className="bg-white rounded-2xl shadow-xl p-8 w-full max-w-md">
-        <div className="text-center mb-8">
-          <h1 className="text-3xl font-bold text-indigo-600">FreeLock</h1>
-          <p className="text-slate-500 mt-1">Secure Freelancing Platform</p>
-        </div>
+
+      <div className="mb-8 text-center">
+        <div className="text-xl font-bold text-zinc-900 tracking-tight">FreeLock</div>
+        <div className="text-sm text-zinc-500 mt-1">Secure Freelancing Platform</div>
+      </div>
+
+      <div className="bg-white rounded-xl border border-zinc-200 p-8 w-full max-w-sm shadow-sm">
+        <h1 className="text-base font-semibold text-zinc-900 mb-1">Sign in</h1>
+        <p className="text-sm text-zinc-500 mb-6">Enter your credentials to access your portals</p>
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <label className="block text-sm font-medium text-slate-700 mb-1">Email</label>
+            <label className="block text-sm font-medium text-zinc-700 mb-1.5">Email</label>
             <input
               type="email"
               required
               value={form.email}
               onChange={e => setForm({ ...form, email: e.target.value })}
-              className="w-full border border-slate-300 rounded-lg px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-indigo-500"
-              placeholder="you@example.com"
+              className="w-full border border-zinc-200 rounded-lg px-3 py-2.5 text-sm text-zinc-900 placeholder:text-zinc-400 focus:outline-none focus:border-zinc-400 transition-colors"
+              placeholder="you@company.com"
             />
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-slate-700 mb-1">Password</label>
+            <label className="block text-sm font-medium text-zinc-700 mb-1.5">Password</label>
             <div className="relative">
               <input
                 type={showPassword ? 'text' : 'password'}
                 required
                 value={form.password}
                 onChange={e => setForm({ ...form, password: e.target.value })}
-                className="w-full border border-slate-300 rounded-lg px-4 py-2.5 pr-10 focus:outline-none focus:ring-2 focus:ring-indigo-500"
-                placeholder="••••••••"
+                className="w-full border border-zinc-200 rounded-lg px-3 py-2.5 pr-12 text-sm text-zinc-900 placeholder:text-zinc-400 focus:outline-none focus:border-zinc-400 transition-colors"
+                placeholder="Enter your password"
               />
               <button
                 type="button"
                 onClick={() => setShowPassword(!showPassword)}
-                className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 text-xs font-medium"
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-zinc-400 hover:text-zinc-700 text-xs font-medium"
               >
                 {showPassword ? 'Hide' : 'Show'}
               </button>
@@ -88,22 +89,22 @@ export default function Login() {
           <button
             type="submit"
             disabled={loading}
-            className="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-2.5 rounded-lg transition-colors disabled:opacity-50"
+            className="w-full bg-zinc-900 hover:bg-zinc-800 text-white font-medium py-2.5 rounded-lg text-sm transition-colors disabled:opacity-50"
           >
-            {loading ? 'Signing in...' : 'Sign In'}
+            {loading ? 'Signing in...' : 'Sign in'}
           </button>
         </form>
 
-        <p className="mt-6 text-center text-slate-500 text-sm">
+        <p className="mt-5 text-center text-zinc-500 text-sm">
           Don't have an account?{' '}
-          <Link to="/register" className="text-indigo-600 font-medium hover:underline">Register here</Link>
+          <Link to="/register" className="text-zinc-900 font-semibold hover:underline underline-offset-2">Sign up</Link>
         </p>
 
-        <div className="mt-4 p-3 bg-slate-50 rounded-lg text-xs text-slate-500">
-          <p className="font-medium mb-1">Demo accounts:</p>
-          <p>client@test.com / Test@123</p>
-          <p>freelancer@test.com / Test@123</p>
-          <p>admin@test.com / Test@123</p>
+        <div className="mt-5 p-3 bg-zinc-50 rounded-lg border border-zinc-100 text-xs text-zinc-500">
+          <p className="font-semibold text-zinc-600 mb-1.5">Demo accounts</p>
+          <p className="font-mono">client@test.com / Test@123</p>
+          <p className="font-mono">freelancer@test.com / Test@123</p>
+          <p className="font-mono">admin@test.com / Test@123</p>
         </div>
       </div>
     </div>

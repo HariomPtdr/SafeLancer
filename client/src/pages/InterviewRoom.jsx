@@ -182,7 +182,7 @@ export default function InterviewRoom() {
   }
 
   return (
-    <div className="min-h-screen bg-slate-50 flex flex-col">
+    <div className="min-h-screen bg-zinc-100 flex flex-col">
       <Toaster />
       <Navbar />
 
@@ -190,20 +190,20 @@ export default function InterviewRoom() {
 
         {/* Video Call Panel */}
         {callState !== 'idle' && (
-          <div className="bg-slate-900 rounded-2xl overflow-hidden">
+          <div className="bg-zinc-900 rounded-xl overflow-hidden">
             <div className="relative flex items-center justify-center" style={{ minHeight: 300 }}>
-              <video ref={remoteVideoRef} autoPlay playsInline className="w-full max-h-80 object-cover rounded-xl" />
+              <video ref={remoteVideoRef} autoPlay playsInline className="w-full max-h-80 object-cover rounded-lg" />
               <video ref={localVideoRef} autoPlay playsInline muted
-                className="absolute bottom-3 right-3 w-32 h-24 object-cover rounded-xl border-2 border-white shadow-lg" />
+                className="absolute bottom-3 right-3 w-32 h-24 object-cover rounded-lg border-2 border-white/20 shadow-lg" />
               {callState === 'active' && (
                 <button onClick={() => endCall(true)}
-                  className="absolute bottom-3 left-3 bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-xl text-sm font-semibold">
+                  className="absolute bottom-3 left-3 bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg text-sm font-medium">
                   End Call
                 </button>
               )}
             </div>
             {callState === 'calling' && (
-              <div className="text-center p-4 text-white text-sm">
+              <div className="text-center p-4 text-zinc-400 text-sm">
                 Calling...
                 <button onClick={() => endCall(true)} className="ml-4 text-red-400 hover:text-red-300 underline">Cancel</button>
               </div>
@@ -213,18 +213,18 @@ export default function InterviewRoom() {
 
         {/* Incoming Call */}
         {callState === 'receiving' && (
-          <div className="bg-white rounded-2xl border border-indigo-200 p-5 flex items-center justify-between shadow-lg">
+          <div className="bg-white rounded-xl border border-zinc-200 p-4 flex items-center justify-between shadow-sm">
             <div>
-              <p className="font-semibold text-slate-800">{caller?.name} is calling...</p>
-              <p className="text-sm text-slate-500">Incoming video call</p>
+              <p className="font-medium text-zinc-900">{caller?.name} is calling...</p>
+              <p className="text-sm text-zinc-500">Incoming video call</p>
             </div>
-            <div className="flex gap-3">
+            <div className="flex gap-2">
               <button onClick={acceptCall}
-                className="bg-green-500 hover:bg-green-600 text-white px-5 py-2 rounded-xl font-semibold">
+                className="bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-2 rounded-lg text-sm font-medium">
                 Accept
               </button>
               <button onClick={() => { setCallState('idle'); setCaller(null) }}
-                className="bg-red-500 hover:bg-red-600 text-white px-5 py-2 rounded-xl font-semibold">
+                className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg text-sm font-medium">
                 Decline
               </button>
             </div>
@@ -232,26 +232,26 @@ export default function InterviewRoom() {
         )}
 
         {/* Chat Box */}
-        <div className="bg-white rounded-2xl border border-slate-200 flex flex-col flex-1" style={{ minHeight: 400 }}>
+        <div className="bg-white rounded-xl border border-zinc-200 flex flex-col flex-1" style={{ minHeight: 400 }}>
           {/* Header */}
-          <div className="flex items-center justify-between px-5 py-4 border-b border-slate-200">
+          <div className="flex items-center justify-between px-5 py-4 border-b border-zinc-100">
             <div>
-              <h2 className="font-bold text-slate-800">Interview — {jobTitle}</h2>
-              <p className="text-xs text-slate-400">Pre-contract interview session</p>
+              <h2 className="font-semibold text-zinc-900 text-sm">Interview — {jobTitle}</h2>
+              <p className="text-xs text-zinc-400">Pre-contract interview · messages not saved</p>
             </div>
             <div className="flex gap-2">
               {callState === 'idle' && (
                 <button onClick={startCall}
-                  className="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-xl text-sm font-semibold flex items-center gap-2 transition-colors">
+                  className="bg-zinc-900 hover:bg-zinc-800 text-white px-4 py-2 rounded-lg text-sm font-medium flex items-center gap-2 transition-colors">
                   <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 10l4.553-2.277A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M3 8a2 2 0 012-2h8a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2V8z" />
                   </svg>
-                  Start Video Call
+                  Video Call
                 </button>
               )}
               {user.role === 'client' && jobId && (
                 <button onClick={handleEndAndDecide}
-                  className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-xl text-sm font-semibold transition-colors">
+                  className="bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors">
                   End &amp; Decide
                 </button>
               )}
@@ -259,20 +259,20 @@ export default function InterviewRoom() {
           </div>
 
           {/* Messages */}
-          <div className="flex-1 overflow-y-auto p-4 space-y-3" style={{ maxHeight: 450 }}>
+          <div className="flex-1 overflow-y-auto p-4 space-y-2.5" style={{ maxHeight: 450 }}>
             {messages.length === 0 && (
-              <p className="text-center text-slate-400 py-8 text-sm">Interview chat — messages are not saved after the session ends.</p>
+              <p className="text-center text-zinc-400 py-8 text-sm">Interview chat — messages are not saved after the session ends.</p>
             )}
             {messages.map((msg, i) => {
               const isMine = msg.sender?._id === user.id
               return (
                 <div key={i} className={`flex ${isMine ? 'justify-end' : 'justify-start'}`}>
-                  <div className={`max-w-xs md:max-w-md px-4 py-2.5 rounded-2xl text-sm ${
-                    isMine ? 'bg-indigo-600 text-white rounded-br-sm' : 'bg-slate-100 text-slate-800 rounded-bl-sm'
+                  <div className={`max-w-xs md:max-w-md px-4 py-2.5 rounded-xl text-sm ${
+                    isMine ? 'bg-zinc-900 text-white rounded-br-sm' : 'bg-zinc-100 text-zinc-800 rounded-bl-sm'
                   }`}>
-                    {!isMine && <p className="text-xs font-semibold mb-1 text-indigo-500">{msg.sender?.name || msg.senderName}</p>}
+                    {!isMine && <p className="text-xs font-semibold mb-1 text-zinc-500">{msg.sender?.name || msg.senderName}</p>}
                     <p className="leading-relaxed">{msg.text}</p>
-                    <p className={`text-xs mt-1 ${isMine ? 'text-indigo-200' : 'text-slate-400'}`}>
+                    <p className="text-xs mt-1 text-zinc-400">
                       {msg.createdAt ? new Date(msg.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : 'now'}
                     </p>
                   </div>
@@ -281,7 +281,7 @@ export default function InterviewRoom() {
             })}
             {otherTyping && (
               <div className="flex justify-start">
-                <div className="bg-slate-100 rounded-2xl rounded-bl-sm px-4 py-2.5 text-sm text-slate-400 italic">
+                <div className="bg-zinc-100 rounded-xl rounded-bl-sm px-4 py-2.5 text-sm text-zinc-400 italic">
                   typing...
                 </div>
               </div>
@@ -290,17 +290,17 @@ export default function InterviewRoom() {
           </div>
 
           {/* Input */}
-          <div className="border-t border-slate-200 p-4 flex gap-3">
+          <div className="border-t border-zinc-100 p-4 flex gap-3">
             <textarea
               value={text}
               onChange={handleTyping}
               onKeyDown={handleKeyDown}
               rows={1}
               placeholder="Type a message... (Enter to send)"
-              className="flex-1 border border-slate-300 rounded-xl px-3 py-2 text-sm resize-none focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              className="flex-1 border border-zinc-200 rounded-lg px-3 py-2 text-sm resize-none focus:outline-none focus:border-zinc-400 transition-colors"
             />
             <button onClick={sendMessage} disabled={!text.trim()}
-              className="bg-indigo-600 hover:bg-indigo-700 text-white px-5 py-2 rounded-xl text-sm font-semibold disabled:opacity-50 transition-colors">
+              className="bg-zinc-900 hover:bg-zinc-800 text-white px-5 py-2 rounded-lg text-sm font-medium disabled:opacity-50 transition-colors">
               Send
             </button>
           </div>

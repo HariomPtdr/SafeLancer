@@ -11,11 +11,10 @@ function getPasswordStrength(password) {
   if (/[a-z]/.test(password)) score++
   if (/\d/.test(password)) score++
   if (/[^A-Za-z\d]/.test(password)) score++
-
   if (score <= 2) return { score, label: 'Weak', color: 'bg-red-500' }
-  if (score === 3) return { score, label: 'Fair', color: 'bg-yellow-500' }
+  if (score === 3) return { score, label: 'Fair', color: 'bg-amber-500' }
   if (score === 4) return { score, label: 'Good', color: 'bg-blue-500' }
-  return { score, label: 'Strong', color: 'bg-green-500' }
+  return { score, label: 'Strong', color: 'bg-emerald-500' }
 }
 
 export default function Register() {
@@ -35,7 +34,7 @@ export default function Register() {
       toast.error('Please enter a valid email address'); return false
     }
     if (strength.score < 5) {
-      toast.error('Password must have 8+ characters, an uppercase letter, a lowercase letter, a number, and a special character'); return false
+      toast.error('Password must have 8+ chars, uppercase, lowercase, number, and special character'); return false
     }
     if (form.password !== form.confirmPassword) {
       toast.error('Passwords do not match'); return false
@@ -60,7 +59,7 @@ export default function Register() {
       localStorage.setItem('token', data.token)
       localStorage.setItem('user', JSON.stringify(data.user))
       localStorage.setItem('profileCompletion', '20')
-      toast.success('Account created! Let\'s set up your profile.')
+      toast.success("Account created! Let's set up your profile.")
       setTimeout(() => navigate('/profile/setup'), 600)
     } catch (err) {
       toast.error(err.response?.data?.message || 'Registration failed')
@@ -78,114 +77,87 @@ export default function Register() {
   ]
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-indigo-50 to-slate-100 flex items-center justify-center p-4">
+    <div className="min-h-screen bg-zinc-100 flex flex-col items-center justify-center p-4 py-10">
       <Toaster />
-      <div className="bg-white rounded-2xl shadow-xl p-8 w-full max-w-md">
-        <div className="text-center mb-8">
-          <h1 className="text-3xl font-bold text-indigo-600">FreeLock</h1>
-          <p className="text-slate-500 mt-1">Create your account — takes 30 seconds</p>
-        </div>
+
+      <div className="mb-8 text-center">
+        <div className="text-xl font-bold text-zinc-900 tracking-tight">FreeLock</div>
+        <div className="text-sm text-zinc-500 mt-1">Create your account</div>
+      </div>
+
+      <div className="bg-white rounded-xl border border-zinc-200 p-8 w-full max-w-sm shadow-sm">
+        <h1 className="text-base font-semibold text-zinc-900 mb-1">Create an account</h1>
+        <p className="text-sm text-zinc-500 mb-6">Sign up to get started — takes 30 seconds</p>
 
         <form onSubmit={handleSubmit} className="space-y-4">
-          {/* Name */}
           <div>
-            <label className="block text-sm font-medium text-slate-700 mb-1">Full Name</label>
+            <label className="block text-sm font-medium text-zinc-700 mb-1.5">Name</label>
             <input
               type="text"
               required
               value={form.name}
               onChange={e => setForm({ ...form, name: e.target.value })}
-              className="w-full border border-slate-300 rounded-lg px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-indigo-500"
-              placeholder="Your full name"
+              className="w-full border border-zinc-200 rounded-lg px-3 py-2.5 text-sm text-zinc-900 placeholder:text-zinc-400 focus:outline-none focus:border-zinc-400 transition-colors"
+              placeholder="Your name"
             />
           </div>
 
-          {/* Email */}
           <div>
-            <label className="block text-sm font-medium text-slate-700 mb-1">Email</label>
+            <label className="block text-sm font-medium text-zinc-700 mb-1.5">Email</label>
             <input
               type="email"
               required
               value={form.email}
               onChange={e => setForm({ ...form, email: e.target.value })}
-              className="w-full border border-slate-300 rounded-lg px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-indigo-500"
-              placeholder="you@example.com"
+              className="w-full border border-zinc-200 rounded-lg px-3 py-2.5 text-sm text-zinc-900 placeholder:text-zinc-400 focus:outline-none focus:border-zinc-400 transition-colors"
+              placeholder="you@company.com"
             />
           </div>
 
-          {/* Password */}
           <div>
-            <label className="block text-sm font-medium text-slate-700 mb-1">Password</label>
+            <label className="block text-sm font-medium text-zinc-700 mb-1.5">Password</label>
             <div className="relative">
               <input
                 type={showPassword ? 'text' : 'password'}
                 required
                 value={form.password}
                 onChange={e => setForm({ ...form, password: e.target.value })}
-                className="w-full border border-slate-300 rounded-lg px-4 py-2.5 pr-10 focus:outline-none focus:ring-2 focus:ring-indigo-500"
-                placeholder="Create a strong password"
+                className="w-full border border-zinc-200 rounded-lg px-3 py-2.5 pr-12 text-sm text-zinc-900 placeholder:text-zinc-400 focus:outline-none focus:border-zinc-400 transition-colors"
+                placeholder="Min 6 characters"
               />
-              <button
-                type="button"
-                onClick={() => setShowPassword(!showPassword)}
-                className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 text-xs font-medium"
-              >
+              <button type="button" onClick={() => setShowPassword(!showPassword)}
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-zinc-400 hover:text-zinc-700 text-xs font-medium">
                 {showPassword ? 'Hide' : 'Show'}
               </button>
             </div>
-
-            {/* Password strength bar */}
             {form.password && (
-              <div className="mt-2">
-                <div className="flex gap-1 mb-1">
-                  {[1, 2, 3, 4, 5].map(i => (
-                    <div
-                      key={i}
-                      className={`h-1 flex-1 rounded-full transition-colors ${i <= strength.score ? strength.color : 'bg-slate-200'}`}
-                    />
-                  ))}
-                </div>
-                <p className={`text-xs font-medium ${
-                  strength.score <= 2 ? 'text-red-500' :
-                  strength.score === 3 ? 'text-yellow-600' :
-                  strength.score === 4 ? 'text-blue-600' : 'text-green-600'
-                }`}>{strength.label} password</p>
-
-                {/* Criteria checklist */}
-                <div className="mt-2 grid grid-cols-2 gap-x-2 gap-y-0.5">
-                  {passwordCriteria.map(c => (
-                    <p key={c.label} className={`text-xs flex items-center gap-1 ${c.met ? 'text-green-600' : 'text-slate-400'}`}>
-                      <span>{c.met ? '✓' : '○'}</span> {c.label}
-                    </p>
-                  ))}
-                </div>
+              <div className="mt-2 flex gap-1">
+                {[1, 2, 3, 4, 5].map(i => (
+                  <div key={i} className={`h-1 flex-1 rounded-full transition-colors ${i <= strength.score ? strength.color : 'bg-zinc-100'}`} />
+                ))}
               </div>
             )}
           </div>
 
-          {/* Confirm Password */}
           <div>
-            <label className="block text-sm font-medium text-slate-700 mb-1">Confirm Password</label>
+            <label className="block text-sm font-medium text-zinc-700 mb-1.5">Confirm Password</label>
             <div className="relative">
               <input
                 type={showConfirm ? 'text' : 'password'}
                 required
                 value={form.confirmPassword}
                 onChange={e => setForm({ ...form, confirmPassword: e.target.value })}
-                className={`w-full border rounded-lg px-4 py-2.5 pr-10 focus:outline-none focus:ring-2 focus:ring-indigo-500 ${
+                className={`w-full border rounded-lg px-3 py-2.5 pr-12 text-sm text-zinc-900 placeholder:text-zinc-400 focus:outline-none transition-colors ${
                   form.confirmPassword && form.password !== form.confirmPassword
-                    ? 'border-red-400 bg-red-50'
+                    ? 'border-red-300 bg-red-50'
                     : form.confirmPassword && form.password === form.confirmPassword
-                    ? 'border-green-400'
-                    : 'border-slate-300'
+                    ? 'border-emerald-300'
+                    : 'border-zinc-200 focus:border-zinc-400'
                 }`}
-                placeholder="Repeat your password"
+                placeholder="Repeat password"
               />
-              <button
-                type="button"
-                onClick={() => setShowConfirm(!showConfirm)}
-                className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 text-xs font-medium"
-              >
+              <button type="button" onClick={() => setShowConfirm(!showConfirm)}
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-zinc-400 hover:text-zinc-700 text-xs font-medium">
                 {showConfirm ? 'Hide' : 'Show'}
               </button>
             </div>
@@ -194,24 +166,23 @@ export default function Register() {
             )}
           </div>
 
-          {/* Role Selection */}
           <div>
-            <label className="block text-sm font-medium text-slate-700 mb-2">I am a:</label>
-            <div className="grid grid-cols-2 gap-3">
+            <label className="block text-sm font-medium text-zinc-700 mb-2">I am a</label>
+            <div className="grid grid-cols-2 gap-2">
               {['client', 'freelancer'].map(role => (
                 <button
                   key={role}
                   type="button"
                   onClick={() => setForm({ ...form, role })}
-                  className={`py-3 px-2 rounded-xl border-2 font-semibold capitalize transition-all text-left ${
+                  className={`py-3 px-3 rounded-lg border text-left transition-all ${
                     form.role === role
-                      ? 'border-indigo-600 bg-indigo-50 text-indigo-700'
-                      : 'border-slate-200 text-slate-600 hover:border-slate-400'
+                      ? 'border-zinc-900 bg-zinc-900 text-white'
+                      : 'border-zinc-200 text-zinc-600 hover:border-zinc-400 bg-white'
                   }`}
                 >
-                  <div className="text-base">{role === 'client' ? '🏢 Client' : '💻 Freelancer'}</div>
-                  <div className="text-xs font-normal mt-0.5 text-slate-500">
-                    {role === 'client' ? 'I hire talent & manage projects' : 'I offer skills & complete work'}
+                  <div className="text-sm font-semibold capitalize">{role === 'client' ? 'Client' : 'Freelancer'}</div>
+                  <div className={`text-xs mt-0.5 ${form.role === role ? 'text-zinc-300' : 'text-zinc-400'}`}>
+                    {role === 'client' ? 'I hire talent' : 'I do the work'}
                   </div>
                 </button>
               ))}
@@ -221,15 +192,15 @@ export default function Register() {
           <button
             type="submit"
             disabled={loading}
-            className="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-2.5 rounded-lg transition-colors disabled:opacity-50 mt-2"
+            className="w-full bg-zinc-900 hover:bg-zinc-800 text-white font-medium py-2.5 rounded-lg text-sm transition-colors disabled:opacity-50"
           >
-            {loading ? 'Creating account...' : 'Create Account'}
+            {loading ? 'Creating account...' : 'Sign up'}
           </button>
         </form>
 
-        <p className="mt-6 text-center text-slate-500 text-sm">
+        <p className="mt-5 text-center text-zinc-500 text-sm">
           Already have an account?{' '}
-          <Link to="/login" className="text-indigo-600 font-medium hover:underline">Sign in</Link>
+          <Link to="/login" className="text-zinc-900 font-semibold hover:underline underline-offset-2">Sign in</Link>
         </p>
       </div>
     </div>

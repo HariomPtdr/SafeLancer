@@ -27,11 +27,7 @@ export default function PostJob() {
     if (!validate()) return
     setLoading(true)
     try {
-      await api.post('/api/jobs', {
-        ...form,
-        budget: Number(form.budget),
-        skills
-      })
+      await api.post('/api/jobs', { ...form, budget: Number(form.budget), skills })
       toast.success('Job posted!')
       setTimeout(() => navigate('/dashboard/client'), 1000)
     } catch (err) {
@@ -40,20 +36,24 @@ export default function PostJob() {
   }
 
   const inputClass = (field) =>
-    `w-full border rounded-lg px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-indigo-500 ${
-      errors[field] ? 'border-red-400' : 'border-slate-300'
+    `w-full border rounded-lg px-3 py-2.5 text-sm text-zinc-900 placeholder:text-zinc-400 focus:outline-none transition-colors ${
+      errors[field] ? 'border-red-300 bg-red-50' : 'border-zinc-200 focus:border-zinc-400'
     }`
 
   return (
-    <div className="min-h-screen bg-slate-50">
+    <div className="min-h-screen bg-zinc-100">
       <Toaster />
       <Navbar />
       <div className="max-w-2xl mx-auto p-6">
-        <div className="bg-white rounded-2xl border border-slate-200 p-6">
-          <h1 className="text-2xl font-bold text-slate-800 mb-6">Post a New Job</h1>
-          <form onSubmit={handleSubmit} className="space-y-4">
+        <div className="mb-5">
+          <h1 className="text-xl font-semibold text-zinc-900">Post a New Job</h1>
+          <p className="text-sm text-zinc-500 mt-1">Fill in the details to attract the best talent</p>
+        </div>
+
+        <div className="bg-white rounded-xl border border-zinc-200 p-6">
+          <form onSubmit={handleSubmit} className="space-y-5">
             <div>
-              <label className="block text-sm font-medium text-slate-700 mb-1">Job Title</label>
+              <label className="block text-sm font-medium text-zinc-700 mb-1.5">Job Title</label>
               <input
                 value={form.title}
                 onChange={e => setForm({ ...form, title: e.target.value })}
@@ -62,8 +62,9 @@ export default function PostJob() {
               />
               {errors.title && <p className="text-red-500 text-xs mt-1">{errors.title}</p>}
             </div>
+
             <div>
-              <label className="block text-sm font-medium text-slate-700 mb-1">Description</label>
+              <label className="block text-sm font-medium text-zinc-700 mb-1.5">Description</label>
               <textarea
                 rows={5}
                 value={form.description}
@@ -73,9 +74,10 @@ export default function PostJob() {
               />
               {errors.description && <p className="text-red-500 text-xs mt-1">{errors.description}</p>}
             </div>
+
             <div className="grid grid-cols-2 gap-4">
               <div>
-                <label className="block text-sm font-medium text-slate-700 mb-1">Budget (₹)</label>
+                <label className="block text-sm font-medium text-zinc-700 mb-1.5">Budget (₹)</label>
                 <input
                   type="number"
                   value={form.budget}
@@ -86,7 +88,7 @@ export default function PostJob() {
                 {errors.budget && <p className="text-red-500 text-xs mt-1">{errors.budget}</p>}
               </div>
               <div>
-                <label className="block text-sm font-medium text-slate-700 mb-1">Deadline</label>
+                <label className="block text-sm font-medium text-zinc-700 mb-1.5">Deadline</label>
                 <input
                   type="date"
                   value={form.deadline}
@@ -96,12 +98,14 @@ export default function PostJob() {
                 {errors.deadline && <p className="text-red-500 text-xs mt-1">{errors.deadline}</p>}
               </div>
             </div>
+
             <div>
-              <label className="block text-sm font-medium text-slate-700 mb-1">Required Skills</label>
+              <label className="block text-sm font-medium text-zinc-700 mb-1.5">Required Skills</label>
               <SkillSelector value={skills} onChange={setSkills} />
             </div>
+
             <button type="submit" disabled={loading}
-              className="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-2.5 rounded-lg transition-colors disabled:opacity-50">
+              className="w-full bg-zinc-900 hover:bg-zinc-800 text-white font-medium py-2.5 rounded-lg text-sm transition-colors disabled:opacity-50">
               {loading ? 'Posting...' : 'Post Job'}
             </button>
           </form>

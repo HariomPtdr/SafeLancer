@@ -61,7 +61,7 @@ export default function VerifyHash() {
               <p className="text-zinc-400 text-xs mb-1.5">SHA-256 Hash</p>
               <p className="text-emerald-400 font-mono text-xs break-all">{hash}</p>
             </div>
-            <a href={`http://localhost:5001/api/files/certificate/${hash}`} target="_blank" rel="noreferrer"
+            <a href={`${import.meta.env.VITE_API_URL || 'http://localhost:5001'}/api/files/certificate/${hash}`} target="_blank" rel="noreferrer"
               className="inline-block bg-zinc-900 hover:bg-zinc-800 text-white px-6 py-2.5 rounded-lg text-sm font-medium transition-colors">
               Download Certificate PDF
             </a>

@@ -54,7 +54,7 @@ export default function InterviewRoom() {
       setCallState('receiving')
     })
 
-    socket.on('call-accepted', (signal) => {
+    socket.on('call-accepted', ({ signal }) => {
       peerRef.current?.signal(signal)
       setCallState('active')
     })

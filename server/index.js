@@ -90,7 +90,7 @@ io.on('connection', (socket) => {
   });
 
   socket.on('call-user', (data) => {
-    socket.to(data.contractId).emit('incoming-call', { signal: data.signal, from: data.from });
+    socket.to(data.contractId).emit('incoming-call', { signal: data.signal, from: data.from, name: data.name });
   });
 
   socket.on('accept-call', (data) => {

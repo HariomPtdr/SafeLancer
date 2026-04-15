@@ -72,7 +72,7 @@ export default function ChatRoom() {
       setCallState('receiving')
     })
 
-    socket.on('call-accepted', (signal) => {
+    socket.on('call-accepted', ({ signal }) => {
       peerRef.current?.signal(signal)
       setCallState('active')
     })
@@ -278,7 +278,7 @@ export default function ChatRoom() {
               <p className="text-center text-zinc-400 py-8 text-sm">No messages yet. Say hello!</p>
             )}
             {messages.map((msg, i) => {
-              const isMine = msg.sender?._id === user.id || msg.senderId === user.id
+              const isMine = String(msg.sender?._id || msg.sender || '') === user.id
               return (
                 <div key={i} className={`flex ${isMine ? 'justify-end' : 'justify-start'}`}>
                   <div className={`max-w-xs md:max-w-md px-4 py-2.5 rounded-xl text-sm ${

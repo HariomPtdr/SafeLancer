@@ -104,7 +104,7 @@ router.post('/google/complete', async (req, res) => {
     }
 
     const token = jwt.sign({ id: user._id, role: user.role, name: user.name }, process.env.JWT_SECRET, { expiresIn: '7d' });
-    res.json({ token, user: { id: user._id, name: user.name, email: user.email, role: user.role } });
+    res.json({ token, user: { id: user._id, name: user.name, email: user.email, role: user.role, rating: user.rating || 0 } });
   } catch (err) {
     res.status(400).json({ message: 'Session expired. Please try signing in again.' });
   }
@@ -159,7 +159,7 @@ router.post('/register', async (req, res) => {
 
     res.status(201).json({
       token,
-      user: { id: user._id, name: user.name, email: user.email, role: user.role }
+      user: { id: user._id, name: user.name, email: user.email, role: user.role, rating: 0 }
     });
   } catch (err) {
     console.error('Register error:', err);

@@ -66,13 +66,13 @@ export default function JobBoard() {
                   <div className="flex gap-4 mt-3 text-sm text-slate-500">
                     <span>Budget: <strong className="text-slate-700">₹{job.budget?.toLocaleString()}</strong></span>
                     <span>Deadline: <strong className="text-slate-700">{new Date(job.deadline).toLocaleDateString()}</strong></span>
-                    <span>Bids: <strong className="text-slate-700">{job.bids?.length || 0}</strong></span>
+                    <span>Applications: <strong className="text-slate-700">{job.bids?.length || 0}</strong></span>
                     {job.client?.rating > 0 && <span>Client: <strong className="text-slate-700">★ {job.client.rating}</strong></span>}
                   </div>
                 </div>
                 <Link to={`/jobs/${job._id}`}
                   className="ml-4 bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-lg text-sm font-medium whitespace-nowrap transition-colors">
-                  View & Bid
+                  View & Apply
                 </Link>
               </div>
             </div>

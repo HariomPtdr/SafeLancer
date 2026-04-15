@@ -195,22 +195,88 @@ async function suiteJobs() {
     assertField(r.data, 'title')
   })
 
-  await test('Freelancer places bid', async () => {
-    const r = await post(`/api/jobs/${state.jobId}/bid`, {
-      amount: 45000,
-      timeline: 20,
+  await test('Freelancer applies to job (proposal only, no amount)', async () => {
+    const r = await post(`/api/jobs/${state.jobId}/apply`, {
       proposal: 'I have extensive React experience and can deliver exactly what you need.'
     }, state.freelancerToken)
     assertStatus(r, 200)
-    assert(r.data.bids?.length > 0, 'Bid not saved')
+    assert(r.data.bids?.length > 0, 'Application not saved')
     state.bidId = r.data.bids[r.data.bids.length - 1]._id
+    assert(r.data.bids[r.data.bids.length - 1].status === 'applied', 'Status should be applied')
   })
 
-  await test('Cannot bid twice on same job', async () => {
-    const r = await post(`/api/jobs/${state.jobId}/bid`, {
-      amount: 44000, timeline: 18, proposal: 'Second bid attempt'
+  await test('Cannot apply twice to same job', async () => {
+    const r = await post(`/api/jobs/${state.jobId}/apply`, {
+      proposal: 'Second attempt'
     }, state.freelancerToken)
-    assert(r.status === 400 || r.status === 409, 'Expected 4xx for duplicate bid')
+    assert(r.status === 400 || r.status === 409, 'Expected 4xx for duplicate application')
+  })
+
+  await test('Client shortlists applicant', async () => {
+    const r = await patch(`/api/jobs/${state.jobId}/applications/${state.bidId}/shortlist`, {}, state.clientToken)
+    assertStatus(r, 200)
+    const bid = r.data.bids?.find(b => b._id === state.bidId)
+    assert(bid?.status === 'shortlisted', `Expected shortlisted, got ${bid?.status}`)
+  })
+
+  await test('Client schedules interview', async () => {
+    const scheduledAt = new Date(Date.now() + 2 * 86400000).toISOString()
+    const r = await patch(`/api/jobs/${state.jobId}/applications/${state.bidId}/schedule-interview`, {
+      scheduledAt
+    }, state.clientToken)
+    assertStatus(r, 200)
+    const bid = r.data.bids?.find(b => b._id === state.bidId)
+    assert(bid?.status === 'interview_scheduled', `Expected interview_scheduled, got ${bid?.status}`)
+    assert(bid?.meetingRoomId?.startsWith('interview-'), 'meetingRoomId should start with interview-')
+    state.interviewMeetingRoomId = bid?.meetingRoomId
+  })
+
+  await test('Client marks interview done', async () => {
+    const r = await patch(`/api/jobs/${state.jobId}/applications/${state.bidId}/interview-done`, {}, state.clientToken)
+    assertStatus(r, 200)
+    const bid = r.data.bids?.find(b => b._id === state.bidId)
+    assert(bid?.status === 'interviewed', `Expected interviewed, got ${bid?.status}`)
+  })
+
+  await test('Freelancer cannot shortlist (wrong role)', async () => {
+    const r = await patch(`/api/jobs/${state.jobId}/applications/${state.bidId}/shortlist`, {}, state.freelancerToken)
+    assert(r.status === 403, `Expected 403, got ${r.status}`)
+  })
+
+  await test('Freelancer sees their applications via my-applications', async () => {
+    const r = await get('/api/jobs/my-applications', state.freelancerToken)
+    assertStatus(r, 200)
+    assert(Array.isArray(r.data), 'Expected array')
+    assert(r.data.some(a => a.job._id === state.jobId), 'Applied job not in applications list')
+    const app = r.data.find(a => a.job._id === state.jobId)
+    assert(app.bid.status === 'interviewed', `Expected interviewed status, got ${app.bid.status}`)
+  })
+
+  await test('Client gets applications list with full profile', async () => {
+    const r = await get(`/api/jobs/${state.jobId}/applications`, state.clientToken)
+    assertStatus(r, 200)
+    assertField(r.data, 'applications')
+    assert(Array.isArray(r.data.applications), 'applications should be array')
+    assert(r.data.applications.length > 0, 'Should have at least one application')
+  })
+
+  await test('Client directly hires applicant — contract auto-created', async () => {
+    const r = await patch(`/api/jobs/${state.jobId}/applications/${state.bidId}/hire`, {}, state.clientToken)
+    assertStatus(r, 200)
+    assertField(r.data, 'contract')
+    state.hireContractId = r.data.contract._id
+    assert(r.data.contract.amount === 50000, `Contract amount should be job budget 50000, got ${r.data.contract.amount}`)
+    assert(r.data.job.status === 'in_progress', 'Job should be in_progress after hire')
+    const bid = r.data.job.bids?.find(b => b._id === state.bidId)
+    assert(bid?.status === 'hired', `Bid status should be hired, got ${bid?.status}`)
+  })
+
+  await test('Hired contract has milestones (advance + 3 phases)', async () => {
+    const r = await get(`/api/contracts/${state.hireContractId}`, state.clientToken)
+    assertStatus(r, 200)
+    const milestones = r.data.milestones
+    assert(milestones.length === 4, `Expected 4 milestones (advance + 3 phases), got ${milestones.length}`)
+    assert(milestones.some(m => m.isAdvance), 'Should have advance milestone')
   })
 }
 

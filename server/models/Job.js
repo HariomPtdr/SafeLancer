@@ -2,9 +2,19 @@ const mongoose = require('mongoose');
 
 const bidSchema = new mongoose.Schema({
   freelancer: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
-  amount: { type: Number, required: true },
-  proposal: { type: String, required: true },
-  status: { type: String, enum: ['pending', 'accepted', 'rejected'], default: 'pending' }
+  proposal:   { type: String, required: true },
+  status: {
+    type: String,
+    enum: ['applied', 'shortlisted', 'interview_scheduled', 'interviewed', 'negotiating', 'hired', 'rejected'],
+    default: 'applied'
+  },
+  appliedAt:            { type: Date, default: Date.now },
+  shortlistedAt:        Date,
+  interviewScheduledAt: Date,
+  meetingRoomId:        String,
+  interviewDoneAt:      Date,
+  rejectionReason:      String,
+  hiredAt:              Date,
 }, { timestamps: true });
 
 const jobSchema = new mongoose.Schema({

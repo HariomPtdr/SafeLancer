@@ -13,6 +13,7 @@ import NegotiationRoom from './pages/NegotiationRoom'
 import FreelancerBrowse from './pages/FreelancerBrowse'
 import FreelancerProfile from './pages/FreelancerProfile'
 import ChatRoom from './pages/ChatRoom'
+import InterviewRoom from './pages/InterviewRoom'
 import VerifyHash from './pages/VerifyHash'
 import AdminDashboard from './pages/AdminDashboard'
 
@@ -59,6 +60,7 @@ export default function App() {
 
         {/* Chat & Video */}
         <Route path="/chat/:contractId" element={<ProtectedRoute><ChatRoom /></ProtectedRoute>} />
+        <Route path="/interview/:meetingRoomId" element={<ProtectedRoute><InterviewRoom /></ProtectedRoute>} />
 
         {/* Admin */}
         <Route path="/admin" element={<ProtectedRoute role="admin"><AdminDashboard /></ProtectedRoute>} />

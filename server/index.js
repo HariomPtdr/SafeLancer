@@ -39,6 +39,20 @@ io.on('connection', (socket) => {
     socket.join(contractId);
   });
 
+  socket.on('join-interview', (meetingRoomId) => {
+    socket.join(meetingRoomId);
+  });
+
+  socket.on('send-interview-message', (data) => {
+    io.to(data.roomId).emit('receive-message', {
+      sender: { _id: data.senderId, name: data.senderName },
+      senderName: data.senderName,
+      text: data.text,
+      type: 'text',
+      createdAt: new Date()
+    });
+  });
+
   socket.on('send-message', async (data) => {
     const Message = require('./models/Message');
     const msg = new Message({

@@ -1,13 +1,21 @@
 import { useState } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import api from '../api'
 import toast, { Toaster } from 'react-hot-toast'
+
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5001'
 
 export default function Login() {
   const navigate = useNavigate()
   const [form, setForm] = useState({ email: '', password: '' })
   const [showPassword, setShowPassword] = useState(false)
   const [loading, setLoading] = useState(false)
+  const [exiting, setExiting] = useState(false)
+
+  const goTo = (path) => {
+    setExiting(true)
+    setTimeout(() => navigate(path), 220)
+  }
 
   const handleSubmit = async (e) => {
     e.preventDefault()
@@ -39,16 +47,19 @@ export default function Login() {
     }
   }
 
+  const cx = exiting ? 'auth-card-exit' : 'auth-card-enter'
+  const hx = exiting ? 'auth-head-exit' : 'auth-head-enter'
+
   return (
     <div className="min-h-screen bg-zinc-100 flex flex-col items-center justify-center p-4">
       <Toaster />
 
-      <div className="mb-8 text-center">
+      <div className={`mb-8 text-center ${hx}`}>
         <div className="text-xl font-bold text-zinc-900 tracking-tight">FreeLock</div>
         <div className="text-sm text-zinc-500 mt-1">Secure Freelancing Platform</div>
       </div>
 
-      <div className="bg-white rounded-xl border border-zinc-200 p-8 w-full max-w-md shadow-sm">
+      <div className={`bg-white rounded-xl border border-zinc-200 p-8 w-full max-w-md shadow-sm ${cx}`}>
         <h1 className="text-base font-semibold text-zinc-900 mb-1">Sign in</h1>
         <p className="text-sm text-zinc-500 mb-6">Enter your credentials to access your portals</p>
 
@@ -102,7 +113,7 @@ export default function Login() {
         </div>
 
         <a
-          href={`${import.meta.env.VITE_API_URL || 'http://localhost:5001'}/api/auth/google`}
+          href={`${API_URL}/api/auth/google`}
           className="w-full flex items-center justify-center gap-2.5 border border-zinc-200 rounded-lg py-2.5 text-sm font-medium text-zinc-700 hover:bg-zinc-50 transition-colors"
         >
           <svg className="w-4 h-4" viewBox="0 0 24 24">
@@ -116,7 +127,13 @@ export default function Login() {
 
         <p className="mt-5 text-center text-zinc-500 text-sm">
           Don't have an account?{' '}
-          <Link to="/register" className="text-zinc-900 font-semibold hover:underline underline-offset-2">Sign up</Link>
+          <button
+            type="button"
+            onClick={() => goTo('/register')}
+            className="text-zinc-900 font-semibold hover:underline underline-offset-2"
+          >
+            Sign up
+          </button>
         </p>
       </div>
     </div>

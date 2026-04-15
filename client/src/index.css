@@ -8,6 +8,35 @@ body {
   color: #09090b;
 }
 
+/* Auth page transitions */
+@keyframes authEnter {
+  from { opacity: 0; transform: translateY(22px) scale(0.97); }
+  to   { opacity: 1; transform: translateY(0)    scale(1);    }
+}
+@keyframes authExit {
+  from { opacity: 1; transform: translateY(0)     scale(1);    }
+  to   { opacity: 0; transform: translateY(-18px) scale(0.97); }
+}
+@keyframes authHeadEnter {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: translateY(0);    }
+}
+
+.auth-card-enter {
+  animation: authEnter 0.42s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+.auth-card-exit {
+  animation: authExit 0.22s ease-in both;
+  pointer-events: none;
+}
+.auth-head-enter {
+  animation: authHeadEnter 0.38s cubic-bezier(0.16, 1, 0.3, 1) 0.06s both;
+}
+.auth-head-exit {
+  animation: authExit 0.18s ease-in both;
+  pointer-events: none;
+}
+
 /* Clean scrollbar */
 ::-webkit-scrollbar { width: 6px; height: 6px; }
 ::-webkit-scrollbar-track { background: transparent; }

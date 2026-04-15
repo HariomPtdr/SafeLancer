@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import api from '../api'
 import toast, { Toaster } from 'react-hot-toast'
 
@@ -59,6 +59,12 @@ export default function Register() {
   const [showPassword, setShowPassword] = useState(false)
   const [showConfirm, setShowConfirm] = useState(false)
   const [loading, setLoading] = useState(false)
+  const [exiting, setExiting] = useState(false)
+
+  const goTo = (path) => {
+    setExiting(true)
+    setTimeout(() => navigate(path), 220)
+  }
 
   const strength = getPasswordStrength(form.password)
 
@@ -106,18 +112,21 @@ export default function Register() {
     }
   }
 
+  const cx = exiting ? 'auth-card-exit' : 'auth-card-enter'
+  const hx = exiting ? 'auth-head-exit' : 'auth-head-enter'
+
   // ── Step 1: Role picker ────────────────────────────────────────────────
   if (step === 'role') {
     return (
       <div className="min-h-screen bg-zinc-100 flex flex-col items-center justify-center p-4">
         <Toaster />
 
-        <div className="mb-8 text-center">
+        <div className={`mb-8 text-center ${hx}`}>
           <div className="text-xl font-bold text-zinc-900 tracking-tight">FreeLock</div>
           <div className="text-sm text-zinc-500 mt-1">Escrow-protected freelancing</div>
         </div>
 
-        <div className="bg-white rounded-xl border border-zinc-200 p-8 w-full max-w-md shadow-sm">
+        <div className={`bg-white rounded-xl border border-zinc-200 p-8 w-full max-w-md shadow-sm ${cx}`}>
           <h1 className="text-base font-semibold text-zinc-900 mb-1">Join FreeLock</h1>
           <p className="text-sm text-zinc-500 mb-6">How do you want to use FreeLock?</p>
 
@@ -172,7 +181,7 @@ export default function Register() {
 
           <p className="mt-5 text-center text-zinc-500 text-sm">
             Already have an account?{' '}
-            <Link to="/login" className="text-zinc-900 font-semibold hover:underline underline-offset-2">Sign in</Link>
+            <button type="button" onClick={() => goTo('/login')} className="text-zinc-900 font-semibold hover:underline underline-offset-2">Sign in</button>
           </p>
         </div>
       </div>
@@ -184,12 +193,12 @@ export default function Register() {
     <div className="min-h-screen bg-zinc-100 flex flex-col items-center justify-center p-4 py-10">
       <Toaster />
 
-      <div className="mb-8 text-center">
+      <div className={`mb-8 text-center ${hx}`}>
         <div className="text-xl font-bold text-zinc-900 tracking-tight">FreeLock</div>
         <div className="text-sm text-zinc-500 mt-1">Create your account</div>
       </div>
 
-      <div className="bg-white rounded-xl border border-zinc-200 p-8 w-full max-w-md shadow-sm">
+      <div className={`bg-white rounded-xl border border-zinc-200 p-8 w-full max-w-md shadow-sm ${cx}`}>
         <div className="flex items-center justify-between mb-1">
           <h1 className="text-base font-semibold text-zinc-900">Create an account</h1>
           <button
@@ -310,7 +319,7 @@ export default function Register() {
 
         <p className="mt-5 text-center text-zinc-500 text-sm">
           Already have an account?{' '}
-          <Link to="/login" className="text-zinc-900 font-semibold hover:underline underline-offset-2">Sign in</Link>
+          <button type="button" onClick={() => goTo('/login')} className="text-zinc-900 font-semibold hover:underline underline-offset-2">Sign in</button>
         </p>
       </div>
     </div>

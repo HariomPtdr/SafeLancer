@@ -275,7 +275,7 @@ export default function ClientProfile() {
 
           {/* Earned */}
           {earnedBadges.length > 0 && (
-            <div className="grid grid-cols-2 gap-1.5 mb-2">
+            <div className="flex flex-col gap-1.5 mb-2">
               {earnedBadges.map(badge => {
                 const c = BADGE_COLORS[badge.color]
                 return (
@@ -298,7 +298,7 @@ export default function ClientProfile() {
             <p className="text-[10px] text-zinc-400 font-semibold uppercase tracking-wider mb-1.5">Still to unlock</p>
           )}
           {lockedBadges.length > 0 && (
-            <div className="grid grid-cols-2 gap-1.5">
+            <div className="flex flex-col gap-1.5">
               {lockedBadges.map(badge => (
                 <div key={badge.id} className="flex items-start gap-2 border border-zinc-100 rounded-lg px-2.5 py-2 bg-zinc-50 opacity-50">
                   <div className="w-6 h-6 rounded-md bg-zinc-200 text-zinc-400 flex items-center justify-center flex-shrink-0 mt-0.5">

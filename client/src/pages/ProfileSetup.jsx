@@ -871,6 +871,8 @@ function ProfileEditForm({ portfolio, user, onSave, onCancel }) {
       else if (!isValidUrl(form.githubUrl)) e.githubUrl = 'Enter a valid URL'
       if (!form.portfolioUrl) e.portfolioUrl = 'Portfolio URL is required'
       else if (!isValidUrl(form.portfolioUrl)) e.portfolioUrl = 'Enter a valid URL'
+      if (!(localPortfolio?.projectSamples?.length > 0)) e.portfolioSample = 'Upload at least one portfolio sample'
+      if (!localPortfolio?.resumeUrl) e.resume = 'Resume is required'
     } else {
       if (!form.clientType) e.clientType = 'Please select your client type'
       if (!form.location) e.location = 'Location is required'
@@ -1310,7 +1312,7 @@ function ProfileEditForm({ portfolio, user, onSave, onCancel }) {
           <div>
             <div className="flex items-baseline justify-between mb-1.5">
               <label className="text-sm font-medium text-zinc-700">
-                Add Portfolio Sample
+                Add Portfolio Sample <span className="text-red-500 ml-0.5">*</span>
                 {!(localPortfolio?.projectSamples?.length > 0) && (
                   <span className="ml-1.5 text-xs text-zinc-400 font-normal">+10%</span>
                 )}
@@ -1320,19 +1322,20 @@ function ProfileEditForm({ portfolio, user, onSave, onCancel }) {
             <input value={sampleTitle} onChange={e => setSampleTitle(e.target.value)}
               className="w-full border border-zinc-200 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:border-zinc-400 transition-colors mb-2"
               placeholder="Sample title (e.g. E-Commerce App)" />
-            <label className="block cursor-pointer bg-zinc-50 hover:bg-zinc-100 border-2 border-dashed border-zinc-200 hover:border-zinc-400 rounded-lg p-5 text-center transition-colors">
+            <label className={`block cursor-pointer bg-zinc-50 hover:bg-zinc-100 border-2 border-dashed rounded-lg p-5 text-center transition-colors ${errors.portfolioSample ? 'border-red-300' : 'border-zinc-200 hover:border-zinc-400'}`}>
               <p className="text-sm text-zinc-600 font-medium">
                 {uploading ? 'Uploading & generating hash…' : 'Click to upload portfolio sample'}
               </p>
               <p className="text-xs text-zinc-400 mt-1">Images, PDFs, zip files · Max 10 MB</p>
-              <input type="file" className="hidden" onChange={handleSampleUpload} disabled={uploading} />
+              <input type="file" className="hidden" onChange={e => { setErrors(prev => ({ ...prev, portfolioSample: '' })); handleSampleUpload(e) }} disabled={uploading} />
             </label>
+            {errors.portfolioSample && <p className="text-xs text-red-500 mt-1">{errors.portfolioSample}</p>}
           </div>
 
           <div>
             <div className="flex items-baseline justify-between mb-1.5">
               <label className="text-sm font-medium text-zinc-700">
-                Resume (PDF)
+                Resume (PDF) <span className="text-red-500 ml-0.5">*</span>
                 {!localPortfolio?.resumeUrl && <span className="ml-1.5 text-xs text-zinc-400 font-normal">+5%</span>}
               </label>
             </div>
@@ -1350,13 +1353,16 @@ function ProfileEditForm({ portfolio, user, onSave, onCancel }) {
                 </label>
               </div>
             ) : (
-              <label className="block cursor-pointer bg-zinc-50 hover:bg-zinc-100 border-2 border-dashed border-zinc-200 hover:border-zinc-400 rounded-lg p-5 text-center transition-colors">
-                <p className="text-sm text-zinc-600 font-medium">
-                  {resumeUploading ? 'Uploading…' : 'Click to upload resume PDF'}
-                </p>
-                <p className="text-xs text-zinc-400 mt-1">PDF only · Max 10 MB</p>
-                <input type="file" accept=".pdf" className="hidden" onChange={handleResumeUpload} disabled={resumeUploading} />
-              </label>
+              <>
+                <label className={`block cursor-pointer bg-zinc-50 hover:bg-zinc-100 border-2 border-dashed rounded-lg p-5 text-center transition-colors ${errors.resume ? 'border-red-300' : 'border-zinc-200 hover:border-zinc-400'}`}>
+                  <p className="text-sm text-zinc-600 font-medium">
+                    {resumeUploading ? 'Uploading…' : 'Click to upload resume PDF'}
+                  </p>
+                  <p className="text-xs text-zinc-400 mt-1">PDF only · Max 10 MB</p>
+                  <input type="file" accept=".pdf" className="hidden" onChange={e => { setErrors(prev => ({ ...prev, resume: '' })); handleResumeUpload(e) }} disabled={resumeUploading} />
+                </label>
+                {errors.resume && <p className="text-xs text-red-500 mt-1">{errors.resume}</p>}
+              </>
             )}
           </div>
         </div>

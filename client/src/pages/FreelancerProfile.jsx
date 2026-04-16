@@ -319,28 +319,34 @@ export default function FreelancerProfile() {
               <h2 className="text-sm font-semibold text-zinc-800">Portfolio Samples</h2>
               <span className="text-xs text-zinc-400">{profile.projectSamples.length} project{profile.projectSamples.length !== 1 ? 's' : ''}</span>
             </div>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <div className="flex flex-col gap-2">
               {profile.projectSamples.map((sample, i) => (
-                <div key={i} className="border border-zinc-100 rounded-xl p-4 hover:border-zinc-300 hover:bg-zinc-50 transition-all">
-                  <div className="flex items-start justify-between gap-3">
-                    <div className="w-9 h-9 bg-zinc-900 rounded-lg flex items-center justify-center text-white flex-shrink-0">
-                      {Icons.paperclip}
-                    </div>
-                    <div className="flex-1 min-w-0">
-                      <h3 className="font-medium text-zinc-900 text-sm">{sample.title}</h3>
-                      {sample.description && (
-                        <p className="text-xs text-zinc-500 mt-0.5 line-clamp-2">{sample.description}</p>
-                      )}
-                      {sample.fileUrl && (
+                <div key={i} className="flex items-center gap-3 bg-white border border-zinc-200 rounded-xl px-4 py-3 hover:border-zinc-300 transition-colors">
+                  <div className="w-10 h-10 bg-zinc-900 rounded-xl flex items-center justify-center text-white flex-shrink-0">
+                    {Icons.paperclip}
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <p className="text-sm font-semibold text-zinc-900 truncate">{sample.title}</p>
+                    {sample.description
+                      ? <p className="text-xs text-zinc-500 mt-0.5 truncate">{sample.description}</p>
+                      : sample.fileUrl && (
                         <a href={`${FILE_BASE}${sample.fileUrl}`} target="_blank" rel="noreferrer"
-                          className="inline-flex items-center gap-1 text-zinc-600 hover:text-zinc-900 text-xs mt-2 font-medium underline underline-offset-2 transition-colors">
+                          className="text-xs text-zinc-500 hover:text-zinc-700 mt-0.5 truncate block transition-colors">
                           View / Download
                         </a>
-                      )}
-                    </div>
+                      )
+                    }
+                  </div>
+                  <div className="flex items-center gap-2 flex-shrink-0">
+                    {sample.description && sample.fileUrl && (
+                      <a href={`${FILE_BASE}${sample.fileUrl}`} target="_blank" rel="noreferrer"
+                        className="text-xs text-zinc-500 hover:text-zinc-700 font-medium transition-colors">
+                        Download
+                      </a>
+                    )}
                     {sample.fileHash && (
                       <a href={`/verify/${sample.fileHash}`} target="_blank" rel="noreferrer"
-                        className="flex-shrink-0 inline-flex items-center gap-1 text-xs bg-zinc-100 text-zinc-700 border border-zinc-200 px-2 py-1 rounded-lg hover:bg-zinc-200 transition-colors font-medium">
+                        className="inline-flex items-center gap-1 text-xs bg-zinc-900 text-white px-2.5 py-1 rounded-lg hover:bg-zinc-700 transition-colors font-medium">
                         {Icons.shield}
                         SHA-256
                       </a>

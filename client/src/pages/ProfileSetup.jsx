@@ -578,8 +578,8 @@ function ProfileCard({ portfolio, user, fullUser, completion, onEdit, onCompleti
           </div>
         </div>
 
-        {/* Stats row — freelancer */}
-        {isFreelancer && fullUser && (
+        {/* Stats row — freelancer (only when there's real data) */}
+        {isFreelancer && fullUser && fullUser.totalJobsCompleted > 0 && (
           <div className="bg-white rounded-xl border border-zinc-200">
             <div className="grid grid-cols-4 divide-x divide-zinc-100">
               {[

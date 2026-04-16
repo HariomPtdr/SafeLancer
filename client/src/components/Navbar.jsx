@@ -70,6 +70,9 @@ export default function Navbar() {
             <Link to="/profile/setup" className="text-zinc-500 hover:text-zinc-900 text-sm font-medium transition-colors">
               Profile
             </Link>
+            <Link to="/payments" className="text-zinc-500 hover:text-zinc-900 text-sm font-medium transition-colors">
+              Payments
+            </Link>
 
             {/* Badge indicator */}
             {user.role !== 'admin' && (

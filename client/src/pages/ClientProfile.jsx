@@ -62,7 +62,7 @@ export default function ClientProfile() {
     ? (profile.avatarUrl.startsWith('http') ? profile.avatarUrl : `${FILE_BASE}${profile.avatarUrl}`)
     : null
 
-  const { earned: earnedBadges } = computeBadges('client', profile.user, profile)
+  const { earned: earnedBadges } = computeBadges(profile.user?.role || 'client', profile.user, profile)
 
   const avgRating = ratings.length > 0
     ? (ratings.reduce((s, r) => s + r.stars, 0) / ratings.length).toFixed(1)

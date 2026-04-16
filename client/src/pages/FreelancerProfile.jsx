@@ -58,6 +58,10 @@ export default function FreelancerProfile() {
     ? (ratings.reduce((s, r) => s + r.stars, 0) / ratings.length).toFixed(1)
     : null
 
+  const avatarUrl = profile.avatarUrl
+    ? (profile.avatarUrl.startsWith('http') ? profile.avatarUrl : `${FILE_BASE}${profile.avatarUrl}`)
+    : null
+
   const inputCls = "w-full border border-zinc-200 rounded-lg px-3 py-2.5 text-sm text-zinc-900 placeholder:text-zinc-400 focus:outline-none focus:border-zinc-400 transition-colors"
 
   return (
@@ -70,9 +74,13 @@ export default function FreelancerProfile() {
         <div className="bg-white rounded-xl border border-zinc-200 p-6 mb-4">
           <div className="flex items-start justify-between">
             <div className="flex items-center gap-4">
-              <div className="w-14 h-14 bg-zinc-900 rounded-full flex items-center justify-center text-white text-xl font-bold flex-shrink-0">
-                {profile.user?.name?.[0]?.toUpperCase()}
-              </div>
+              {avatarUrl
+                ? <img src={avatarUrl} alt={profile.user?.name}
+                    className="w-14 h-14 object-cover border border-zinc-200 rounded-full flex-shrink-0" />
+                : <div className="w-14 h-14 bg-zinc-900 rounded-full flex items-center justify-center text-white text-xl font-bold flex-shrink-0">
+                    {profile.user?.name?.[0]?.toUpperCase()}
+                  </div>
+              }
               <div>
                 <h1 className="text-xl font-semibold text-zinc-900">{profile.user?.name}</h1>
                 <div className="flex items-center gap-3 mt-1 flex-wrap">

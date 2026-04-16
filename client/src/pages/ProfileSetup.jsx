@@ -867,14 +867,25 @@ function ProfileEditForm({ portfolio, user, onSave, onCancel }) {
     else if (form.bio.trim().length > 1000) e.bio = 'Bio cannot exceed 1000 characters'
     if (isFreelancer) {
       if (form.skills.length === 0) e.skills = 'Add at least one skill'
-      if (form.githubUrl && !isValidUrl(form.githubUrl)) e.githubUrl = 'Enter a valid URL'
-      if (form.portfolioUrl && !isValidUrl(form.portfolioUrl)) e.portfolioUrl = 'Enter a valid URL'
+      if (!form.githubUrl) e.githubUrl = 'GitHub URL is required'
+      else if (!isValidUrl(form.githubUrl)) e.githubUrl = 'Enter a valid URL'
+      if (!form.portfolioUrl) e.portfolioUrl = 'Portfolio URL is required'
+      else if (!isValidUrl(form.portfolioUrl)) e.portfolioUrl = 'Enter a valid URL'
     } else {
       if (!form.clientType) e.clientType = 'Please select your client type'
-      if (isBusiness && !form.industry) e.industry = 'Please select your industry'
-      if (form.websiteUrl && !isValidUrl(form.websiteUrl)) e.websiteUrl = 'Enter a valid URL'
+      if (!form.location) e.location = 'Location is required'
+      if (!form.yearsHiring) e.yearsHiring = 'Please select your hiring experience'
+      if (!form.preferredComm) e.preferredComm = 'Please select your communication style'
+      if (isBusiness) {
+        if (!form.companyName) e.companyName = 'Company name is required'
+        if (!form.industry) e.industry = 'Please select your industry'
+        if (!form.companySize) e.companySize = 'Please select your company size'
+        if (!form.websiteUrl) e.websiteUrl = 'Company website is required'
+        else if (!isValidUrl(form.websiteUrl)) e.websiteUrl = 'Enter a valid URL'
+      }
     }
-    if (form.linkedinUrl && !isValidUrl(form.linkedinUrl)) e.linkedinUrl = 'Enter a valid URL'
+    if (!form.linkedinUrl) e.linkedinUrl = 'LinkedIn URL is required'
+    else if (!isValidUrl(form.linkedinUrl)) e.linkedinUrl = 'Enter a valid URL'
     setErrors(e)
     return Object.keys(e).length === 0
   }
@@ -1071,7 +1082,7 @@ function ProfileEditForm({ portfolio, user, onSave, onCancel }) {
         {/* ── Business-only fields ── */}
         {!isFreelancer && isBusiness && (
           <>
-            <Field label="Company Name" bonus={10} error={errors.companyName}>
+            <Field label="Company Name" required bonus={10} error={errors.companyName}>
               <input value={form.companyName} onChange={e => setForm({ ...form, companyName: e.target.value })}
                 className={inputClass(errors.companyName)} placeholder="e.g. TechStart Ltd" />
             </Field>
@@ -1084,7 +1095,7 @@ function ProfileEditForm({ portfolio, user, onSave, onCancel }) {
                   {INDUSTRIES.map(ind => <option key={ind} value={ind}>{ind}</option>)}
                 </select>
               </Field>
-              <Field label="Company Size" bonus={10} error={errors.companySize}>
+              <Field label="Company Size" required bonus={10} error={errors.companySize}>
                 <select value={form.companySize}
                   onChange={e => setForm({ ...form, companySize: e.target.value })}
                   className={inputClass(false)}>
@@ -1095,7 +1106,7 @@ function ProfileEditForm({ portfolio, user, onSave, onCancel }) {
                 </select>
               </Field>
             </div>
-            <Field label="Company Website" bonus={5} error={errors.websiteUrl} hint="https://...">
+            <Field label="Company Website" required bonus={5} error={errors.websiteUrl} hint="https://...">
               <input value={form.websiteUrl}
                 onChange={e => { setForm({ ...form, websiteUrl: e.target.value }); setErrors({ ...errors, websiteUrl: '' }) }}
                 className={inputClass(errors.websiteUrl)} placeholder="https://yourcompany.com" />
@@ -1136,7 +1147,7 @@ function ProfileEditForm({ portfolio, user, onSave, onCancel }) {
                 <option value="unavailable">Unavailable</option>
               </select>
             </Field>
-            <Field label="GitHub URL" bonus={15} error={errors.githubUrl} hint="https://...">
+            <Field label="GitHub URL" required bonus={15} error={errors.githubUrl} hint="https://...">
               <input value={form.githubUrl}
                 onChange={e => { setForm({ ...form, githubUrl: e.target.value }); setErrors({ ...errors, githubUrl: '' }) }}
                 className={inputClass(errors.githubUrl)} placeholder="https://github.com/username" />
@@ -1147,13 +1158,13 @@ function ProfileEditForm({ portfolio, user, onSave, onCancel }) {
         {/* ── Shared client fields (shown once clientType is chosen) ── */}
         {!isFreelancer && form.clientType && (
           <>
-            <Field label="Location" bonus={isIndividual ? 15 : 10} error={errors.location}>
+            <Field label="Location" required bonus={isIndividual ? 15 : 10} error={errors.location}>
               <input value={form.location}
                 onChange={e => setForm({ ...form, location: e.target.value })}
                 className={inputClass(false)} placeholder="e.g. Mumbai, India" />
             </Field>
 
-            <Field label="Years hiring freelancers" bonus={isIndividual ? 15 : 10} error={errors.yearsHiring}>
+            <Field label="Years hiring freelancers" required bonus={isIndividual ? 15 : 10} error={errors.yearsHiring}>
               <div className="flex flex-col gap-2">
                 {YEARS_HIRING_OPTIONS.map(opt => {
                   const selected = form.yearsHiring === opt.value
@@ -1183,7 +1194,7 @@ function ProfileEditForm({ portfolio, user, onSave, onCancel }) {
               </div>
             </Field>
 
-            <Field label="Preferred communication style" bonus={isIndividual ? 10 : 5} error={errors.preferredComm}>
+            <Field label="Preferred communication style" required bonus={isIndividual ? 10 : 5} error={errors.preferredComm}>
               <div className="flex flex-col gap-2">
                 {COMM_OPTIONS.map(opt => {
                   const commIcons = { async: SetupIcons.chat, sync: SetupIcons.phone, flexible: SetupIcons.sparkles }
@@ -1216,30 +1227,19 @@ function ProfileEditForm({ portfolio, user, onSave, onCancel }) {
           </>
         )}
 
-        <Field label="LinkedIn URL" bonus={isFreelancer ? 5 : isIndividual ? 10 : 5} error={errors.linkedinUrl} hint="https://...">
+        <Field label="LinkedIn URL" required bonus={isFreelancer ? 5 : isIndividual ? 10 : 5} error={errors.linkedinUrl} hint="https://...">
           <input value={form.linkedinUrl}
             onChange={e => { setForm({ ...form, linkedinUrl: e.target.value }); setErrors({ ...errors, linkedinUrl: '' }) }}
             className={inputClass(errors.linkedinUrl)} placeholder="https://linkedin.com/in/username" />
         </Field>
 
         {isFreelancer && (
-          <Field label="Portfolio Website" bonus={5} error={errors.portfolioUrl} hint="https://...">
+          <Field label="Portfolio Website" required bonus={5} error={errors.portfolioUrl} hint="https://...">
             <input value={form.portfolioUrl}
               onChange={e => { setForm({ ...form, portfolioUrl: e.target.value }); setErrors({ ...errors, portfolioUrl: '' }) }}
               className={inputClass(errors.portfolioUrl)} placeholder="https://yourportfolio.com" />
           </Field>
         )}
-
-        <div className="flex gap-3 pt-2 border-t border-zinc-100">
-          <button onClick={handleSave} disabled={saving}
-            className="flex-1 bg-zinc-900 hover:bg-zinc-800 text-white font-medium py-2.5 rounded-lg text-sm transition-colors disabled:opacity-50">
-            {saving ? 'Saving…' : 'Save Profile'}
-          </button>
-          <button onClick={onCancel}
-            className="flex-1 border border-zinc-200 text-zinc-600 font-medium py-2.5 rounded-lg text-sm hover:bg-zinc-50 transition-colors">
-            Cancel
-          </button>
-        </div>
       </div>
 
       {/* ── Payment Verification — all clients ── */}
@@ -1361,6 +1361,18 @@ function ProfileEditForm({ portfolio, user, onSave, onCancel }) {
           </div>
         </div>
       )}
+
+      {/* ── Save / Cancel ── always at the very bottom ── */}
+      <div className="bg-white rounded-xl border border-zinc-200 p-4 flex gap-3">
+        <button onClick={handleSave} disabled={saving}
+          className="flex-1 bg-zinc-900 hover:bg-zinc-800 text-white font-medium py-2.5 rounded-lg text-sm transition-colors disabled:opacity-50">
+          {saving ? 'Saving…' : 'Save Profile'}
+        </button>
+        <button onClick={onCancel}
+          className="flex-1 border border-zinc-200 text-zinc-600 font-medium py-2.5 rounded-lg text-sm hover:bg-zinc-50 transition-colors">
+          Cancel
+        </button>
+      </div>
     </div>
   )
 }

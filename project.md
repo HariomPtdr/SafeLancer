@@ -1,4 +1,4 @@
-# SafeLancer — Claude Code Context
+# SafeLancer —  Code Context
 
 ## Project Overview
 MERN stack freelancing escrow platform. Solves payment fraud via SHA-256 proof of delivery, milestone-based escrow, and cryptographic delivery certificates.

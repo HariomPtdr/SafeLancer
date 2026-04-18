@@ -196,7 +196,7 @@ function BadgesCard({ user, portfolio }) {
 // PaymentVerifyModal is now in components/PaymentVerifyModal.jsx
 
 // ─── Avatar display ───────────────────────────────────────────────────────────
-function Avatar({ url, name, size = 14, shape = 'circle', className = '' }) {
+function Avatar({ url, name, size = 14, shape = 'circle', className = '', style: styleProp = {} }) {
   const sizeClass = `w-${size} h-${size}`
   const shapeClass = shape === 'circle' ? 'rounded-full' : 'rounded-xl'
   const borderClass = className ? '' : 'border'
@@ -205,13 +205,13 @@ function Avatar({ url, name, size = 14, shape = 'circle', className = '' }) {
   if (fullUrl) {
     return (
       <img src={fullUrl} alt={name}
-        className={`${sizeClass} ${shapeClass} object-cover ${borderClass} ${className}`}
-        style={borderStyle} />
+        className={`${sizeClass} ${shapeClass} object-cover object-top ${borderClass} ${className}`}
+        style={{ ...borderStyle, ...styleProp }} />
     )
   }
   return (
     <div className={`${sizeClass} ${shapeClass} flex items-center justify-center text-white font-bold flex-shrink-0 ${borderClass} ${className}`}
-      style={{ background: 'linear-gradient(135deg, #FF6803, #AE3A02)', fontSize: size > 10 ? '1.25rem' : '0.875rem', ...borderStyle }}>
+      style={{ background: 'linear-gradient(135deg, #FF6803, #AE3A02)', fontSize: size > 10 ? '1.25rem' : '0.875rem', ...borderStyle, ...styleProp }}>
       {name?.[0]?.toUpperCase()}
     </div>
   )

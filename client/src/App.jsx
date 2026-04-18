@@ -1,3 +1,5 @@
+import VerificationPending from './pages/verificationpending'
+<Route path="/verification-pending" element={<VerificationPending />} />
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
 import { Toaster } from 'react-hot-toast'
 import ProtectedRoute from './components/ProtectedRoute'
@@ -62,7 +64,6 @@ export default function App() {
 
         {/* Onboarding */}
         <Route path="/profile/setup" element={<ProtectedRoute><ProfileSetup /></ProtectedRoute>} />
-        <Route path="/payments" element={<ProtectedRoute><PaymentSettings /></ProtectedRoute>} />
 
         {/* Dashboards */}
         <Route path="/dashboard/client" element={<ProtectedRoute role="client"><ClientDashboard /></ProtectedRoute>} />

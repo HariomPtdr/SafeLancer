@@ -244,7 +244,6 @@ export default function Register() {
           Signing up as a{' '}
           <span className="font-medium capitalize" style={{ color: '#A78BFA' }}>{role}</span>
         </p>
-
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
             <label className="block text-sm font-medium mb-1.5" style={{ color: '#a1a1aa' }}>Name</label>
@@ -257,7 +256,6 @@ export default function Register() {
               placeholder="Your name"
             />
           </div>
-
           <div>
             <label className="block text-sm font-medium mb-1.5" style={{ color: '#a1a1aa' }}>Email</label>
             <input
@@ -269,7 +267,6 @@ export default function Register() {
               placeholder="you@company.com"
             />
           </div>
-
           <div>
             <label className="block text-sm font-medium mb-1.5" style={{ color: '#a1a1aa' }}>Password</label>
             <div className="relative">
@@ -307,7 +304,6 @@ export default function Register() {
               </div>
             )}
           </div>
-
           <div>
             <label className="block text-sm font-medium mb-1.5" style={{ color: '#a1a1aa' }}>Confirm Password</label>
             <div className="relative">

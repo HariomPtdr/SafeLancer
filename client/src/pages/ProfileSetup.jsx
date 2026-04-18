@@ -4,7 +4,6 @@ import api from '../api'
 import Navbar from '../components/Navbar'
 import SkillSelector from '../components/SkillSelector'
 import toast from 'react-hot-toast'
-import PaymentVerifyModal from '../components/PaymentVerifyModal'
 import {
   FREELANCER_BADGES, CLIENT_BADGES, BADGE_COLORS,
   computeBadges, storeBadgeSummary
@@ -711,6 +710,19 @@ function ProfileEditForm({ portfolio, user, onSave, onCancel }) {
   const handleAvatarUpload = async (e) => {
     const file = e.target.files[0]
     if (!file) return
+
+    // Validate file type
+    if (!file.type.startsWith('image/')) {
+      toast.error('Please select an image file (JPG, PNG, GIF, etc.)')
+      return
+    }
+
+    // Validate file size (10MB limit)
+    if (file.size > 10 * 1024 * 1024) {
+      toast.error('File size must be less than 10MB')
+      return
+    }
+
     setAvatarUploading(true)
     const fd = new FormData()
     fd.append('avatar', file)
@@ -726,7 +738,7 @@ function ProfileEditForm({ portfolio, user, onSave, onCancel }) {
       toast.success('Photo uploaded!')
     } catch (err) {
       const msg = err?.response?.data?.message || err?.message || 'Upload failed'
-      toast.error(msg)
+      toast.error(`Upload failed: ${msg}`)
       console.error('Avatar upload error:', err?.response?.data || err?.message)
     }
     finally { setAvatarUploading(false) }

@@ -190,11 +190,11 @@ export const CLIENT_BADGES = [
 ]
 
 export const BADGE_COLORS = {
-  amber:   { earned: 'bg-zinc-50 border-zinc-200 text-zinc-800', icon: 'bg-zinc-900 text-white' },
-  blue:    { earned: 'bg-zinc-50 border-zinc-200 text-zinc-800', icon: 'bg-zinc-900 text-white' },
-  green:   { earned: 'bg-zinc-50 border-zinc-200 text-zinc-800', icon: 'bg-zinc-900 text-white' },
-  violet:  { earned: 'bg-zinc-50 border-zinc-200 text-zinc-800', icon: 'bg-zinc-900 text-white' },
-  emerald: { earned: 'bg-zinc-50 border-zinc-200 text-zinc-800', icon: 'bg-zinc-900 text-white' },
+  amber:   { earned: 'bg-[rgba(255,104,3,0.10)] border-[rgba(255,104,3,0.32)] text-[#F5EDE4]',    icon: 'bg-[rgba(255,104,3,0.20)] text-[#FF6803]' },
+  blue:    { earned: 'bg-[rgba(59,130,246,0.08)] border-[rgba(59,130,246,0.32)] text-[#F5EDE4]',  icon: 'bg-[rgba(59,130,246,0.18)] text-[#93c5fd]' },
+  green:   { earned: 'bg-[rgba(34,197,94,0.08)] border-[rgba(34,197,94,0.32)] text-[#F5EDE4]',   icon: 'bg-[rgba(34,197,94,0.18)] text-[#86efac]' },
+  violet:  { earned: 'bg-[rgba(139,92,246,0.08)] border-[rgba(139,92,246,0.32)] text-[#F5EDE4]', icon: 'bg-[rgba(139,92,246,0.18)] text-[#c4b5fd]' },
+  emerald: { earned: 'bg-[rgba(16,185,129,0.08)] border-[rgba(16,185,129,0.32)] text-[#F5EDE4]', icon: 'bg-[rgba(16,185,129,0.18)] text-[#6ee7b7]' },
 }
 
 /**

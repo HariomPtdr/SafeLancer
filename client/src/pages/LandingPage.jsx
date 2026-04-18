@@ -2,6 +2,7 @@ import { useEffect, useRef, useState, useCallback } from 'react'
 import { useNavigate } from 'react-router-dom'
 import Hero3D         from '../components/Hero3D'
 import FooterParticles from '../components/FooterParticles'
+import { LogoMark } from '../components/SafeLancerLogo'
 
 /* ═══════════════════════════════════════════════════════════════════
    DESIGN TOKENS
@@ -169,7 +170,7 @@ export default function LandingPage() {
           transition: 'transform .85s cubic-bezier(.76,0,.24,1)',
           pointerEvents: phase > 0 ? 'none' : 'all',
         }}>
-          <div style={{ width: '56px', height: '56px', borderRadius: '16px', background: T.gradB, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '26px', boxShadow: `0 0 60px ${T.blue}60`, animation: 'i-pop .5s cubic-bezier(.16,1,.3,1) .1s both' }}>🔒</div>
+          <div style={{ width: '56px', height: '56px', borderRadius: '16px', background: T.gradB, display: 'flex', alignItems: 'center', justifyContent: 'center', boxShadow: `0 0 60px ${T.blue}60`, animation: 'i-pop .5s cubic-bezier(.16,1,.3,1) .1s both' }}><LogoMark size={30} color="white" keyholeColor="#7A2200" /></div>
           <div style={{ fontWeight: 900, fontSize: 'clamp(28px,5vw,58px)', letterSpacing: '-0.07em', color: T.text, animation: 'i-blur .7s ease .25s both' }}>SafeLancer</div>
           <div style={{ fontSize: '11px', letterSpacing: '0.22em', color: T.muted, textTransform: 'uppercase', fontWeight: 500, animation: 'i-blur .6s ease .55s both' }}>Freelance · Escrow · Verified</div>
           <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, height: '2px', background: `linear-gradient(90deg,transparent,${T.blue},${T.violet},transparent)`, transformOrigin: 'left', animation: 'i-bar 1.8s ease .3s both' }} />
@@ -182,7 +183,7 @@ export default function LandingPage() {
       <nav style={{ position: 'fixed', top: 0, left: 0, right: 0, zIndex: 200, background: 'rgba(4,4,12,0.75)', backdropFilter: 'blur(22px) saturate(1.8)', WebkitBackdropFilter: 'blur(22px) saturate(1.8)', borderBottom: `1px solid ${T.border}`, padding: '0 6%' }}>
         <div style={{ maxWidth: '1360px', margin: '0 auto', display: 'flex', alignItems: 'center', justifyContent: 'space-between', height: '66px' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '10px', cursor: 'pointer' }} onClick={() => nav('/')}>
-            <div style={{ width: '30px', height: '30px', borderRadius: '8px', background: T.gradB, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '14px' }}>🔒</div>
+            <div style={{ width: '30px', height: '30px', borderRadius: '8px', background: T.gradB, display: 'flex', alignItems: 'center', justifyContent: 'center' }}><LogoMark size={17} color="white" keyholeColor="#7A2200" /></div>
             <span style={{ fontWeight: 800, fontSize: '17px', letterSpacing: '-0.05em' }}>SafeLancer</span>
             <span style={{ fontSize: '9px', fontWeight: 700, color: T.neon, background: `${T.blue}1a`, border: `1px solid ${T.blue}35`, borderRadius: '4px', padding: '2px 7px', letterSpacing: '0.07em' }}>BETA</span>
           </div>
@@ -492,7 +493,7 @@ export default function LandingPage() {
         <div style={{ position: 'relative', zIndex: 1, maxWidth: '1360px', margin: '0 auto', padding: '70px 6% 52px', display: 'grid', gridTemplateColumns: '2fr 1fr 1fr 1fr', gap: '52px', boxSizing: 'border-box' }}>
           <div>
             <div style={{ display: 'flex', alignItems: 'center', gap: '9px', marginBottom: '14px' }}>
-              <div style={{ width: '26px', height: '26px', borderRadius: '7px', background: T.gradB, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '12px' }}>🔒</div>
+              <div style={{ width: '26px', height: '26px', borderRadius: '7px', background: T.gradB, display: 'flex', alignItems: 'center', justifyContent: 'center' }}><LogoMark size={14} color="white" keyholeColor="#7A2200" /></div>
               <span style={{ fontWeight: 800, fontSize: '15px', letterSpacing: '-0.04em' }}>SafeLancer</span>
             </div>
             <p style={{ fontSize: '13px', color: '#1c1008', lineHeight: 1.65, maxWidth: '210px', margin: '0 0 20px' }}>Cryptographic escrow for the future of work.</p>

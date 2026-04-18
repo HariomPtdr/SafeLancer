@@ -201,20 +201,31 @@ body {
   transition: color 0.2s;
 }
 
+/* ─── Global placeholder ─────────────────────────── */
+input::placeholder,
+textarea::placeholder { color: rgba(255,255,255,0.32) !important; }
+
 /* ─── Glass input ────────────────────────────────── */
 .dark-input {
-  background: var(--bg-elevated);
-  border: 1px solid var(--border);
+  background: #111009;
+  border: 1px solid rgba(255,255,255,0.08);
   color: var(--text);
   border-radius: 10px;
+  padding: 10px 12px;
+  font-size: 14px;
+  line-height: 1.5;
   transition: border-color 0.2s, box-shadow 0.2s;
   outline: none;
+  overflow: hidden;
 }
-.dark-input::placeholder { color: var(--text-faint); }
+.dark-input::placeholder { color: rgba(255,255,255,0.32); }
 .dark-input:focus {
-  border-color: var(--purple);
-  box-shadow: 0 0 0 3px rgba(255,104,3,0.16);
+  border-color: rgba(255,104,3,0.5);
+  box-shadow: 0 0 0 3px rgba(255,104,3,0.12);
 }
+input[type="date"].dark-input,
+input[type="date"] { color-scheme: dark; }
+select.dark-input { padding-right: 32px; }
 
 /* ─── Status badges ──────────────────────────────── */
 .badge {

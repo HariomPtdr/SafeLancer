@@ -3,6 +3,7 @@ import { useNavigate, Link, useLocation } from 'react-router-dom'
 import { FREELANCER_BADGES, CLIENT_BADGES, BADGE_COLORS } from '../utils/badges'
 import api from '../api'
 import NavbarCanvas from './NavbarCanvas'
+import { LogoMark } from './SafeLancerLogo'
 
 export default function Navbar() {
   const navigate = useNavigate()
@@ -116,7 +117,7 @@ export default function Navbar() {
           style={{ transition: 'opacity 0.2s' }}
           onMouseEnter={e => e.currentTarget.style.opacity = '0.82'}
           onMouseLeave={e => e.currentTarget.style.opacity = '1'}>
-          <span className="text-lg" style={{ filter: 'drop-shadow(0 0 6px rgba(255,104,3,0.7))' }}>🔒</span>
+          <LogoMark size={22} />
           <span className="text-base font-bold tracking-tight navbar-logo-text" style={{ color: '#F5EDE4' }}>SafeLancer</span>
           <span
             className="text-[9px] px-1.5 py-0.5 rounded font-semibold tracking-wider uppercase"

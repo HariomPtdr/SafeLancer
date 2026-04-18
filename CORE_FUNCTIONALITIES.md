@@ -1,3 +1,4 @@
+
 # SafeLancer — Core Functionalities: File & Code Reference
 
 ---

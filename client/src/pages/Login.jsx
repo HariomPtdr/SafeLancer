@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import api from '../api'
 import toast from 'react-hot-toast'
 import { calcCompletion } from '../utils/profileCompletion'
+import { LogoMark } from '../components/SafeLancerLogo'
 
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5001'
 
@@ -61,10 +62,10 @@ export default function Login() {
       {/* Logo */}
       <div className={`mb-8 text-center relative z-10 ${hx}`}>
         <div className="flex items-center justify-center gap-2.5 mb-3">
-          <div className="animate-float text-3xl" style={{ filter: 'drop-shadow(0 0 12px rgba(255,104,3,0.7))' }}>🔒</div>
+          <div style={{ filter: 'drop-shadow(0 0 10px rgba(255,104,3,0.55))' }}><LogoMark size={34} /></div>
           <span className="text-2xl font-bold tracking-tight" style={{ background: 'linear-gradient(135deg,#FF6803,#AE3A02)', WebkitBackgroundClip: 'text', WebkitTextFillColor: "transparent" }}>SafeLancer</span>
         </div>
-        <div className="text-sm" style={{ color: '#6b5445' }}>Cryptographic Escrow · Zero Trust</div>
+        <div className="text-sm" style={{ color: '#6b5445' }}>Secure freelancing, guaranteed payments</div>
       </div>
 
       {/* Card */}

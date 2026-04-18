@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from 'react'
 import { useNavigate, Link, useLocation } from 'react-router-dom'
 import { FREELANCER_BADGES, CLIENT_BADGES, BADGE_COLORS } from '../utils/badges'
 import api from '../api'
+import NavbarCanvas from './NavbarCanvas'
 
 export default function Navbar() {
   const navigate = useNavigate()
@@ -81,7 +82,7 @@ export default function Navbar() {
   const isActive = (path) => location.pathname === path || location.pathname.startsWith(path + '/')
 
   const linkStyle = (path) => ({
-    color: isActive(path) ? '#A78BFA' : '#71717a',
+    color: isActive(path) ? '#BFBFBF' : '#BFBFBF',
     fontWeight: 500,
     fontSize: '14px',
     transition: 'color 0.15s',
@@ -89,30 +90,37 @@ export default function Navbar() {
   })
 
   const dropdownStyle = {
-    background: '#111113',
-    border: '1px solid rgba(255,255,255,0.08)',
+    background: '#120a02',
+    border: '1px solid rgba(255,104,3,0.18)',
     borderRadius: '14px',
-    boxShadow: '0 16px 40px rgba(0,0,0,0.5)',
+    boxShadow: '0 16px 40px rgba(0,0,0,0.6), 0 0 20px rgba(255,104,3,0.06)',
     overflow: 'hidden',
   }
 
   return (
-    <div className="sticky top-0 z-50">
+    <div className="sticky top-0 z-50" style={{ position: 'relative' }}>
+      {/* 3D data-stream canvas — sits behind all nav content */}
+      <NavbarCanvas />
       <nav
         className="px-6 py-3 flex items-center justify-between"
         style={{
-          background: 'rgba(10,10,11,0.9)',
-          backdropFilter: 'blur(12px)',
-          borderBottom: '1px solid rgba(255,255,255,0.06)',
+          position: 'relative',
+          background: 'rgba(11,5,1,0.82)',
+          backdropFilter: 'blur(18px)',
+          borderBottom: '1px solid rgba(255,104,3,0.16)',
+          boxShadow: '0 1px 0 rgba(255,104,3,0.08)',
         }}
       >
         {/* Logo */}
-        <Link to={dashboardPath} className="flex items-center gap-2 no-underline">
-          <span className="text-lg">🔒</span>
-          <span className="text-base font-bold text-white tracking-tight">SafeLancer</span>
+        <Link to={dashboardPath} className="flex items-center gap-2 no-underline" data-cursor="logo"
+          style={{ transition: 'opacity 0.2s' }}
+          onMouseEnter={e => e.currentTarget.style.opacity = '0.82'}
+          onMouseLeave={e => e.currentTarget.style.opacity = '1'}>
+          <span className="text-lg" style={{ filter: 'drop-shadow(0 0 6px rgba(255,104,3,0.7))' }}>🔒</span>
+          <span className="text-base font-bold tracking-tight navbar-logo-text" style={{ color: '#F5EDE4' }}>SafeLancer</span>
           <span
             className="text-[9px] px-1.5 py-0.5 rounded font-semibold tracking-wider uppercase"
-            style={{ background: 'rgba(139,92,246,0.2)', color: '#A78BFA', border: '1px solid rgba(139,92,246,0.3)' }}
+            style={{ background: 'rgba(255,104,3,0.14)', color: '#BFBFBF', border: '1px solid rgba(255,104,3,0.25)', animation: 'badge-pulse 2.8s ease-in-out infinite' }}
           >
             Beta
           </span>
@@ -120,9 +128,9 @@ export default function Navbar() {
 
         {user && (
           <div className="flex items-center gap-5">
-            <Link to={dashboardPath} style={linkStyle(dashboardPath)}
-              onMouseEnter={e => e.currentTarget.style.color = '#d4d4d8'}
-              onMouseLeave={e => e.currentTarget.style.color = isActive(dashboardPath) ? '#A78BFA' : '#71717a'}>
+            <Link to={dashboardPath} data-cursor="link" className="nav-link-wrap" style={linkStyle(dashboardPath)}
+              onMouseEnter={e => e.currentTarget.style.color = '#F5EDE4'}
+              onMouseLeave={e => e.currentTarget.style.color = isActive(dashboardPath) ? '#BFBFBF' : '#BFBFBF'}>
               Home
             </Link>
 
@@ -130,9 +138,9 @@ export default function Navbar() {
             {user.role !== 'admin' && (
               user.role === 'client' ? (
                 <>
-                  <Link to="/jobs/post" style={linkStyle('/jobs/post')}
-                    onMouseEnter={e => e.currentTarget.style.color = '#d4d4d8'}
-                    onMouseLeave={e => e.currentTarget.style.color = isActive('/jobs/post') ? '#A78BFA' : '#71717a'}>
+                  <Link to="/jobs/post" data-cursor="link" className="nav-link-wrap" style={linkStyle('/jobs/post')}
+                    onMouseEnter={e => e.currentTarget.style.color = '#F5EDE4'}
+                    onMouseLeave={e => e.currentTarget.style.color = isActive('/jobs/post') ? '#BFBFBF' : '#BFBFBF'}>
                     Post Job
                   </Link>
 
@@ -140,7 +148,7 @@ export default function Navbar() {
                     <button
                       onClick={openJobsDropdown}
                       className="flex items-center gap-1 text-sm font-medium transition-colors"
-                      style={{ color: jobsOpen ? '#A78BFA' : '#71717a', background: 'none', border: 'none', cursor: 'pointer' }}
+                      style={{ color: jobsOpen ? '#BFBFBF' : '#BFBFBF', background: 'none', border: 'none', cursor: 'pointer' }}
                     >
                       My Jobs
                       <svg className={`w-3.5 h-3.5 transition-transform ${jobsOpen ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -150,24 +158,24 @@ export default function Navbar() {
 
                     {jobsOpen && (
                       <div className="absolute left-0 top-full mt-2 w-72 z-50" style={dropdownStyle}>
-                        <div className="flex items-center justify-between px-4 py-3" style={{ borderBottom: '1px solid rgba(255,255,255,0.06)' }}>
+                        <div className="flex items-center justify-between px-4 py-3" style={{ borderBottom: '1px solid rgba(255,104,3,0.12)' }}>
                           <p className="text-sm font-semibold text-white">My Posted Jobs</p>
                           <Link to="/dashboard/client" onClick={() => setJobsOpen(false)}
-                            className="text-xs font-medium transition-colors" style={{ color: '#A78BFA' }}>
+                            className="text-xs font-medium transition-colors" style={{ color: '#BFBFBF' }}>
                             View all →
                           </Link>
                         </div>
                         <div className="max-h-80 overflow-y-auto">
                           {jobsLoading ? (
                             <div className="flex justify-center py-6">
-                              <div className="animate-spin h-4 w-4 border-2 border-t-transparent rounded-full" style={{ borderColor: '#8B5CF6', borderTopColor: 'transparent' }} />
+                              <div className="animate-spin h-4 w-4 border-2 border-t-transparent rounded-full" style={{ borderColor: '#FF6803', borderTopColor: 'transparent' }} />
                             </div>
                           ) : jobs.length === 0 ? (
                             <div className="py-6 text-center">
-                              <p className="text-sm" style={{ color: '#52525b' }}>No jobs posted yet</p>
+                              <p className="text-sm" style={{ color: '#6b5445' }}>No jobs posted yet</p>
                               <Link to="/jobs/post" onClick={() => setJobsOpen(false)}
                                 className="inline-block mt-2 text-xs px-3 py-1.5 rounded-lg font-medium"
-                                style={{ background: 'rgba(139,92,246,0.2)', color: '#A78BFA', border: '1px solid rgba(139,92,246,0.3)' }}>
+                                style={{ background: 'rgba(255,104,3,0.14)', color: '#BFBFBF', border: '1px solid rgba(255,104,3,0.25)' }}>
                                 Post a Job
                               </Link>
                             </div>
@@ -177,19 +185,19 @@ export default function Navbar() {
                             return (
                               <Link key={j._id} to={`/jobs/${j._id}`} onClick={() => setJobsOpen(false)}
                                 className="flex items-center gap-3 px-4 py-3 transition-colors"
-                                style={{ borderBottom: '1px solid rgba(255,255,255,0.04)', color: 'inherit', textDecoration: 'none' }}
-                                onMouseEnter={e => e.currentTarget.style.background = 'rgba(255,255,255,0.04)'}
+                                style={{ borderBottom: '1px solid rgba(255,104,3,0.08)', color: 'inherit', textDecoration: 'none' }}
+                                onMouseEnter={e => e.currentTarget.style.background = 'rgba(255,104,3,0.06)'}
                                 onMouseLeave={e => e.currentTarget.style.background = 'transparent'}
                               >
                                 <div className="flex-1 min-w-0">
                                   <p className="text-sm font-medium text-white truncate">{j.title}</p>
-                                  <p className="text-xs mt-0.5" style={{ color: '#52525b' }}>
+                                  <p className="text-xs mt-0.5" style={{ color: '#6b5445' }}>
                                     ₹{j.budget?.toLocaleString()} · {bids.length} applicant{bids.length !== 1 ? 's' : ''}
                                     {pending > 0 ? ` · ${pending} new` : ''}
                                   </p>
                                 </div>
                                 <span className="text-[10px] font-semibold px-2 py-0.5 rounded-md capitalize flex-shrink-0"
-                                  style={{ background: 'rgba(139,92,246,0.15)', color: '#A78BFA' }}>
+                                  style={{ background: 'rgba(255,104,3,0.12)', color: '#BFBFBF' }}>
                                   {j.status.replace('_', ' ')}
                                 </span>
                               </Link>
@@ -201,9 +209,9 @@ export default function Navbar() {
                   </div>
                 </>
               ) : (
-                <Link to="/jobs" style={linkStyle('/jobs')}
-                  onMouseEnter={e => e.currentTarget.style.color = '#d4d4d8'}
-                  onMouseLeave={e => e.currentTarget.style.color = isActive('/jobs') ? '#A78BFA' : '#71717a'}>
+                <Link to="/jobs" data-cursor="link" className="nav-link-wrap" style={linkStyle('/jobs')}
+                  onMouseEnter={e => e.currentTarget.style.color = '#F5EDE4'}
+                  onMouseLeave={e => e.currentTarget.style.color = isActive('/jobs') ? '#BFBFBF' : '#BFBFBF'}>
                   Jobs
                 </Link>
               )
@@ -212,14 +220,14 @@ export default function Navbar() {
             {/* Profile & Payments — hidden for admin */}
             {user.role !== 'admin' && (
               <>
-                <Link to="/profile/setup" style={linkStyle('/profile/setup')}
-                  onMouseEnter={e => e.currentTarget.style.color = '#d4d4d8'}
-                  onMouseLeave={e => e.currentTarget.style.color = isActive('/profile/setup') ? '#A78BFA' : '#71717a'}>
+                <Link to="/profile/setup" data-cursor="profile" className="nav-link-wrap" style={linkStyle('/profile/setup')}
+                  onMouseEnter={e => e.currentTarget.style.color = '#F5EDE4'}
+                  onMouseLeave={e => e.currentTarget.style.color = isActive('/profile/setup') ? '#BFBFBF' : '#BFBFBF'}>
                   Profile
                 </Link>
-                <Link to="/payments" style={linkStyle('/payments')}
-                  onMouseEnter={e => e.currentTarget.style.color = '#d4d4d8'}
-                  onMouseLeave={e => e.currentTarget.style.color = isActive('/payments') ? '#A78BFA' : '#71717a'}>
+                <Link to="/payments" data-cursor="link" className="nav-link-wrap" style={linkStyle('/payments')}
+                  onMouseEnter={e => e.currentTarget.style.color = '#F5EDE4'}
+                  onMouseLeave={e => e.currentTarget.style.color = isActive('/payments') ? '#BFBFBF' : '#BFBFBF'}>
                   Payments
                 </Link>
               </>
@@ -231,20 +239,20 @@ export default function Navbar() {
                 <button
                   onClick={() => setBadgeOpen(v => !v)}
                   className="flex items-center gap-1.5 text-sm font-medium transition-colors"
-                  style={{ color: badgeOpen ? '#A78BFA' : '#71717a', background: 'none', border: 'none', cursor: 'pointer' }}
+                  style={{ color: badgeOpen ? '#BFBFBF' : '#BFBFBF', background: 'none', border: 'none', cursor: 'pointer' }}
                 >
                   <span className="text-base leading-none">🏅</span>
                   {hasAnyBadgeData ? (
                     <span className="text-[10px] px-1.5 py-0.5 rounded leading-none font-semibold"
                       style={earnedCount > 0
-                        ? { background: 'rgba(251,191,36,0.15)', color: '#fbbf24' }
-                        : { background: 'rgba(255,255,255,0.08)', color: '#71717a' }
+                        ? { background: 'rgba(251,191,36,0.15)', color: '#FF6803' }
+                        : { background: 'rgba(255,104,3,0.10)', color: '#BFBFBF' }
                       }>
                       {earnedCount}/{totalCount}
                     </span>
                   ) : (
                     <span className="text-[10px] px-1.5 py-0.5 rounded leading-none font-semibold"
-                      style={{ background: 'rgba(255,255,255,0.08)', color: '#71717a' }}>
+                      style={{ background: 'rgba(255,104,3,0.10)', color: '#BFBFBF' }}>
                       Badges
                     </span>
                   )}
@@ -252,15 +260,15 @@ export default function Navbar() {
 
                 {badgeOpen && (
                   <div className="absolute right-0 top-full mt-2 w-80 z-50" style={dropdownStyle}>
-                    <div className="flex items-center justify-between px-4 py-3" style={{ borderBottom: '1px solid rgba(255,255,255,0.06)' }}>
+                    <div className="flex items-center justify-between px-4 py-3" style={{ borderBottom: '1px solid rgba(255,104,3,0.12)' }}>
                       <div>
                         <p className="text-sm font-semibold text-white">Badges & Achievements</p>
                         {hasAnyBadgeData && (
-                          <p className="text-xs mt-0.5" style={{ color: '#52525b' }}>{earnedCount} of {totalCount} earned</p>
+                          <p className="text-xs mt-0.5" style={{ color: '#6b5445' }}>{earnedCount} of {totalCount} earned</p>
                         )}
                       </div>
                       <Link to="/profile/setup" onClick={() => setBadgeOpen(false)}
-                        className="text-xs font-medium" style={{ color: '#A78BFA' }}>
+                        className="text-xs font-medium" style={{ color: '#BFBFBF' }}>
                         View profile →
                       </Link>
                     </div>
@@ -269,17 +277,17 @@ export default function Navbar() {
                       {!hasAnyBadgeData ? (
                         <div className="py-6 text-center">
                           <p className="text-2xl mb-2">🏅</p>
-                          <p className="text-sm font-medium" style={{ color: '#a1a1aa' }}>No badge data yet</p>
-                          <p className="text-xs mt-1" style={{ color: '#52525b' }}>Visit your profile to load your badges</p>
+                          <p className="text-sm font-medium" style={{ color: '#BFBFBF' }}>No badge data yet</p>
+                          <p className="text-xs mt-1" style={{ color: '#6b5445' }}>Visit your profile to load your badges</p>
                           <Link to="/profile/setup" onClick={() => setBadgeOpen(false)}
                             className="inline-block mt-3 text-xs px-3 py-1.5 rounded-lg font-medium"
-                            style={{ background: 'rgba(139,92,246,0.2)', color: '#A78BFA', border: '1px solid rgba(139,92,246,0.3)' }}>
+                            style={{ background: 'rgba(255,104,3,0.14)', color: '#BFBFBF', border: '1px solid rgba(255,104,3,0.25)' }}>
                             Go to Profile
                           </Link>
                         </div>
                       ) : earnedBadges.length > 0 ? (
                         <div>
-                          <p className="text-[10px] font-semibold uppercase tracking-wider px-1 mb-2" style={{ color: '#52525b' }}>Earned</p>
+                          <p className="text-[10px] font-semibold uppercase tracking-wider px-1 mb-2" style={{ color: '#6b5445' }}>Earned</p>
                           <div className="space-y-1.5">
                             {earnedBadges.map(badge => {
                               const c = BADGE_COLORS[badge.color]
@@ -308,29 +316,35 @@ export default function Navbar() {
             )}
 
             {/* User info */}
-            <div className="flex items-center gap-3 pl-4" style={{ borderLeft: '1px solid rgba(255,255,255,0.08)' }}>
+            <div className="flex items-center gap-3 pl-4" data-cursor="profile"
+              style={{ borderLeft: '1px solid rgba(255,104,3,0.18)' }}>
               <div className="w-7 h-7 rounded-full flex items-center justify-center text-white text-xs font-bold"
-                style={{ background: 'linear-gradient(135deg, #8B5CF6, #6D28D9)' }}>
+                style={{ background: 'linear-gradient(135deg, #FF6803, #AE3A02)', boxShadow: '0 0 10px rgba(255,104,3,0.40)', transition: 'box-shadow 0.2s' }}
+                onMouseEnter={e => e.currentTarget.style.boxShadow = '0 0 18px rgba(255,104,3,0.70)'}
+                onMouseLeave={e => e.currentTarget.style.boxShadow = '0 0 10px rgba(255,104,3,0.40)'}>
                 {user.name?.[0]?.toUpperCase()}
               </div>
               <div>
-                <div className="text-sm font-semibold text-white leading-tight">{user.name}</div>
-                <div className="text-[11px] capitalize leading-tight" style={{ color: '#52525b' }}>{user.role}</div>
+                <div className="text-sm font-semibold leading-tight" style={{ color: '#F5EDE4' }}>{user.name}</div>
+                <div className="text-[11px] capitalize leading-tight" style={{ color: '#6b5445' }}>{user.role}</div>
               </div>
             </div>
 
             <button
+              data-cursor="danger"
               onClick={logout}
               className="text-sm font-medium transition-colors"
-              style={{ color: '#52525b', background: 'none', border: 'none', cursor: 'pointer' }}
+              style={{ color: '#6b5445', background: 'none', border: 'none' }}
               onMouseEnter={e => e.currentTarget.style.color = '#ef4444'}
-              onMouseLeave={e => e.currentTarget.style.color = '#52525b'}
+              onMouseLeave={e => e.currentTarget.style.color = '#1c1008'}
             >
               Logout
             </button>
           </div>
         )}
       </nav>
+      {/* Animated bottom glow sweep */}
+      <div className="nav-glow-line" />
     </div>
   )
 }

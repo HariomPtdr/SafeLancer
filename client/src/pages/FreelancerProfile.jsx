@@ -74,15 +74,15 @@ export default function FreelancerProfile() {
   }, [userId])
 
   if (loading) return (
-    <div className="min-h-screen" style={{ background: '#0a0a0b' }}><Navbar />
+    <div className="min-h-screen" style={{ background: 'transparent' }}><Navbar />
       <div className="flex justify-center py-20">
-        <div className="animate-spin h-6 w-6 border-2 border-[#8B5CF6] border-t-transparent rounded-full" />
+        <div className="animate-spin h-6 w-6 border-2 border-[#FF6803] border-t-transparent rounded-full" />
       </div>
     </div>
   )
   if (!profile) return (
-    <div className="min-h-screen" style={{ background: '#0a0a0b' }}><Navbar />
-      <p className="text-center py-12 text-sm" style={{ color: '#52525b' }}>Profile not found</p>
+    <div className="min-h-screen" style={{ background: 'transparent' }}><Navbar />
+      <p className="text-center py-12 text-sm" style={{ color: '#6b5445' }}>Profile not found</p>
     </div>
   )
 
@@ -97,20 +97,20 @@ export default function FreelancerProfile() {
   const { earned: earnedBadges, total: totalBadges } = computeBadges('freelancer', profile.user, profile)
 
   return (
-    <div className="min-h-screen" style={{ background: '#0a0a0b' }}>
+    <div className="min-h-screen" style={{ background: 'transparent' }}>
       <Navbar />
 
       <div className="max-w-4xl mx-auto px-6 pt-4">
-        <button onClick={() => navigate(-1)} className="flex items-center gap-1.5 text-sm font-medium transition-colors" style={{ color: '#a1a1aa' }}
+        <button onClick={() => navigate(-1)} className="flex items-center gap-1.5 text-sm font-medium transition-colors" style={{ color: '#BFBFBF' }}
           onMouseEnter={e => e.currentTarget.style.color = '#f4f4f5'}
-          onMouseLeave={e => e.currentTarget.style.color = '#a1a1aa'}>
+          onMouseLeave={e => e.currentTarget.style.color = '#BFBFBF'}>
           <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" /></svg>
           Back
         </button>
       </div>
 
       {/* Cover */}
-      <div className="h-36" style={{ background: 'linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%)' }} />
+      <div className="h-36" style={{ background: 'linear-gradient(135deg, #120a02 0%, #120a02 50%, #1c1008 100%)' }} />
 
       <div className="max-w-4xl mx-auto px-6 pb-16">
 
@@ -121,8 +121,8 @@ export default function FreelancerProfile() {
               {/* Avatar */}
               {avatarUrl
                 ? <img src={avatarUrl} alt={profile.user?.name}
-                    className="w-20 h-20 rounded-xl object-cover -mt-14 flex-shrink-0" style={{ border: '4px solid #111113', boxShadow: '0 0 0 1px rgba(139,92,246,0.3)' }} />
-                : <div className="w-20 h-20 rounded-xl -mt-14 flex items-center justify-center text-white text-2xl font-bold flex-shrink-0 select-none" style={{ background: 'linear-gradient(135deg, #8B5CF6, #6D28D9)', border: '4px solid #111113' }}>
+                    className="w-20 h-20 rounded-xl object-cover -mt-14 flex-shrink-0" style={{ border: '4px solid #111113', boxShadow: '0 0 0 1px rgba(255,104,3,0.25)' }} />
+                : <div className="w-20 h-20 rounded-xl -mt-14 flex items-center justify-center text-white text-2xl font-bold flex-shrink-0 select-none" style={{ background: 'linear-gradient(135deg, #FF6803, #AE3A02)', border: '4px solid #111113' }}>
                     {profile.user?.name?.[0]?.toUpperCase()}
                   </div>
               }
@@ -130,16 +130,16 @@ export default function FreelancerProfile() {
                 <h1 className="text-xl font-bold text-white">{profile.user?.name}</h1>
                 <div className="flex items-center gap-2 mt-1.5 flex-wrap">
                   {avgRating && (
-                    <span className="flex items-center gap-1 font-semibold text-sm" style={{ color: '#A78BFA' }}>
+                    <span className="flex items-center gap-1 font-semibold text-sm" style={{ color: '#BFBFBF' }}>
                       <svg className="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" /></svg>
                       {avgRating}
-                      <span className="font-normal text-xs" style={{ color: '#52525b' }}>({ratings.length})</span>
+                      <span className="font-normal text-xs" style={{ color: '#6b5445' }}>({ratings.length})</span>
                     </span>
                   )}
                   {profile.user?.totalJobsCompleted > 0 && (
-                    <span className="text-xs" style={{ color: '#52525b' }}>{profile.user.totalJobsCompleted} jobs completed</span>
+                    <span className="text-xs" style={{ color: '#6b5445' }}>{profile.user.totalJobsCompleted} jobs completed</span>
                   )}
-                  <span className="text-xs px-2.5 py-1 rounded-full font-medium" style={{ background: '#1a1a1d', color: '#a1a1aa', border: '1px solid rgba(255,255,255,0.08)' }}>
+                  <span className="text-xs px-2.5 py-1 rounded-full font-medium" style={{ background: '#120a02', color: '#BFBFBF', border: '1px solid rgba(255,104,3,0.10)' }}>
                     {profile.availability === 'full-time' ? 'Available full-time'
                       : profile.availability === 'part-time' ? 'Available part-time'
                       : 'Not available'}
@@ -151,45 +151,45 @@ export default function FreelancerProfile() {
 
           {/* Bio */}
           {profile.bio && (
-            <p className="mt-5 text-sm leading-relaxed pt-4" style={{ color: '#a1a1aa', borderTop: '1px solid rgba(255,255,255,0.06)' }}>{profile.bio}</p>
+            <p className="mt-5 text-sm leading-relaxed pt-4" style={{ color: '#BFBFBF', borderTop: '1px solid rgba(255,104,3,0.06)' }}>{profile.bio}</p>
           )}
 
           {/* Skills */}
           {profile.skills?.length > 0 && (
             <div className="flex flex-wrap gap-1.5 mt-4">
               {profile.skills.map(s => (
-                <span key={s} className="px-2.5 py-1 rounded-lg text-xs font-medium" style={{ background: 'rgba(139,92,246,0.1)', color: '#A78BFA', border: '1px solid rgba(139,92,246,0.2)' }}>{s}</span>
+                <span key={s} className="px-2.5 py-1 rounded-lg text-xs font-medium" style={{ background: 'rgba(255,104,3,0.10)', color: '#BFBFBF', border: '1px solid rgba(255,104,3,0.14)' }}>{s}</span>
               ))}
             </div>
           )}
 
           {/* Links */}
           {(profile.githubUrl || profile.linkedinUrl || profile.portfolioUrl) && (
-            <div className="flex flex-wrap items-center gap-3 mt-4 pt-4" style={{ borderTop: '1px solid rgba(255,255,255,0.06)' }}>
+            <div className="flex flex-wrap items-center gap-3 mt-4 pt-4" style={{ borderTop: '1px solid rgba(255,104,3,0.06)' }}>
               {profile.githubUrl && (
                 <a href={profile.githubUrl} target="_blank" rel="noreferrer"
                   className="inline-flex items-center gap-2 text-sm font-medium transition-colors px-3 py-1.5 rounded-lg"
-                  style={{ color: '#a1a1aa', border: '1px solid rgba(255,255,255,0.08)' }}
-                  onMouseEnter={e => { e.currentTarget.style.color = '#f4f4f5'; e.currentTarget.style.borderColor = 'rgba(139,92,246,0.4)' }}
-                  onMouseLeave={e => { e.currentTarget.style.color = '#a1a1aa'; e.currentTarget.style.borderColor = 'rgba(255,255,255,0.08)' }}>
+                  style={{ color: '#BFBFBF', border: '1px solid rgba(255,104,3,0.10)' }}
+                  onMouseEnter={e => { e.currentTarget.style.color = '#f4f4f5'; e.currentTarget.style.borderColor = 'rgba(174,58,2,0.40)' }}
+                  onMouseLeave={e => { e.currentTarget.style.color = '#BFBFBF'; e.currentTarget.style.borderColor = 'rgba(255,104,3,0.10)' }}>
                   {Icons.github} GitHub
                 </a>
               )}
               {profile.linkedinUrl && (
                 <a href={profile.linkedinUrl} target="_blank" rel="noreferrer"
                   className="inline-flex items-center gap-2 text-sm font-medium transition-colors px-3 py-1.5 rounded-lg"
-                  style={{ color: '#a1a1aa', border: '1px solid rgba(255,255,255,0.08)' }}
-                  onMouseEnter={e => { e.currentTarget.style.color = '#f4f4f5'; e.currentTarget.style.borderColor = 'rgba(139,92,246,0.4)' }}
-                  onMouseLeave={e => { e.currentTarget.style.color = '#a1a1aa'; e.currentTarget.style.borderColor = 'rgba(255,255,255,0.08)' }}>
+                  style={{ color: '#BFBFBF', border: '1px solid rgba(255,104,3,0.10)' }}
+                  onMouseEnter={e => { e.currentTarget.style.color = '#f4f4f5'; e.currentTarget.style.borderColor = 'rgba(174,58,2,0.40)' }}
+                  onMouseLeave={e => { e.currentTarget.style.color = '#BFBFBF'; e.currentTarget.style.borderColor = 'rgba(255,104,3,0.10)' }}>
                   {Icons.linkedin} LinkedIn
                 </a>
               )}
               {profile.portfolioUrl && (
                 <a href={profile.portfolioUrl} target="_blank" rel="noreferrer"
                   className="inline-flex items-center gap-2 text-sm font-medium transition-colors px-3 py-1.5 rounded-lg"
-                  style={{ color: '#a1a1aa', border: '1px solid rgba(255,255,255,0.08)' }}
-                  onMouseEnter={e => { e.currentTarget.style.color = '#f4f4f5'; e.currentTarget.style.borderColor = 'rgba(139,92,246,0.4)' }}
-                  onMouseLeave={e => { e.currentTarget.style.color = '#a1a1aa'; e.currentTarget.style.borderColor = 'rgba(255,255,255,0.08)' }}>
+                  style={{ color: '#BFBFBF', border: '1px solid rgba(255,104,3,0.10)' }}
+                  onMouseEnter={e => { e.currentTarget.style.color = '#f4f4f5'; e.currentTarget.style.borderColor = 'rgba(174,58,2,0.40)' }}
+                  onMouseLeave={e => { e.currentTarget.style.color = '#BFBFBF'; e.currentTarget.style.borderColor = 'rgba(255,104,3,0.10)' }}>
                   {Icons.globe} Portfolio
                 </a>
               )}
@@ -199,16 +199,16 @@ export default function FreelancerProfile() {
 
         {/* ── Stats ── */}
         <div className="dark-card mb-4">
-          <div className="grid grid-cols-4" style={{ borderBottom: '1px solid rgba(255,255,255,0.06)' }}>
+          <div className="grid grid-cols-4" style={{ borderBottom: '1px solid rgba(255,104,3,0.06)' }}>
             {[
               { value: avgRating ? `${avgRating}` : '—', label: 'Avg Rating' },
               { value: profile.user?.totalJobsCompleted || 0, label: 'Jobs Done' },
               { value: `${profile.user?.onTimeDeliveryRate?.toFixed(0) || 0}%`, label: 'On-time' },
               { value: `${profile.user?.disputeRate?.toFixed(0) || 0}%`, label: 'Disputes' },
             ].map((stat, idx) => (
-              <div key={stat.label} className="py-4 px-2 text-center" style={idx > 0 ? { borderLeft: '1px solid rgba(255,255,255,0.06)' } : {}}>
+              <div key={stat.label} className="py-4 px-2 text-center" style={idx > 0 ? { borderLeft: '1px solid rgba(255,104,3,0.06)' } : {}}>
                 <div className="text-xl font-bold text-white">{stat.value}</div>
-                <div className="text-xs mt-0.5 leading-tight" style={{ color: '#52525b' }}>{stat.label}</div>
+                <div className="text-xs mt-0.5 leading-tight" style={{ color: '#6b5445' }}>{stat.label}</div>
               </div>
             ))}
           </div>
@@ -218,11 +218,11 @@ export default function FreelancerProfile() {
         <div className="dark-card p-5 mb-4">
           <div className="flex items-center justify-between mb-3">
             <h2 className="text-sm font-semibold text-white">Badges & Achievements</h2>
-            <span className="text-xs" style={{ color: '#52525b' }}>{earnedBadges.length} / {totalBadges} earned</span>
+            <span className="text-xs" style={{ color: '#6b5445' }}>{earnedBadges.length} / {totalBadges} earned</span>
           </div>
 
           {earnedBadges.length === 0 && (
-            <p className="text-sm italic" style={{ color: '#52525b' }}>No badges earned yet.</p>
+            <p className="text-sm italic" style={{ color: '#6b5445' }}>No badges earned yet.</p>
           )}
 
           {earnedBadges.length > 0 && (
@@ -245,33 +245,46 @@ export default function FreelancerProfile() {
           )}
         </div>
 
-       
+        {/* ── Resume ── */}
+        {profile.resumeUrl && (
+          <div className="dark-card p-5 mb-4">
+            <h2 className="text-sm font-semibold text-white mb-3">Resume</h2>
+            <a href={`${FILE_BASE}${profile.resumeUrl}`} target="_blank" rel="noreferrer"
+              className="inline-flex items-center gap-2.5 font-medium text-sm px-4 py-2.5 rounded-xl transition-colors"
+              style={{ border: '1px solid rgba(255,104,3,0.10)', background: '#120a02', color: '#BFBFBF' }}
+              onMouseEnter={e => e.currentTarget.style.color = '#f4f4f5'}
+              onMouseLeave={e => e.currentTarget.style.color = '#BFBFBF'}>
+              {Icons.download}
+              Download Resume (PDF)
+            </a>
+          </div>
+        )}
 
         {/* ── Portfolio Samples ── */}
         {profile.projectSamples?.length > 0 && (
           <div className="dark-card p-5 mb-4">
             <div className="flex items-center justify-between mb-4">
               <h2 className="text-sm font-semibold text-white">Portfolio Samples</h2>
-              <span className="text-xs" style={{ color: '#52525b' }}>{profile.projectSamples.length} project{profile.projectSamples.length !== 1 ? 's' : ''}</span>
+              <span className="text-xs" style={{ color: '#6b5445' }}>{profile.projectSamples.length} project{profile.projectSamples.length !== 1 ? 's' : ''}</span>
             </div>
             <div className="flex flex-col gap-2">
               {profile.projectSamples.map((sample, i) => (
                 <div key={i} className="flex items-center gap-3 rounded-xl px-4 py-3 transition-colors"
-                  style={{ border: '1px solid rgba(255,255,255,0.08)', background: '#1a1a1d' }}
-                  onMouseEnter={e => e.currentTarget.style.borderColor = 'rgba(139,92,246,0.3)'}
-                  onMouseLeave={e => e.currentTarget.style.borderColor = 'rgba(255,255,255,0.08)'}>
-                  <div className="w-10 h-10 rounded-xl flex items-center justify-center text-white flex-shrink-0" style={{ background: 'linear-gradient(135deg, #8B5CF6, #6D28D9)' }}>
+                  style={{ border: '1px solid rgba(255,104,3,0.10)', background: '#120a02' }}
+                  onMouseEnter={e => e.currentTarget.style.borderColor = 'rgba(255,104,3,0.25)'}
+                  onMouseLeave={e => e.currentTarget.style.borderColor = 'rgba(255,104,3,0.10)'}>
+                  <div className="w-10 h-10 rounded-xl flex items-center justify-center text-white flex-shrink-0" style={{ background: 'linear-gradient(135deg, #FF6803, #AE3A02)' }}>
                     {Icons.paperclip}
                   </div>
                   <div className="flex-1 min-w-0">
                     <p className="text-sm font-semibold text-white truncate">{sample.title}</p>
                     {sample.description
-                      ? <p className="text-xs mt-0.5 truncate" style={{ color: '#a1a1aa' }}>{sample.description}</p>
+                      ? <p className="text-xs mt-0.5 truncate" style={{ color: '#BFBFBF' }}>{sample.description}</p>
                       : sample.fileUrl && (
-                        <a href={sample.fileUrl.startsWith('http') ? sample.fileUrl : `${FILE_BASE}${sample.fileUrl}`} target="_blank" rel="noreferrer"
-                          className="text-xs mt-0.5 truncate block transition-colors" style={{ color: '#a1a1aa' }}
-                          onMouseEnter={e => e.currentTarget.style.color = '#A78BFA'}
-                          onMouseLeave={e => e.currentTarget.style.color = '#a1a1aa'}>
+                        <a href={`${FILE_BASE}${sample.fileUrl}`} target="_blank" rel="noreferrer"
+                          className="text-xs mt-0.5 truncate block transition-colors" style={{ color: '#BFBFBF' }}
+                          onMouseEnter={e => e.currentTarget.style.color = '#BFBFBF'}
+                          onMouseLeave={e => e.currentTarget.style.color = '#BFBFBF'}>
                           View / Download
                         </a>
                       )
@@ -279,17 +292,17 @@ export default function FreelancerProfile() {
                   </div>
                   <div className="flex items-center gap-2 flex-shrink-0">
                     {sample.description && sample.fileUrl && (
-                      <a href={sample.fileUrl.startsWith('http') ? sample.fileUrl : `${FILE_BASE}${sample.fileUrl}`} target="_blank" rel="noreferrer"
-                        className="text-xs font-medium transition-colors" style={{ color: '#a1a1aa' }}
-                        onMouseEnter={e => e.currentTarget.style.color = '#A78BFA'}
-                        onMouseLeave={e => e.currentTarget.style.color = '#a1a1aa'}>
+                      <a href={`${FILE_BASE}${sample.fileUrl}`} target="_blank" rel="noreferrer"
+                        className="text-xs font-medium transition-colors" style={{ color: '#BFBFBF' }}
+                        onMouseEnter={e => e.currentTarget.style.color = '#BFBFBF'}
+                        onMouseLeave={e => e.currentTarget.style.color = '#BFBFBF'}>
                         Download
                       </a>
                     )}
                     {sample.fileHash && (
                       <a href={`/verify/${sample.fileHash}`} target="_blank" rel="noreferrer"
                         className="inline-flex items-center gap-1 text-xs px-2.5 py-1 rounded-lg font-medium transition-colors"
-                        style={{ background: 'rgba(139,92,246,0.15)', color: '#A78BFA', border: '1px solid rgba(139,92,246,0.3)' }}>
+                        style={{ background: 'rgba(255,104,3,0.12)', color: '#BFBFBF', border: '1px solid rgba(255,104,3,0.25)' }}>
                         {Icons.shield}
                         SHA-256
                       </a>

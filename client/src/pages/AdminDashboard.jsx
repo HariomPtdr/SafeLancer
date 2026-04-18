@@ -11,9 +11,9 @@ function FileLink({ url, label }) {
   return (
     <a href={href} target="_blank" rel="noopener noreferrer"
       className="inline-flex items-center gap-1.5 text-xs underline underline-offset-2 transition-colors"
-      style={{ color: '#A78BFA' }}
-      onMouseEnter={e => e.currentTarget.style.color = '#c4b5fd'}
-      onMouseLeave={e => e.currentTarget.style.color = '#A78BFA'}>
+      style={{ color: '#BFBFBF' }}
+      onMouseEnter={e => e.currentTarget.style.color = '#BFBFBF'}
+      onMouseLeave={e => e.currentTarget.style.color = '#BFBFBF'}>
       <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
       </svg>
@@ -26,7 +26,7 @@ function HashBadge({ hash }) {
   if (!hash) return null
   return (
     <span className="font-mono text-[10px] px-2 py-0.5 rounded break-all"
-      style={{ background: 'rgba(139,92,246,0.08)', color: '#A78BFA', border: '1px solid rgba(139,92,246,0.15)' }}>
+      style={{ background: 'rgba(255,104,3,0.08)', color: '#BFBFBF', border: '1px solid rgba(255,104,3,0.12)' }}>
       SHA256: {hash.substring(0, 16)}…
     </span>
   )
@@ -56,34 +56,34 @@ function DisputeDetail({ disputeId, onClose, onResolved }) {
   }
 
   const STATUS_COLOR = {
-    pending_deposit: { background: '#1a1a1d', color: '#52525b', border: '1px solid rgba(255,255,255,0.06)' },
-    funded:          { background: 'rgba(59,130,246,0.1)', color: '#60a5fa', border: '1px solid rgba(59,130,246,0.2)' },
-    in_progress:     { background: 'rgba(245,158,11,0.08)', color: '#f59e0b', border: '1px solid rgba(245,158,11,0.2)' },
-    submitted:       { background: 'rgba(139,92,246,0.08)', color: '#A78BFA', border: '1px solid rgba(139,92,246,0.15)' },
-    review:          { background: 'rgba(234,179,8,0.08)', color: '#eab308', border: '1px solid rgba(234,179,8,0.2)' },
+    pending_deposit: { background: '#120a02', color: '#6b5445', border: '1px solid rgba(255,104,3,0.06)' },
+    funded:          { background: 'rgba(255,104,3,0.1)', color: '#BFBFBF', border: '1px solid rgba(255,104,3,0.2)' },
+    in_progress:     { background: 'rgba(245,158,11,0.08)', color: '#FF6803', border: '1px solid rgba(245,158,11,0.2)' },
+    submitted:       { background: 'rgba(255,104,3,0.08)', color: '#BFBFBF', border: '1px solid rgba(255,104,3,0.12)' },
+    review:          { background: 'rgba(234,179,8,0.08)', color: '#FF6803', border: '1px solid rgba(234,179,8,0.2)' },
     approved:        { background: 'rgba(16,185,129,0.1)', color: '#10b981', border: '1px solid rgba(16,185,129,0.2)' },
-    released:        { background: 'rgba(139,92,246,0.1)', color: '#A78BFA', border: '1px solid rgba(139,92,246,0.2)' },
+    released:        { background: 'rgba(255,104,3,0.10)', color: '#BFBFBF', border: '1px solid rgba(255,104,3,0.14)' },
     disputed:        { background: 'rgba(239,68,68,0.08)', color: '#f87171', border: '1px solid rgba(239,68,68,0.2)' },
-    refunded:        { background: '#1a1a1d', color: '#52525b', border: '1px solid rgba(255,255,255,0.06)' },
-    inaccurate_1:    { background: 'rgba(249,115,22,0.08)', color: '#fb923c', border: '1px solid rgba(249,115,22,0.2)' },
+    refunded:        { background: '#120a02', color: '#6b5445', border: '1px solid rgba(255,104,3,0.06)' },
+    inaccurate_1:    { background: 'rgba(249,115,22,0.08)', color: '#FF6803', border: '1px solid rgba(249,115,22,0.2)' },
     inaccurate_2:    { background: 'rgba(239,68,68,0.06)', color: '#f87171', border: '1px solid rgba(239,68,68,0.15)' },
   }
 
   return (
     <div className="fixed inset-0 z-50 flex items-start justify-center p-4 overflow-y-auto">
       <div className="absolute inset-0 bg-black/60 backdrop-blur-sm" onClick={onClose} />
-      <div className="relative rounded-2xl shadow-2xl w-full max-w-3xl my-8 overflow-hidden" style={{ background: '#111113', border: '1px solid rgba(255,255,255,0.08)' }}>
-        <div className="flex items-center justify-between px-6 py-4" style={{ borderBottom: '1px solid rgba(255,255,255,0.06)', background: 'rgba(239,68,68,0.06)' }}>
+      <div className="relative rounded-2xl shadow-2xl w-full max-w-3xl my-8 overflow-hidden" style={{ background: '#111113', border: '1px solid rgba(255,104,3,0.10)' }}>
+        <div className="flex items-center justify-between px-6 py-4" style={{ borderBottom: '1px solid rgba(255,104,3,0.06)', background: 'rgba(239,68,68,0.06)' }}>
           <div className="flex items-center gap-2">
             <div className="w-2 h-2 rounded-full bg-red-500" />
             <h2 className="text-sm font-semibold text-white">Dispute Review</h2>
             {data?.dispute?.contract?.hashId && (
-              <span className="font-mono text-xs" style={{ color: '#52525b' }}>#{data.dispute.contract.hashId}</span>
+              <span className="font-mono text-xs" style={{ color: '#6b5445' }}>#{data.dispute.contract.hashId}</span>
             )}
           </div>
-          <button onClick={onClose} className="transition-colors" style={{ color: '#52525b' }}
-            onMouseEnter={e => e.currentTarget.style.color = '#a1a1aa'}
-            onMouseLeave={e => e.currentTarget.style.color = '#52525b'}>
+          <button onClick={onClose} className="transition-colors" style={{ color: '#6b5445' }}
+            onMouseEnter={e => e.currentTarget.style.color = '#BFBFBF'}
+            onMouseLeave={e => e.currentTarget.style.color = '#1c1008'}>
             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
             </svg>
@@ -93,21 +93,21 @@ function DisputeDetail({ disputeId, onClose, onResolved }) {
         {loading ? (
           <div className="flex justify-center py-16">
             <div className="animate-spin h-6 w-6 border-2 border-t-transparent rounded-full"
-              style={{ borderColor: '#8B5CF6', borderTopColor: 'transparent' }} />
+              style={{ borderColor: '#FF6803', borderTopColor: 'transparent' }} />
           </div>
         ) : data ? (
           <div className="p-6 space-y-6 max-h-[80vh] overflow-y-auto">
             {/* Parties */}
             <div className="grid grid-cols-2 gap-3">
-              <div className="rounded-xl p-3" style={{ background: 'rgba(59,130,246,0.06)', border: '1px solid rgba(59,130,246,0.15)' }}>
-                <p className="text-[10px] font-semibold uppercase tracking-wider mb-1" style={{ color: '#60a5fa' }}>Client</p>
+              <div className="rounded-xl p-3" style={{ background: 'rgba(255,104,3,0.06)', border: '1px solid rgba(255,104,3,0.15)' }}>
+                <p className="text-[10px] font-semibold uppercase tracking-wider mb-1" style={{ color: '#BFBFBF' }}>Client</p>
                 <p className="text-sm font-semibold text-white">{data.dispute.contract?.client?.name}</p>
-                <p className="text-xs" style={{ color: '#52525b' }}>{data.dispute.contract?.client?.email}</p>
+                <p className="text-xs" style={{ color: '#6b5445' }}>{data.dispute.contract?.client?.email}</p>
               </div>
               <div className="rounded-xl p-3" style={{ background: 'rgba(16,185,129,0.06)', border: '1px solid rgba(16,185,129,0.15)' }}>
                 <p className="text-[10px] font-semibold uppercase tracking-wider mb-1" style={{ color: '#10b981' }}>Freelancer</p>
                 <p className="text-sm font-semibold text-white">{data.dispute.contract?.freelancer?.name}</p>
-                <p className="text-xs" style={{ color: '#52525b' }}>{data.dispute.contract?.freelancer?.email}</p>
+                <p className="text-xs" style={{ color: '#6b5445' }}>{data.dispute.contract?.freelancer?.email}</p>
               </div>
             </div>
 
@@ -117,30 +117,30 @@ function DisputeDetail({ disputeId, onClose, onResolved }) {
                 Dispute Reason · Raised by {data.dispute.raisedBy?.name} ({data.dispute.raisedBy?.role})
               </p>
               <p className="text-sm" style={{ color: '#fca5a5' }}>{data.dispute.reason}</p>
-              <p className="text-xs mt-1" style={{ color: '#52525b' }}>{new Date(data.dispute.createdAt).toLocaleString()}</p>
+              <p className="text-xs mt-1" style={{ color: '#6b5445' }}>{new Date(data.dispute.createdAt).toLocaleString()}</p>
             </div>
 
             {/* Disputed Milestone Files */}
             {data.dispute.milestone && (
-              <div className="rounded-xl overflow-hidden" style={{ border: '1px solid rgba(255,255,255,0.06)' }}>
-                <div className="px-4 py-2.5" style={{ background: '#1a1a1d', borderBottom: '1px solid rgba(255,255,255,0.06)' }}>
-                  <p className="text-xs font-semibold uppercase tracking-wider" style={{ color: '#52525b' }}>Disputed Milestone — {data.dispute.milestone.title}</p>
+              <div className="rounded-xl overflow-hidden" style={{ border: '1px solid rgba(255,104,3,0.06)' }}>
+                <div className="px-4 py-2.5" style={{ background: '#120a02', borderBottom: '1px solid rgba(255,104,3,0.06)' }}>
+                  <p className="text-xs font-semibold uppercase tracking-wider" style={{ color: '#6b5445' }}>Disputed Milestone — {data.dispute.milestone.title}</p>
                 </div>
                 <div className="p-4 space-y-3">
                   <div className="flex items-center justify-between">
-                    <span className="text-sm" style={{ color: '#a1a1aa' }}>Amount: <strong className="text-white">₹{data.dispute.milestone.amount?.toLocaleString()}</strong></span>
+                    <span className="text-sm" style={{ color: '#BFBFBF' }}>Amount: <strong className="text-white">₹{data.dispute.milestone.amount?.toLocaleString()}</strong></span>
                     <span className="text-xs px-2 py-0.5 rounded-full font-medium capitalize" style={STATUS_COLOR[data.dispute.milestone.status] || STATUS_COLOR.pending_deposit}>
                       {data.dispute.milestone.status?.replace(/_/g, ' ')}
                     </span>
                   </div>
 
                   {data.dispute.milestone.submissionFileUrl && (
-                    <div className="flex items-center gap-3 rounded-lg p-3" style={{ background: '#1a1a1d', border: '1px solid rgba(255,255,255,0.06)' }}>
-                      <svg className="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" style={{ color: '#52525b' }}>
+                    <div className="flex items-center gap-3 rounded-lg p-3" style={{ background: '#120a02', border: '1px solid rgba(255,104,3,0.06)' }}>
+                      <svg className="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" style={{ color: '#6b5445' }}>
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                       </svg>
                       <div className="flex-1 min-w-0">
-                        <p className="text-xs font-medium mb-1" style={{ color: '#a1a1aa' }}>Submitted File</p>
+                        <p className="text-xs font-medium mb-1" style={{ color: '#BFBFBF' }}>Submitted File</p>
                         <div className="flex flex-wrap items-center gap-2">
                           <FileLink url={data.dispute.milestone.submissionFileUrl} label="Download file" />
                           <HashBadge hash={data.dispute.milestone.submissionFileHash} />
@@ -150,12 +150,12 @@ function DisputeDetail({ disputeId, onClose, onResolved }) {
                   )}
 
                   {data.dispute.milestone.submissionVideoUrl && (
-                    <div className="flex items-center gap-3 rounded-lg p-3" style={{ background: '#1a1a1d', border: '1px solid rgba(255,255,255,0.06)' }}>
-                      <svg className="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" style={{ color: '#52525b' }}>
+                    <div className="flex items-center gap-3 rounded-lg p-3" style={{ background: '#120a02', border: '1px solid rgba(255,104,3,0.06)' }}>
+                      <svg className="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" style={{ color: '#6b5445' }}>
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 10l4.553-2.069A1 1 0 0121 8.868v6.264a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" />
                       </svg>
                       <div className="flex-1 min-w-0">
-                        <p className="text-xs font-medium mb-1" style={{ color: '#a1a1aa' }}>Submission Video</p>
+                        <p className="text-xs font-medium mb-1" style={{ color: '#BFBFBF' }}>Submission Video</p>
                         <div className="flex flex-wrap items-center gap-2">
                           <FileLink url={data.dispute.milestone.submissionVideoUrl} label="Watch video" />
                           <HashBadge hash={data.dispute.milestone.submissionVideoHash} />
@@ -165,24 +165,24 @@ function DisputeDetail({ disputeId, onClose, onResolved }) {
                   )}
 
                   {data.dispute.milestone.submissionNote && (
-                    <div className="rounded-lg p-3" style={{ background: '#1a1a1d', border: '1px solid rgba(255,255,255,0.06)' }}>
-                      <p className="text-xs font-medium mb-1" style={{ color: '#52525b' }}>Submission Note</p>
-                      <p className="text-sm" style={{ color: '#a1a1aa' }}>{data.dispute.milestone.submissionNote}</p>
+                    <div className="rounded-lg p-3" style={{ background: '#120a02', border: '1px solid rgba(255,104,3,0.06)' }}>
+                      <p className="text-xs font-medium mb-1" style={{ color: '#6b5445' }}>Submission Note</p>
+                      <p className="text-sm" style={{ color: '#BFBFBF' }}>{data.dispute.milestone.submissionNote}</p>
                     </div>
                   )}
 
                   {data.dispute.milestone.inaccuracyNote && (
                     <div className="rounded-lg p-3" style={{ background: 'rgba(249,115,22,0.06)', border: '1px solid rgba(249,115,22,0.2)' }}>
-                      <p className="text-xs font-medium mb-1" style={{ color: '#fb923c' }}>
+                      <p className="text-xs font-medium mb-1" style={{ color: '#FF6803' }}>
                         Inaccuracy Note ({data.dispute.milestone.inaccuracyCount}/{data.dispute.milestone.maxRevisions} revisions used)
                       </p>
-                      <p className="text-sm" style={{ color: '#fdba74' }}>{data.dispute.milestone.inaccuracyNote}</p>
+                      <p className="text-sm" style={{ color: '#AE3A02' }}>{data.dispute.milestone.inaccuracyNote}</p>
                     </div>
                   )}
 
                   {data.dispute.milestone.deadlineExtensions?.length > 0 && (
                     <div className="rounded-lg p-3" style={{ background: 'rgba(245,158,11,0.06)', border: '1px solid rgba(245,158,11,0.2)' }}>
-                      <p className="text-xs font-medium mb-2" style={{ color: '#f59e0b' }}>
+                      <p className="text-xs font-medium mb-2" style={{ color: '#FF6803' }}>
                         Deadline Extended {data.dispute.milestone.deadlineExtensions.length}×
                       </p>
                       {data.dispute.milestone.deadlineExtensions.map((ext, i) => (
@@ -198,21 +198,21 @@ function DisputeDetail({ disputeId, onClose, onResolved }) {
 
             {/* All Contract Milestones */}
             {data.milestones?.length > 0 && (
-              <div className="rounded-xl overflow-hidden" style={{ border: '1px solid rgba(255,255,255,0.06)' }}>
-                <div className="px-4 py-2.5" style={{ background: '#1a1a1d', borderBottom: '1px solid rgba(255,255,255,0.06)' }}>
-                  <p className="text-xs font-semibold uppercase tracking-wider" style={{ color: '#52525b' }}>All Contract Milestones</p>
+              <div className="rounded-xl overflow-hidden" style={{ border: '1px solid rgba(255,104,3,0.06)' }}>
+                <div className="px-4 py-2.5" style={{ background: '#120a02', borderBottom: '1px solid rgba(255,104,3,0.06)' }}>
+                  <p className="text-xs font-semibold uppercase tracking-wider" style={{ color: '#6b5445' }}>All Contract Milestones</p>
                 </div>
                 <div style={{ borderTop: 'none' }}>
                   {data.milestones.map((m, idx) => (
                     <div key={m._id} className="px-4 py-3 flex items-center gap-3"
-                      style={idx > 0 ? { borderTop: '1px solid rgba(255,255,255,0.04)' } : {}}>
+                      style={idx > 0 ? { borderTop: '1px solid rgba(255,104,3,0.06)' } : {}}>
                       <span className="w-6 h-6 rounded-full text-[10px] font-bold flex items-center justify-center flex-shrink-0"
-                        style={{ background: '#1a1a1d', color: '#52525b' }}>
+                        style={{ background: '#120a02', color: '#6b5445' }}>
                         {m.isAdvance ? 'A' : m.milestoneNumber}
                       </span>
                       <div className="flex-1 min-w-0">
                         <p className="text-sm font-medium text-white truncate">{m.title}</p>
-                        <p className="text-xs" style={{ color: '#52525b' }}>₹{m.amount?.toLocaleString()}</p>
+                        <p className="text-xs" style={{ color: '#6b5445' }}>₹{m.amount?.toLocaleString()}</p>
                       </div>
                       <div className="flex items-center gap-2 flex-shrink-0">
                         {m.submissionFileUrl && <FileLink url={m.submissionFileUrl} label="File" />}
@@ -230,17 +230,17 @@ function DisputeDetail({ disputeId, onClose, onResolved }) {
 
             {/* Freelancer Portfolio Samples */}
             {data.portfolioSamples?.length > 0 && (
-              <div className="rounded-xl overflow-hidden" style={{ border: '1px solid rgba(255,255,255,0.06)' }}>
-                <div className="px-4 py-2.5" style={{ background: '#1a1a1d', borderBottom: '1px solid rgba(255,255,255,0.06)' }}>
-                  <p className="text-xs font-semibold uppercase tracking-wider" style={{ color: '#52525b' }}>Freelancer Portfolio Samples</p>
+              <div className="rounded-xl overflow-hidden" style={{ border: '1px solid rgba(255,104,3,0.06)' }}>
+                <div className="px-4 py-2.5" style={{ background: '#120a02', borderBottom: '1px solid rgba(255,104,3,0.06)' }}>
+                  <p className="text-xs font-semibold uppercase tracking-wider" style={{ color: '#6b5445' }}>Freelancer Portfolio Samples</p>
                 </div>
                 <div>
                   {data.portfolioSamples.map((s, i) => (
                     <div key={i} className="px-4 py-3 flex items-center gap-3"
-                      style={i > 0 ? { borderTop: '1px solid rgba(255,255,255,0.04)' } : {}}>
+                      style={i > 0 ? { borderTop: '1px solid rgba(255,104,3,0.06)' } : {}}>
                       <div className="flex-1 min-w-0">
                         <p className="text-sm font-medium text-white">{s.title}</p>
-                        {s.description && <p className="text-xs truncate" style={{ color: '#52525b' }}>{s.description}</p>}
+                        {s.description && <p className="text-xs truncate" style={{ color: '#6b5445' }}>{s.description}</p>}
                         {s.fileHash && <HashBadge hash={s.fileHash} />}
                       </div>
                       {s.fileUrl && <FileLink url={s.fileUrl} label="View sample" />}
@@ -251,29 +251,29 @@ function DisputeDetail({ disputeId, onClose, onResolved }) {
             )}
 
             {/* Evidence Timeline */}
-            <div className="rounded-xl overflow-hidden" style={{ border: '1px solid rgba(255,255,255,0.06)' }}>
-              <div className="px-4 py-2.5" style={{ background: '#1a1a1d', borderBottom: '1px solid rgba(255,255,255,0.06)' }}>
-                <p className="text-xs font-semibold uppercase tracking-wider" style={{ color: '#52525b' }}>
+            <div className="rounded-xl overflow-hidden" style={{ border: '1px solid rgba(255,104,3,0.06)' }}>
+              <div className="px-4 py-2.5" style={{ background: '#120a02', borderBottom: '1px solid rgba(255,104,3,0.06)' }}>
+                <p className="text-xs font-semibold uppercase tracking-wider" style={{ color: '#6b5445' }}>
                   Evidence Submitted ({data.dispute.evidence?.length || 0})
                 </p>
               </div>
               {!data.dispute.evidence?.length ? (
-                <p className="text-sm text-center py-4" style={{ color: '#52525b' }}>No evidence submitted yet</p>
+                <p className="text-sm text-center py-4" style={{ color: '#6b5445' }}>No evidence submitted yet</p>
               ) : (
                 <div>
                   {data.dispute.evidence.map((e, i) => (
-                    <div key={i} className="px-4 py-3" style={i > 0 ? { borderTop: '1px solid rgba(255,255,255,0.04)' } : {}}>
+                    <div key={i} className="px-4 py-3" style={i > 0 ? { borderTop: '1px solid rgba(255,104,3,0.06)' } : {}}>
                       <div className="flex items-center gap-2 mb-1">
                         <span className="text-xs font-semibold text-white">{e.submittedBy?.name || 'Unknown'}</span>
                         <span className="text-[10px] px-1.5 py-0.5 rounded font-medium capitalize"
                           style={e.submittedBy?.role === 'client'
-                            ? { background: 'rgba(59,130,246,0.1)', color: '#60a5fa' }
+                            ? { background: 'rgba(255,104,3,0.1)', color: '#BFBFBF' }
                             : { background: 'rgba(16,185,129,0.1)', color: '#10b981' }}>
                           {e.submittedBy?.role}
                         </span>
-                        <span className="text-xs ml-auto" style={{ color: '#52525b' }}>{new Date(e.submittedAt).toLocaleString()}</span>
+                        <span className="text-xs ml-auto" style={{ color: '#6b5445' }}>{new Date(e.submittedAt).toLocaleString()}</span>
                       </div>
-                      <p className="text-sm" style={{ color: '#a1a1aa' }}>{e.description}</p>
+                      <p className="text-sm" style={{ color: '#BFBFBF' }}>{e.description}</p>
                       {e.fileUrl && <div className="mt-1"><FileLink url={e.fileUrl} label="View attachment" /></div>}
                     </div>
                   ))}
@@ -283,28 +283,28 @@ function DisputeDetail({ disputeId, onClose, onResolved }) {
 
             {/* Auto Evidence Summary */}
             {data.dispute.evidenceSummary?.submissionHashes?.length > 0 && (
-              <div className="rounded-xl p-4" style={{ background: '#1a1a1d', border: '1px solid rgba(255,255,255,0.06)' }}>
-                <p className="text-xs font-semibold uppercase tracking-wider mb-2" style={{ color: '#52525b' }}>Auto-Compiled Evidence Summary</p>
+              <div className="rounded-xl p-4" style={{ background: '#120a02', border: '1px solid rgba(255,104,3,0.06)' }}>
+                <p className="text-xs font-semibold uppercase tracking-wider mb-2" style={{ color: '#6b5445' }}>Auto-Compiled Evidence Summary</p>
                 <div className="space-y-1.5">
                   {data.dispute.evidenceSummary.submissionHashes.map((h, i) => (
                     <div key={i} className="flex items-center gap-2">
-                      <span className="text-xs" style={{ color: '#52525b' }}>Submission hash {i + 1}:</span>
+                      <span className="text-xs" style={{ color: '#6b5445' }}>Submission hash {i + 1}:</span>
                       <HashBadge hash={h} />
                     </div>
                   ))}
                   {data.dispute.evidenceSummary.inaccuracyNotes?.map((n, i) => (
-                    <div key={i} className="text-xs" style={{ color: '#fb923c' }}>Inaccuracy note {i + 1}: {n}</div>
+                    <div key={i} className="text-xs" style={{ color: '#FF6803' }}>Inaccuracy note {i + 1}: {n}</div>
                   ))}
                   {data.dispute.evidenceSummary.deadlineExtensionCount > 0 && (
-                    <div className="text-xs" style={{ color: '#f59e0b' }}>Deadline extended {data.dispute.evidenceSummary.deadlineExtensionCount}× during contract</div>
+                    <div className="text-xs" style={{ color: '#FF6803' }}>Deadline extended {data.dispute.evidenceSummary.deadlineExtensionCount}× during contract</div>
                   )}
                 </div>
               </div>
             )}
 
             {/* Resolution Actions */}
-            <div className="pt-4" style={{ borderTop: '1px solid rgba(255,255,255,0.06)' }}>
-              <p className="text-xs font-semibold uppercase tracking-wider mb-3" style={{ color: '#52525b' }}>Resolve Dispute</p>
+            <div className="pt-4" style={{ borderTop: '1px solid rgba(255,104,3,0.06)' }}>
+              <p className="text-xs font-semibold uppercase tracking-wider mb-3" style={{ color: '#6b5445' }}>Resolve Dispute</p>
               <div className="flex flex-wrap gap-2 items-center">
                 <button onClick={() => resolve('release_to_freelancer')} disabled={resolving}
                   className="disabled:opacity-50 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors"
@@ -320,7 +320,7 @@ function DisputeDetail({ disputeId, onClose, onResolved }) {
                   onMouseLeave={e => e.currentTarget.style.background = '#dc2626'}>
                   Refund to Client
                 </button>
-                <div className="flex items-center gap-2 pl-3" style={{ borderLeft: '1px solid rgba(255,255,255,0.08)' }}>
+                <div className="flex items-center gap-2 pl-3" style={{ borderLeft: '1px solid rgba(255,104,3,0.10)' }}>
                   <input type="number" min="0" max="100" placeholder="Freelancer %" value={split}
                     onChange={e => setSplit(e.target.value)}
                     className="dark-input w-28 text-sm" />
@@ -347,27 +347,27 @@ const TX_TYPE = {
 }
 
 const M_STATUS_COLOR = {
-  pending_deposit: { background: '#1a1a1d', color: '#52525b', border: '1px solid rgba(255,255,255,0.06)' },
-  funded:          { background: 'rgba(59,130,246,0.1)', color: '#60a5fa', border: '1px solid rgba(59,130,246,0.2)' },
-  in_progress:     { background: 'rgba(245,158,11,0.08)', color: '#f59e0b', border: '1px solid rgba(245,158,11,0.2)' },
-  submitted:       { background: 'rgba(139,92,246,0.08)', color: '#A78BFA', border: '1px solid rgba(139,92,246,0.15)' },
-  review:          { background: 'rgba(234,179,8,0.08)', color: '#eab308', border: '1px solid rgba(234,179,8,0.2)' },
+  pending_deposit: { background: '#120a02', color: '#6b5445', border: '1px solid rgba(255,104,3,0.06)' },
+  funded:          { background: 'rgba(255,104,3,0.1)', color: '#BFBFBF', border: '1px solid rgba(255,104,3,0.2)' },
+  in_progress:     { background: 'rgba(245,158,11,0.08)', color: '#FF6803', border: '1px solid rgba(245,158,11,0.2)' },
+  submitted:       { background: 'rgba(255,104,3,0.08)', color: '#BFBFBF', border: '1px solid rgba(255,104,3,0.12)' },
+  review:          { background: 'rgba(234,179,8,0.08)', color: '#FF6803', border: '1px solid rgba(234,179,8,0.2)' },
   approved:        { background: 'rgba(16,185,129,0.1)', color: '#10b981', border: '1px solid rgba(16,185,129,0.2)' },
-  inaccurate_1:    { background: 'rgba(249,115,22,0.08)', color: '#fb923c', border: '1px solid rgba(249,115,22,0.2)' },
+  inaccurate_1:    { background: 'rgba(249,115,22,0.08)', color: '#FF6803', border: '1px solid rgba(249,115,22,0.2)' },
   inaccurate_2:    { background: 'rgba(239,68,68,0.06)', color: '#f87171', border: '1px solid rgba(239,68,68,0.15)' },
   disputed:        { background: 'rgba(239,68,68,0.08)', color: '#f87171', border: '1px solid rgba(239,68,68,0.2)' },
-  released:        { background: 'rgba(139,92,246,0.1)', color: '#A78BFA', border: '1px solid rgba(139,92,246,0.2)' },
-  refunded:        { background: '#1a1a1d', color: '#52525b', border: '1px solid rgba(255,255,255,0.06)' },
+  released:        { background: 'rgba(255,104,3,0.10)', color: '#BFBFBF', border: '1px solid rgba(255,104,3,0.14)' },
+  refunded:        { background: '#120a02', color: '#6b5445', border: '1px solid rgba(255,104,3,0.06)' },
 }
 
 function SummaryCard({ label, value, sub, accent }) {
   return (
     <div className="rounded-xl p-4" style={accent
-      ? { background: 'linear-gradient(135deg, #8B5CF6, #6D28D9)', border: 'none' }
-      : { background: '#111113', border: '1px solid rgba(255,255,255,0.08)' }}>
+      ? { background: 'linear-gradient(135deg, #FF6803, #AE3A02)', border: 'none' }
+      : { background: '#111113', border: '1px solid rgba(255,104,3,0.10)' }}>
       <div className="text-2xl font-bold" style={{ color: accent ? '#fff' : '#f4f4f5' }}>{value}</div>
-      <div className="text-sm mt-0.5" style={{ color: accent ? 'rgba(255,255,255,0.7)' : '#a1a1aa' }}>{label}</div>
-      {sub && <div className="text-xs mt-0.5" style={{ color: accent ? 'rgba(255,255,255,0.5)' : '#52525b' }}>{sub}</div>}
+      <div className="text-sm mt-0.5" style={{ color: accent ? 'rgba(255,255,255,0.7)' : '#BFBFBF' }}>{label}</div>
+      {sub && <div className="text-xs mt-0.5" style={{ color: accent ? 'rgba(255,255,255,0.5)' : '#1c1008' }}>{sub}</div>}
     </div>
   )
 }
@@ -388,7 +388,7 @@ function PaymentsTab() {
   if (loading) return (
     <div className="flex justify-center py-16">
       <div className="animate-spin h-6 w-6 border-2 border-t-transparent rounded-full"
-        style={{ borderColor: '#8B5CF6', borderTopColor: 'transparent' }} />
+        style={{ borderColor: '#FF6803', borderTopColor: 'transparent' }} />
     </div>
   )
   if (!data) return null
@@ -414,7 +414,7 @@ function PaymentsTab() {
       </div>
 
       {/* Sub-nav */}
-      <div className="flex gap-1 p-1 rounded-xl w-fit" style={{ background: '#1a1a1d' }}>
+      <div className="flex gap-1 p-1 rounded-xl w-fit" style={{ background: '#120a02' }}>
         {[
           { key: 'overview',  label: 'Overview' },
           { key: 'clients',   label: `Clients (${clientSummary.length})` },
@@ -425,10 +425,10 @@ function PaymentsTab() {
           <button key={v.key} onClick={() => setView(v.key)}
             className="px-3 py-1.5 text-xs font-medium rounded-lg transition-colors"
             style={view === v.key
-              ? { background: '#111113', color: '#f4f4f5', border: '1px solid rgba(255,255,255,0.08)' }
-              : { color: '#52525b' }}
-            onMouseEnter={e => { if (view !== v.key) e.currentTarget.style.color = '#a1a1aa' }}
-            onMouseLeave={e => { if (view !== v.key) e.currentTarget.style.color = '#52525b' }}>
+              ? { background: '#111113', color: '#f4f4f5', border: '1px solid rgba(255,104,3,0.10)' }
+              : { color: '#6b5445' }}
+            onMouseEnter={e => { if (view !== v.key) e.currentTarget.style.color = '#BFBFBF' }}
+            onMouseLeave={e => { if (view !== v.key) e.currentTarget.style.color = '#1c1008' }}>
             {v.label}
           </button>
         ))}
@@ -439,23 +439,23 @@ function PaymentsTab() {
         <div className="grid md:grid-cols-2 gap-4">
           {/* Fund flow visual */}
           <div className="dark-card p-5">
-            <p className="text-xs font-semibold uppercase tracking-wider mb-4" style={{ color: '#52525b' }}>Fund Flow</p>
+            <p className="text-xs font-semibold uppercase tracking-wider mb-4" style={{ color: '#6b5445' }}>Fund Flow</p>
             {[
-              { label: 'Client Deposits (Total Funded)', amount: summary.totalFunded, color: '#8B5CF6' },
-              { label: 'Platform Commission Earned', amount: summary.totalPlatformEarnings || 0, color: '#a855f7' },
-              { label: 'Currently in Escrow', amount: summary.totalHeld, color: '#f59e0b' },
+              { label: 'Client Deposits (Total Funded)', amount: summary.totalFunded, color: '#FF6803' },
+              { label: 'Platform Commission Earned', amount: summary.totalPlatformEarnings || 0, color: '#AE3A02' },
+              { label: 'Currently in Escrow', amount: summary.totalHeld, color: '#FF6803' },
               { label: 'Released to Freelancers', amount: summary.totalReleased, color: '#10b981' },
-              { label: 'Advance Held by Platform', amount: summary.totalAdvanceHeld, color: '#60a5fa' },
+              { label: 'Advance Held by Platform', amount: summary.totalAdvanceHeld, color: '#BFBFBF' },
               { label: 'Refunded to Clients', amount: summary.totalRefunded, color: '#f87171' },
             ].map(row => (
               <div key={row.label} className="flex items-center gap-3 mb-3">
                 <div className="w-2.5 h-2.5 rounded-full flex-shrink-0" style={{ background: row.color }} />
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center justify-between mb-0.5">
-                    <span className="text-xs" style={{ color: '#a1a1aa' }}>{row.label}</span>
+                    <span className="text-xs" style={{ color: '#BFBFBF' }}>{row.label}</span>
                     <span className="text-xs font-bold text-white">₹{row.amount.toLocaleString()}</span>
                   </div>
-                  <div className="h-1.5 rounded-full overflow-hidden" style={{ background: '#1a1a1d' }}>
+                  <div className="h-1.5 rounded-full overflow-hidden" style={{ background: '#120a02' }}>
                     <div className="h-1.5 rounded-full transition-all"
                       style={{ width: summary.totalFunded > 0 ? `${Math.min(100, (row.amount / summary.totalFunded) * 100)}%` : '0%', background: row.color }} />
                   </div>
@@ -466,11 +466,11 @@ function PaymentsTab() {
 
           {/* Top clients by deposit */}
           <div className="dark-card p-5">
-            <p className="text-xs font-semibold uppercase tracking-wider mb-4" style={{ color: '#52525b' }}>Top Clients by Deposit</p>
+            <p className="text-xs font-semibold uppercase tracking-wider mb-4" style={{ color: '#6b5445' }}>Top Clients by Deposit</p>
             {clientSummary.slice(0, 6).map(c => (
               <div key={c.client._id} className="flex items-center gap-3 mb-3">
                 <div className="w-7 h-7 rounded-full flex items-center justify-center text-white text-[10px] font-bold flex-shrink-0"
-                  style={{ background: 'linear-gradient(135deg, #8B5CF6, #6D28D9)' }}>
+                  style={{ background: 'linear-gradient(135deg, #FF6803, #AE3A02)' }}>
                   {c.client.name?.[0]?.toUpperCase()}
                 </div>
                 <div className="flex-1 min-w-0">
@@ -478,17 +478,17 @@ function PaymentsTab() {
                     <span className="text-xs font-medium text-white truncate">{c.client.name}</span>
                     <span className="text-xs font-bold text-white flex-shrink-0 ml-2">₹{c.totalDeposited.toLocaleString()}</span>
                   </div>
-                  <div className="flex gap-2 text-[10px] mt-0.5" style={{ color: '#52525b' }}>
+                  <div className="flex gap-2 text-[10px] mt-0.5" style={{ color: '#6b5445' }}>
                     <span>{c.contractCount} contract{c.contractCount !== 1 ? 's' : ''}</span>
                     <span>·</span>
-                    <span style={{ color: '#f59e0b' }}>₹{c.totalHeld.toLocaleString()} held</span>
+                    <span style={{ color: '#FF6803' }}>₹{c.totalHeld.toLocaleString()} held</span>
                     <span>·</span>
                     <span style={{ color: '#10b981' }}>₹{c.totalReleased.toLocaleString()} released</span>
                   </div>
                 </div>
               </div>
             ))}
-            {clientSummary.length === 0 && <p className="text-sm text-center py-4" style={{ color: '#52525b' }}>No client deposits yet</p>}
+            {clientSummary.length === 0 && <p className="text-sm text-center py-4" style={{ color: '#6b5445' }}>No client deposits yet</p>}
           </div>
         </div>
       )}
@@ -497,7 +497,7 @@ function PaymentsTab() {
       {view === 'clients' && (
         <div className="dark-card overflow-hidden">
           <div className="px-5 py-3 grid grid-cols-6 gap-2 text-[10px] font-semibold uppercase tracking-wider"
-            style={{ background: '#1a1a1d', borderBottom: '1px solid rgba(255,255,255,0.06)', color: '#52525b' }}>
+            style={{ background: '#120a02', borderBottom: '1px solid rgba(255,104,3,0.06)', color: '#6b5445' }}>
             <span className="col-span-2">Client</span>
             <span className="text-right">Contracts</span>
             <span className="text-right">Total Deposited</span>
@@ -505,25 +505,25 @@ function PaymentsTab() {
             <span className="text-right">Released</span>
           </div>
           {clientSummary.length === 0
-            ? <p className="text-sm text-center py-8" style={{ color: '#52525b' }}>No client payment data yet</p>
+            ? <p className="text-sm text-center py-8" style={{ color: '#6b5445' }}>No client payment data yet</p>
             : clientSummary.map((c, idx) => (
               <div key={c.client._id} className="px-5 py-3 grid grid-cols-6 gap-2 items-center transition-colors"
-                style={idx > 0 ? { borderTop: '1px solid rgba(255,255,255,0.04)' } : {}}
+                style={idx > 0 ? { borderTop: '1px solid rgba(255,104,3,0.06)' } : {}}
                 onMouseEnter={e => e.currentTarget.style.background = 'rgba(255,255,255,0.02)'}
                 onMouseLeave={e => e.currentTarget.style.background = 'transparent'}>
                 <div className="col-span-2 flex items-center gap-2 min-w-0">
                   <div className="w-7 h-7 rounded-full flex items-center justify-center text-white text-[10px] font-bold flex-shrink-0"
-                    style={{ background: 'linear-gradient(135deg, #8B5CF6, #6D28D9)' }}>
+                    style={{ background: 'linear-gradient(135deg, #FF6803, #AE3A02)' }}>
                     {c.client.name?.[0]?.toUpperCase()}
                   </div>
                   <div className="min-w-0">
                     <p className="text-sm font-medium text-white truncate">{c.client.name}</p>
-                    <p className="text-xs truncate" style={{ color: '#52525b' }}>{c.client.email}</p>
+                    <p className="text-xs truncate" style={{ color: '#6b5445' }}>{c.client.email}</p>
                   </div>
                 </div>
-                <span className="text-sm text-right" style={{ color: '#a1a1aa' }}>{c.contractCount}</span>
+                <span className="text-sm text-right" style={{ color: '#BFBFBF' }}>{c.contractCount}</span>
                 <span className="text-sm font-semibold text-right text-white">₹{c.totalDeposited.toLocaleString()}</span>
-                <span className="text-sm font-medium text-right" style={{ color: '#f59e0b' }}>₹{c.totalHeld.toLocaleString()}</span>
+                <span className="text-sm font-medium text-right" style={{ color: '#FF6803' }}>₹{c.totalHeld.toLocaleString()}</span>
                 <span className="text-sm font-medium text-right" style={{ color: '#10b981' }}>₹{c.totalReleased.toLocaleString()}</span>
               </div>
             ))
@@ -535,38 +535,38 @@ function PaymentsTab() {
       {view === 'advances' && (
         <div className="space-y-3">
           <div className="flex items-center gap-3 p-3 rounded-xl" style={{ background: 'rgba(245,158,11,0.06)', border: '1px solid rgba(245,158,11,0.2)' }}>
-            <svg className="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" style={{ color: '#f59e0b' }}>
+            <svg className="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" style={{ color: '#FF6803' }}>
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
             </svg>
             <p className="text-xs" style={{ color: '#d97706' }}>
-              <strong style={{ color: '#f59e0b' }}>₹{summary.totalAdvanceHeld.toLocaleString()}</strong> advance currently held — released to freelancer when Phase 1 is approved.
+              <strong style={{ color: '#FF6803' }}>₹{summary.totalAdvanceHeld.toLocaleString()}</strong> advance currently held — released to freelancer when Phase 1 is approved.
             </p>
           </div>
 
           <div className="dark-card overflow-hidden">
             <div className="px-5 py-3 grid grid-cols-5 gap-2 text-[10px] font-semibold uppercase tracking-wider"
-              style={{ background: '#1a1a1d', borderBottom: '1px solid rgba(255,255,255,0.06)', color: '#52525b' }}>
+              style={{ background: '#120a02', borderBottom: '1px solid rgba(255,104,3,0.06)', color: '#6b5445' }}>
               <span className="col-span-2">Contract / Project</span>
               <span>Client</span>
               <span className="text-right">Advance Amount</span>
               <span className="text-right">Status</span>
             </div>
             {advances.length === 0
-              ? <p className="text-sm text-center py-8" style={{ color: '#52525b' }}>No advance payments yet</p>
+              ? <p className="text-sm text-center py-8" style={{ color: '#6b5445' }}>No advance payments yet</p>
               : advances.map((a, idx) => (
                 <div key={a._id} className="px-5 py-3 grid grid-cols-5 gap-2 items-center"
-                  style={idx > 0 ? { borderTop: '1px solid rgba(255,255,255,0.04)' } : {}}>
+                  style={idx > 0 ? { borderTop: '1px solid rgba(255,104,3,0.06)' } : {}}>
                   <div className="col-span-2 min-w-0">
                     <p className="text-sm font-medium text-white truncate">
                       {a.contract?.job?.title || 'Untitled Project'}
                     </p>
-                    <p className="text-xs font-mono" style={{ color: '#52525b' }}>#{a.contract?.hashId}</p>
+                    <p className="text-xs font-mono" style={{ color: '#6b5445' }}>#{a.contract?.hashId}</p>
                   </div>
                   <div className="min-w-0">
-                    <p className="text-xs font-medium truncate" style={{ color: '#a1a1aa' }}>{a.contract?.client?.name}</p>
-                    <p className="text-[10px] truncate" style={{ color: '#52525b' }}>{a.contract?.client?.email}</p>
+                    <p className="text-xs font-medium truncate" style={{ color: '#BFBFBF' }}>{a.contract?.client?.name}</p>
+                    <p className="text-[10px] truncate" style={{ color: '#6b5445' }}>{a.contract?.client?.email}</p>
                   </div>
-                  <span className="text-sm font-semibold text-right" style={{ color: a.held ? '#f59e0b' : '#10b981' }}>
+                  <span className="text-sm font-semibold text-right" style={{ color: a.held ? '#FF6803' : '#10b981' }}>
                     ₹{a.amount.toLocaleString()}
                   </span>
                   <div className="text-right">
@@ -586,7 +586,7 @@ function PaymentsTab() {
       {view === 'contracts' && (
         <div className="space-y-3">
           {contracts.length === 0
-            ? <div className="dark-card p-8 text-center text-sm" style={{ color: '#52525b' }}>No contracts with payments yet</div>
+            ? <div className="dark-card p-8 text-center text-sm" style={{ color: '#6b5445' }}>No contracts with payments yet</div>
             : contracts.map(entry => {
               const isOpen = expandedContract === entry.contract._id.toString()
               const contractId = entry.contract._id.toString()
@@ -601,38 +601,38 @@ function PaymentsTab() {
                         <span className="text-sm font-semibold text-white truncate">
                           {entry.contract.job?.title || 'Untitled Project'}
                         </span>
-                        <span className="font-mono text-xs" style={{ color: '#52525b' }}>#{entry.contract.hashId}</span>
+                        <span className="font-mono text-xs" style={{ color: '#6b5445' }}>#{entry.contract.hashId}</span>
                         <span className="text-[10px] px-2 py-0.5 rounded-full font-medium capitalize" style={
-                          entry.contract.status === 'completed' ? { background: 'rgba(139,92,246,0.1)', color: '#A78BFA', border: '1px solid rgba(139,92,246,0.2)' } :
+                          entry.contract.status === 'completed' ? { background: 'rgba(255,104,3,0.10)', color: '#BFBFBF', border: '1px solid rgba(255,104,3,0.14)' } :
                           entry.contract.status === 'active' ? { background: 'rgba(16,185,129,0.1)', color: '#10b981', border: '1px solid rgba(16,185,129,0.2)' } :
-                          { background: '#1a1a1d', color: '#52525b', border: '1px solid rgba(255,255,255,0.06)' }
+                          { background: '#120a02', color: '#6b5445', border: '1px solid rgba(255,104,3,0.06)' }
                         }>
                           {entry.contract.status?.replace(/_/g, ' ')}
                         </span>
                       </div>
-                      <div className="flex gap-3 mt-1 text-xs flex-wrap" style={{ color: '#52525b' }}>
-                        <span>Client: <strong style={{ color: '#a1a1aa' }}>{entry.contract.client?.name}</strong></span>
+                      <div className="flex gap-3 mt-1 text-xs flex-wrap" style={{ color: '#6b5445' }}>
+                        <span>Client: <strong style={{ color: '#BFBFBF' }}>{entry.contract.client?.name}</strong></span>
                         <span>·</span>
-                        <span>Freelancer: <strong style={{ color: '#a1a1aa' }}>{entry.contract.freelancer?.name}</strong></span>
+                        <span>Freelancer: <strong style={{ color: '#BFBFBF' }}>{entry.contract.freelancer?.name}</strong></span>
                         <span>·</span>
                         <span className="font-semibold text-white">₹{entry.totalFunded.toLocaleString()} funded</span>
                       </div>
                     </div>
                     <div className="flex gap-3 text-right flex-shrink-0 text-xs">
-                      {entry.totalHeld > 0 && <span className="font-medium" style={{ color: '#f59e0b' }}>₹{entry.totalHeld.toLocaleString()} held</span>}
+                      {entry.totalHeld > 0 && <span className="font-medium" style={{ color: '#FF6803' }}>₹{entry.totalHeld.toLocaleString()} held</span>}
                       {entry.totalReleased > 0 && <span className="font-medium" style={{ color: '#10b981' }}>₹{entry.totalReleased.toLocaleString()} released</span>}
                       {entry.totalRefunded > 0 && <span className="font-medium" style={{ color: '#f87171' }}>₹{entry.totalRefunded.toLocaleString()} refunded</span>}
                     </div>
                     <svg className={`w-4 h-4 flex-shrink-0 transition-transform ${isOpen ? 'rotate-180' : ''}`}
-                      fill="none" stroke="currentColor" viewBox="0 0 24 24" style={{ color: '#52525b' }}>
+                      fill="none" stroke="currentColor" viewBox="0 0 24 24" style={{ color: '#6b5445' }}>
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
                     </svg>
                   </button>
 
                   {isOpen && (
-                    <div style={{ borderTop: '1px solid rgba(255,255,255,0.06)' }}>
+                    <div style={{ borderTop: '1px solid rgba(255,104,3,0.06)' }}>
                       <div className="px-5 py-2 grid grid-cols-5 gap-2 text-[10px] font-semibold uppercase tracking-wider"
-                        style={{ background: '#1a1a1d', color: '#52525b' }}>
+                        style={{ background: '#120a02', color: '#6b5445' }}>
                         <span className="col-span-2">Phase</span>
                         <span className="text-right">Amount</span>
                         <span className="text-right">Status</span>
@@ -640,16 +640,16 @@ function PaymentsTab() {
                       </div>
                       {entry.milestones.map((m, idx) => (
                         <div key={m._id} className="px-5 py-2.5 grid grid-cols-5 gap-2 items-center"
-                          style={idx > 0 ? { borderTop: '1px solid rgba(255,255,255,0.04)' } : {}}>
+                          style={idx > 0 ? { borderTop: '1px solid rgba(255,104,3,0.06)' } : {}}>
                           <div className="col-span-2 flex items-center gap-2 min-w-0">
                             <span className="w-5 h-5 rounded-full text-[9px] font-bold flex items-center justify-center flex-shrink-0"
-                              style={{ background: '#1a1a1d', color: '#52525b' }}>
+                              style={{ background: '#120a02', color: '#6b5445' }}>
                               {m.isAdvance ? 'A' : m.milestoneNumber}
                             </span>
-                            <span className="text-xs truncate" style={{ color: '#a1a1aa' }}>{m.title}</span>
+                            <span className="text-xs truncate" style={{ color: '#BFBFBF' }}>{m.title}</span>
                             {m.isAdvance && (
                               <span className="text-[9px] px-1.5 rounded font-medium flex-shrink-0"
-                                style={{ background: 'rgba(245,158,11,0.08)', color: '#f59e0b' }}>Advance</span>
+                                style={{ background: 'rgba(245,158,11,0.08)', color: '#FF6803' }}>Advance</span>
                             )}
                           </div>
                           <span className="text-xs font-semibold text-right text-white">₹{m.amount.toLocaleString()}</span>
@@ -659,17 +659,17 @@ function PaymentsTab() {
                               {m.status?.replace(/_/g, ' ')}
                             </span>
                           </div>
-                          <span className="text-[10px] text-right" style={{ color: '#52525b' }}>
+                          <span className="text-[10px] text-right" style={{ color: '#6b5445' }}>
                             {m.releasedAt ? new Date(m.releasedAt).toLocaleDateString() : '—'}
                           </span>
                         </div>
                       ))}
                       <div className="px-5 py-2.5 grid grid-cols-5 gap-2"
-                        style={{ borderTop: '1px solid rgba(255,255,255,0.06)', background: '#1a1a1d' }}>
-                        <span className="col-span-2 text-xs font-semibold" style={{ color: '#a1a1aa' }}>Total</span>
+                        style={{ borderTop: '1px solid rgba(255,104,3,0.06)', background: '#120a02' }}>
+                        <span className="col-span-2 text-xs font-semibold" style={{ color: '#BFBFBF' }}>Total</span>
                         <span className="text-xs font-bold text-right text-white">₹{entry.totalFunded.toLocaleString()}</span>
                         <span className="text-[10px] text-right">
-                          <span style={{ color: '#f59e0b' }}>₹{entry.totalHeld.toLocaleString()} held</span>
+                          <span style={{ color: '#FF6803' }}>₹{entry.totalHeld.toLocaleString()} held</span>
                           {entry.totalRefunded > 0 && <span className="ml-1" style={{ color: '#f87171' }}>₹{entry.totalRefunded.toLocaleString()} refunded</span>}
                         </span>
                         <span className="text-[10px] font-semibold text-right" style={{ color: '#10b981' }}>₹{entry.totalReleased.toLocaleString()} released</span>
@@ -687,7 +687,7 @@ function PaymentsTab() {
       {view === 'payouts' && (
         <div className="dark-card overflow-hidden">
           <div className="px-5 py-3 grid grid-cols-6 gap-2 text-[10px] font-semibold uppercase tracking-wider"
-            style={{ background: '#1a1a1d', borderBottom: '1px solid rgba(255,255,255,0.06)', color: '#52525b' }}>
+            style={{ background: '#120a02', borderBottom: '1px solid rgba(255,104,3,0.06)', color: '#6b5445' }}>
             <span className="col-span-2">Freelancer</span>
             <span>Type</span>
             <span>Phase</span>
@@ -695,10 +695,10 @@ function PaymentsTab() {
             <span className="text-right">Date</span>
           </div>
           {transactions.length === 0
-            ? <p className="text-sm text-center py-8" style={{ color: '#52525b' }}>No payouts recorded yet</p>
+            ? <p className="text-sm text-center py-8" style={{ color: '#6b5445' }}>No payouts recorded yet</p>
             : transactions.map((tx, idx) => (
               <div key={tx._id} className="px-5 py-3 grid grid-cols-6 gap-2 items-center transition-colors"
-                style={idx > 0 ? { borderTop: '1px solid rgba(255,255,255,0.04)' } : {}}
+                style={idx > 0 ? { borderTop: '1px solid rgba(255,104,3,0.06)' } : {}}
                 onMouseEnter={e => e.currentTarget.style.background = 'rgba(255,255,255,0.02)'}
                 onMouseLeave={e => e.currentTarget.style.background = 'transparent'}>
                 <div className="col-span-2 flex items-center gap-2 min-w-0">
@@ -709,26 +709,26 @@ function PaymentsTab() {
                   <div className="min-w-0">
                     <p className="text-xs font-medium text-white truncate">{tx.freelancer?.name}</p>
                     {tx.contract?.hashId && (
-                      <p className="text-[10px] font-mono" style={{ color: '#52525b' }}>#{tx.contract.hashId}</p>
+                      <p className="text-[10px] font-mono" style={{ color: '#6b5445' }}>#{tx.contract.hashId}</p>
                     )}
                   </div>
                 </div>
-                <span className="text-xs" style={{ color: '#a1a1aa' }}>{TX_TYPE[tx.type] || tx.type}</span>
+                <span className="text-xs" style={{ color: '#BFBFBF' }}>{TX_TYPE[tx.type] || tx.type}</span>
                 <div className="min-w-0">
-                  <p className="text-xs truncate" style={{ color: '#a1a1aa' }}>{tx.milestone?.title || '—'}</p>
+                  <p className="text-xs truncate" style={{ color: '#BFBFBF' }}>{tx.milestone?.title || '—'}</p>
                   {tx.milestone?.isAdvance && (
-                    <span className="text-[9px] px-1 rounded" style={{ background: 'rgba(245,158,11,0.08)', color: '#f59e0b' }}>Advance</span>
+                    <span className="text-[9px] px-1 rounded" style={{ background: 'rgba(245,158,11,0.08)', color: '#FF6803' }}>Advance</span>
                   )}
                 </div>
                 <span className="text-sm font-bold text-right" style={{ color: '#10b981' }}>+₹{tx.amount.toLocaleString()}</span>
-                <span className="text-[10px] text-right" style={{ color: '#52525b' }}>{new Date(tx.createdAt).toLocaleDateString()}</span>
+                <span className="text-[10px] text-right" style={{ color: '#6b5445' }}>{new Date(tx.createdAt).toLocaleDateString()}</span>
               </div>
             ))
           }
           {transactions.length > 0 && (
             <div className="px-5 py-3 flex items-center justify-between"
-              style={{ borderTop: '1px solid rgba(255,255,255,0.06)', background: '#1a1a1d' }}>
-              <span className="text-xs" style={{ color: '#52525b' }}>{transactions.length} payouts</span>
+              style={{ borderTop: '1px solid rgba(255,104,3,0.06)', background: '#120a02' }}>
+              <span className="text-xs" style={{ color: '#6b5445' }}>{transactions.length} payouts</span>
               <span className="text-sm font-bold text-white">Total: ₹{summary.totalPayouts.toLocaleString()}</span>
             </div>
           )}
@@ -792,7 +792,7 @@ export default function AdminDashboard() {
   const openDisputes = disputes.filter(d => d.status === 'open')
 
   return (
-    <div className="min-h-screen" style={{ background: '#0a0a0b' }}>
+    <div className="min-h-screen" style={{ background: 'transparent' }}>
       <Navbar />
 
       {expandedDispute && (
@@ -811,28 +811,28 @@ export default function AdminDashboard() {
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
             <div className="dark-card p-4">
               <div className="text-2xl font-bold text-white">{stats.users.total}</div>
-              <div className="text-sm mt-0.5" style={{ color: '#a1a1aa' }}>Total Users</div>
-              <div className="text-xs mt-1" style={{ color: '#52525b' }}>{stats.users.freelancers} freelancers · {stats.users.clients} clients</div>
+              <div className="text-sm mt-0.5" style={{ color: '#BFBFBF' }}>Total Users</div>
+              <div className="text-xs mt-1" style={{ color: '#6b5445' }}>{stats.users.freelancers} freelancers · {stats.users.clients} clients</div>
             </div>
             <div className="dark-card p-4">
               <div className="text-2xl font-bold text-white">{stats.jobs.total}</div>
-              <div className="text-sm mt-0.5" style={{ color: '#a1a1aa' }}>Total Jobs</div>
-              <div className="text-xs mt-1" style={{ color: '#52525b' }}>{stats.jobs.open} open · {stats.jobs.inProgress} in progress</div>
+              <div className="text-sm mt-0.5" style={{ color: '#BFBFBF' }}>Total Jobs</div>
+              <div className="text-xs mt-1" style={{ color: '#6b5445' }}>{stats.jobs.open} open · {stats.jobs.inProgress} in progress</div>
             </div>
             <div className="dark-card p-4">
               <div className="text-2xl font-bold" style={{ color: stats.disputes.open > 0 ? '#f87171' : '#f4f4f5' }}>{stats.disputes.open}</div>
-              <div className="text-sm mt-0.5" style={{ color: '#a1a1aa' }}>Open Disputes</div>
-              <div className="text-xs mt-1" style={{ color: '#52525b' }}>{stats.disputes.total} total</div>
+              <div className="text-sm mt-0.5" style={{ color: '#BFBFBF' }}>Open Disputes</div>
+              <div className="text-xs mt-1" style={{ color: '#6b5445' }}>{stats.disputes.total} total</div>
             </div>
             <div className="dark-card p-4">
-              <div className="text-2xl font-bold" style={{ color: '#f59e0b' }}>{stats.pendingVerifications}</div>
-              <div className="text-sm mt-0.5" style={{ color: '#a1a1aa' }}>Pending Verifications</div>
+              <div className="text-2xl font-bold" style={{ color: '#FF6803' }}>{stats.pendingVerifications}</div>
+              <div className="text-sm mt-0.5" style={{ color: '#BFBFBF' }}>Pending Verifications</div>
             </div>
           </div>
         )}
 
         {/* Tabs */}
-        <div className="flex gap-2 mb-5" style={{ borderBottom: '1px solid rgba(255,255,255,0.06)' }}>
+        <div className="flex gap-2 mb-5" style={{ borderBottom: '1px solid rgba(255,104,3,0.06)' }}>
           {[
             { key: 'verification', label: `Verification${stats?.pendingVerifications > 0 ? ` (${stats.pendingVerifications})` : ''}` },
             { key: 'disputes', label: `Disputes${openDisputes.length > 0 ? ` (${openDisputes.length})` : ''}` },
@@ -842,10 +842,10 @@ export default function AdminDashboard() {
             <button key={tab.key} onClick={() => setActiveTab(tab.key)}
               className="px-4 py-2 text-sm font-medium transition-colors"
               style={activeTab === tab.key
-                ? { color: '#f4f4f5', borderBottom: '2px solid #8B5CF6' }
-                : { color: '#52525b' }}
-              onMouseEnter={e => { if (activeTab !== tab.key) e.currentTarget.style.color = '#a1a1aa' }}
-              onMouseLeave={e => { if (activeTab !== tab.key) e.currentTarget.style.color = '#52525b' }}>
+                ? { color: '#f4f4f5', borderBottom: '2px solid #FF6803' }
+                : { color: '#6b5445' }}
+              onMouseEnter={e => { if (activeTab !== tab.key) e.currentTarget.style.color = '#BFBFBF' }}
+              onMouseLeave={e => { if (activeTab !== tab.key) e.currentTarget.style.color = '#1c1008' }}>
               {tab.label}
             </button>
           ))}
@@ -854,14 +854,14 @@ export default function AdminDashboard() {
         {/* Tab: Verification */}
         {activeTab === 'verification' && (
           <div>
-            <h2 className="text-sm font-semibold mb-3" style={{ color: '#52525b' }}>Freelancer Verification Requests</h2>
+            <h2 className="text-sm font-semibold mb-3" style={{ color: '#6b5445' }}>Freelancer Verification Requests</h2>
             {loading ? (
               <div className="flex justify-center py-8">
                 <div className="animate-spin h-6 w-6 border-2 border-t-transparent rounded-full"
-                  style={{ borderColor: '#8B5CF6', borderTopColor: 'transparent' }} />
+                  style={{ borderColor: '#FF6803', borderTopColor: 'transparent' }} />
               </div>
             ) : pendingFreelancers.length === 0 ? (
-              <div className="dark-card p-6 text-center text-sm" style={{ color: '#52525b' }}>No pending verification requests</div>
+              <div className="dark-card p-6 text-center text-sm" style={{ color: '#6b5445' }}>No pending verification requests</div>
             ) : (
               <div className="space-y-4">
                 {pendingFreelancers.map(f => (
@@ -869,34 +869,34 @@ export default function AdminDashboard() {
                     <div className="flex flex-col md:flex-row justify-between gap-4">
                       <div className="flex-1">
                         <div className="font-medium text-white">{f.name}</div>
-                        <div className="text-sm" style={{ color: '#a1a1aa' }}>{f.email}</div>
+                        <div className="text-sm" style={{ color: '#BFBFBF' }}>{f.email}</div>
                         {f.skills?.length > 0 && (
                           <div className="flex flex-wrap gap-1 mt-2">
                             {f.skills.map(s => (
                               <span key={s} className="text-xs px-2 py-0.5 rounded font-medium"
-                                style={{ background: 'rgba(139,92,246,0.1)', color: '#A78BFA', border: '1px solid rgba(139,92,246,0.2)' }}>{s}</span>
+                                style={{ background: 'rgba(255,104,3,0.10)', color: '#BFBFBF', border: '1px solid rgba(255,104,3,0.14)' }}>{s}</span>
                             ))}
                           </div>
                         )}
-                        {f.bio && <p className="text-xs mt-1 line-clamp-2" style={{ color: '#52525b' }}>{f.bio}</p>}
+                        {f.bio && <p className="text-xs mt-1 line-clamp-2" style={{ color: '#6b5445' }}>{f.bio}</p>}
                         <div className="mt-3 space-y-1 text-sm">
                           {f.linkedin && (
-                            <div><span className="font-medium" style={{ color: '#a1a1aa' }}>LinkedIn:</span>{' '}
-                              <a href={f.linkedin} target="_blank" rel="noopener noreferrer" className="hover:underline" style={{ color: '#A78BFA' }}>{f.linkedin}</a>
+                            <div><span className="font-medium" style={{ color: '#BFBFBF' }}>LinkedIn:</span>{' '}
+                              <a href={f.linkedin} target="_blank" rel="noopener noreferrer" className="hover:underline" style={{ color: '#BFBFBF' }}>{f.linkedin}</a>
                             </div>
                           )}
                           {f.github && (
-                            <div><span className="font-medium" style={{ color: '#a1a1aa' }}>GitHub:</span>{' '}
-                              <a href={f.github} target="_blank" rel="noopener noreferrer" className="hover:underline" style={{ color: '#A78BFA' }}>{f.github}</a>
+                            <div><span className="font-medium" style={{ color: '#BFBFBF' }}>GitHub:</span>{' '}
+                              <a href={f.github} target="_blank" rel="noopener noreferrer" className="hover:underline" style={{ color: '#BFBFBF' }}>{f.github}</a>
                             </div>
                           )}
                           {f.portfolio && (
-                            <div><span className="font-medium" style={{ color: '#a1a1aa' }}>Portfolio:</span>{' '}
-                              <a href={f.portfolio} target="_blank" rel="noopener noreferrer" className="hover:underline" style={{ color: '#A78BFA' }}>{f.portfolio}</a>
+                            <div><span className="font-medium" style={{ color: '#BFBFBF' }}>Portfolio:</span>{' '}
+                              <a href={f.portfolio} target="_blank" rel="noopener noreferrer" className="hover:underline" style={{ color: '#BFBFBF' }}>{f.portfolio}</a>
                             </div>
                           )}
                         </div>
-                        <div className="text-xs mt-2" style={{ color: '#52525b' }}>
+                        <div className="text-xs mt-2" style={{ color: '#6b5445' }}>
                           Joined: {new Date(f.createdAt).toLocaleDateString()} · Profile {f.completionPercent}% complete
                         </div>
                       </div>
@@ -927,14 +927,14 @@ export default function AdminDashboard() {
         {/* Tab: Disputes */}
         {activeTab === 'disputes' && (
           <div>
-            <h2 className="text-sm font-semibold mb-3" style={{ color: '#52525b' }}>Open Disputes</h2>
+            <h2 className="text-sm font-semibold mb-3" style={{ color: '#6b5445' }}>Open Disputes</h2>
             {loading ? (
               <div className="flex justify-center py-8">
                 <div className="animate-spin h-6 w-6 border-2 border-t-transparent rounded-full"
-                  style={{ borderColor: '#8B5CF6', borderTopColor: 'transparent' }} />
+                  style={{ borderColor: '#FF6803', borderTopColor: 'transparent' }} />
               </div>
             ) : openDisputes.length === 0 ? (
-              <div className="dark-card p-6 text-center text-sm" style={{ color: '#52525b' }}>No open disputes</div>
+              <div className="dark-card p-6 text-center text-sm" style={{ color: '#6b5445' }}>No open disputes</div>
             ) : (
               openDisputes.map(d => (
                 <div key={d._id} className="rounded-2xl p-5 mb-3" style={{ background: '#111113', border: '1px solid rgba(239,68,68,0.2)' }}>
@@ -942,15 +942,15 @@ export default function AdminDashboard() {
                     <div className="flex-1 min-w-0">
                       <div className="font-medium text-white flex items-center gap-2 flex-wrap">
                         <span className="capitalize">{d.type?.replace(/_/g, ' ')} Dispute</span>
-                        {d.contract?.hashId && <span className="text-xs font-mono" style={{ color: '#52525b' }}>#{d.contract.hashId}</span>}
+                        {d.contract?.hashId && <span className="text-xs font-mono" style={{ color: '#6b5445' }}>#{d.contract.hashId}</span>}
                       </div>
-                      <div className="flex gap-3 mt-1 text-xs flex-wrap" style={{ color: '#52525b' }}>
-                        {d.contract?.client && <span>Client: <strong style={{ color: '#a1a1aa' }}>{d.contract.client.name}</strong></span>}
-                        {d.contract?.freelancer && <span>Freelancer: <strong style={{ color: '#a1a1aa' }}>{d.contract.freelancer.name}</strong></span>}
+                      <div className="flex gap-3 mt-1 text-xs flex-wrap" style={{ color: '#6b5445' }}>
+                        {d.contract?.client && <span>Client: <strong style={{ color: '#BFBFBF' }}>{d.contract.client.name}</strong></span>}
+                        {d.contract?.freelancer && <span>Freelancer: <strong style={{ color: '#BFBFBF' }}>{d.contract.freelancer.name}</strong></span>}
                       </div>
-                      {d.milestone && <div className="text-sm mt-0.5" style={{ color: '#a1a1aa' }}>{d.milestone.title} · ₹{d.milestone.amount?.toLocaleString()}</div>}
-                      <div className="text-xs mt-0.5" style={{ color: '#52525b' }}>
-                        Raised by: <strong style={{ color: '#a1a1aa' }}>{d.raisedBy?.name}</strong> ({d.raisedBy?.role}) · {new Date(d.createdAt).toLocaleDateString()}
+                      {d.milestone && <div className="text-sm mt-0.5" style={{ color: '#BFBFBF' }}>{d.milestone.title} · ₹{d.milestone.amount?.toLocaleString()}</div>}
+                      <div className="text-xs mt-0.5" style={{ color: '#6b5445' }}>
+                        Raised by: <strong style={{ color: '#BFBFBF' }}>{d.raisedBy?.name}</strong> ({d.raisedBy?.role}) · {new Date(d.createdAt).toLocaleDateString()}
                       </div>
                     </div>
                     <div className="flex items-center gap-2 flex-shrink-0 ml-3">
@@ -971,18 +971,18 @@ export default function AdminDashboard() {
                   {/* Quick evidence preview */}
                   {d.evidence?.length > 0 && (
                     <div className="mb-3">
-                      <p className="text-xs font-medium mb-1.5" style={{ color: '#52525b' }}>Evidence ({d.evidence.length} items):</p>
+                      <p className="text-xs font-medium mb-1.5" style={{ color: '#6b5445' }}>Evidence ({d.evidence.length} items):</p>
                       <div className="space-y-1">
                         {d.evidence.map((e, i) => (
                           <div key={i} className="text-sm rounded-lg p-2 flex items-start gap-2"
-                            style={{ background: '#1a1a1d' }}>
+                            style={{ background: '#120a02' }}>
                             <span className="text-[10px] px-1.5 py-0.5 rounded font-medium flex-shrink-0 capitalize"
                               style={e.submittedBy?.role === 'client'
-                                ? { background: 'rgba(59,130,246,0.1)', color: '#60a5fa' }
+                                ? { background: 'rgba(255,104,3,0.1)', color: '#BFBFBF' }
                                 : { background: 'rgba(16,185,129,0.1)', color: '#10b981' }}>
                               {e.submittedBy?.name || '?'} ({e.submittedBy?.role})
                             </span>
-                            <span className="flex-1" style={{ color: '#a1a1aa' }}>{e.description}</span>
+                            <span className="flex-1" style={{ color: '#BFBFBF' }}>{e.description}</span>
                             {e.fileUrl && <FileLink url={e.fileUrl} label="File" />}
                           </div>
                         ))}
@@ -993,14 +993,14 @@ export default function AdminDashboard() {
                   {/* Milestone file quick links */}
                   {d.milestone?.submissionFileUrl && (
                     <div className="mb-3 flex flex-wrap gap-2 items-center">
-                      <span className="text-xs" style={{ color: '#52525b' }}>Submission:</span>
+                      <span className="text-xs" style={{ color: '#6b5445' }}>Submission:</span>
                       <FileLink url={d.milestone.submissionFileUrl} label="Download file" />
                       {d.milestone.submissionVideoUrl && <FileLink url={d.milestone.submissionVideoUrl} label="Watch video" />}
                       <HashBadge hash={d.milestone.submissionFileHash} />
                     </div>
                   )}
 
-                  <div className="flex gap-2 flex-wrap items-center pt-2" style={{ borderTop: '1px solid rgba(255,255,255,0.06)' }}>
+                  <div className="flex gap-2 flex-wrap items-center pt-2" style={{ borderTop: '1px solid rgba(255,104,3,0.06)' }}>
                     <button onClick={() => resolveDispute(d._id, 'release_to_freelancer')}
                       className="text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors"
                       style={{ background: '#059669' }}
@@ -1015,7 +1015,7 @@ export default function AdminDashboard() {
                       onMouseLeave={e => e.currentTarget.style.background = '#dc2626'}>
                       Refund to Client
                     </button>
-                    <div className="flex items-center gap-2 pl-3" style={{ borderLeft: '1px solid rgba(255,255,255,0.08)' }}>
+                    <div className="flex items-center gap-2 pl-3" style={{ borderLeft: '1px solid rgba(255,104,3,0.10)' }}>
                       <input type="number" min="0" max="100" placeholder="Freelancer %" value={splits[d._id] || ''}
                         onChange={e => setSplits({ ...splits, [d._id]: e.target.value })}
                         className="dark-input w-28 text-sm" />
@@ -1038,7 +1038,7 @@ export default function AdminDashboard() {
         {/* Tab: Stats */}
         {activeTab === 'stats' && stats && (
           <div className="dark-card p-5">
-            <h2 className="text-sm font-semibold mb-4" style={{ color: '#52525b' }}>Platform Statistics</h2>
+            <h2 className="text-sm font-semibold mb-4" style={{ color: '#6b5445' }}>Platform Statistics</h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               {[
                 ['Total Users', stats.users.total],
@@ -1054,8 +1054,8 @@ export default function AdminDashboard() {
                 ['Pending Verifications', stats.pendingVerifications],
               ].map(([label, value]) => (
                 <div key={label} className="flex items-center justify-between pb-2"
-                  style={{ borderBottom: '1px solid rgba(255,255,255,0.04)' }}>
-                  <span className="text-sm" style={{ color: '#a1a1aa' }}>{label}</span>
+                  style={{ borderBottom: '1px solid rgba(255,104,3,0.06)' }}>
+                  <span className="text-sm" style={{ color: '#BFBFBF' }}>{label}</span>
                   <span className="text-sm font-bold text-white">{value}</span>
                 </div>
               ))}

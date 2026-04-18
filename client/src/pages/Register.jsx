@@ -14,8 +14,8 @@ function getPasswordStrength(password) {
   if (/\d/.test(password)) score++
   if (/[^A-Za-z\d]/.test(password)) score++
   if (score <= 2) return { score, label: 'Weak', color: '#ef4444' }
-  if (score === 3) return { score, label: 'Fair', color: '#f59e0b' }
-  if (score === 4) return { score, label: 'Good', color: '#3b82f6' }
+  if (score === 3) return { score, label: 'Fair', color: '#FF6803' }
+  if (score === 4) return { score, label: 'Good', color: '#FF6803' }
   return { score, label: 'Strong', color: '#22c55e' }
 }
 
@@ -134,33 +134,27 @@ export default function Register() {
   const hx = exiting ? 'auth-head-exit' : 'auth-head-enter'
 
   const cardStyle = {
-    background: '#111113',
-    border: '1px solid rgba(255,255,255,0.08)',
-    boxShadow: '0 20px 60px rgba(0,0,0,0.5)',
+    background: 'rgba(18,10,2,0.85)',
+    backdropFilter: 'blur(28px) saturate(1.5)',
+    WebkitBackdropFilter: 'blur(28px) saturate(1.5)',
+    border: '1px solid rgba(255,104,3,0.16)',
+    boxShadow: '0 24px 80px rgba(0,0,0,0.6), 0 0 40px rgba(255,104,3,0.08), inset 0 1px 0 rgba(255,255,255,0.06)',
   }
 
   if (step === 'role') {
     return (
-      <div className="min-h-screen flex flex-col items-center justify-center p-4" style={{ background: '#0a0a0b' }}>
-        {/* Background orb */}
-        <div className="fixed inset-0 overflow-hidden pointer-events-none">
-          <div
-            className="animate-orb absolute w-[500px] h-[500px] rounded-full opacity-15"
-            style={{ background: 'radial-gradient(circle, #8B5CF6 0%, transparent 70%)', top: '-150px', right: '-100px' }}
-          />
-        </div>
-
-        <div className={`mb-8 text-center relative z-10 ${hx}`}>
-          <div className="flex items-center justify-center gap-2.5 mb-2">
-            <div className="animate-float text-3xl">🔒</div>
-            <span className="text-2xl font-bold text-white tracking-tight">SafeLancer</span>
+      <div className="min-h-screen flex flex-col items-center justify-center p-4" style={{ background: 'transparent' }}>
+<div className={`mb-8 text-center relative z-10 ${hx}`}>
+          <div className="flex items-center justify-center gap-2.5 mb-3">
+            <div className="animate-float text-3xl" style={{ filter: 'drop-shadow(0 0 12px rgba(255,104,3,0.7))' }}>🔒</div>
+            <span className="text-2xl font-bold tracking-tight" style={{ background: 'linear-gradient(135deg,#FF6803,#AE3A02)', WebkitBackgroundClip: 'text', WebkitTextFillColor: "transparent" }}>SafeLancer</span>
           </div>
-          <div className="text-sm" style={{ color: '#a1a1aa' }}>Escrow-protected freelancing</div>
+          <div className="text-sm" style={{ color: '#6b5445' }}>Escrow-protected freelancing</div>
         </div>
 
         <div className={`relative z-10 rounded-2xl p-8 w-full max-w-md ${cx}`} style={cardStyle}>
           <h1 className="text-lg font-semibold text-white mb-1">Join SafeLancer</h1>
-          <p className="text-sm mb-6" style={{ color: '#71717a' }}>How do you want to use SafeLancer?</p>
+          <p className="text-sm mb-6" style={{ color: '#BFBFBF' }}>How do you want to use SafeLancer?</p>
 
           <div className="grid grid-cols-2 gap-3 mb-6">
             {ROLES.map(({ value, label, sub, icon }) => (
@@ -170,18 +164,18 @@ export default function Register() {
                 onClick={() => setRole(value)}
                 className="p-4 rounded-xl text-left transition-all"
                 style={{
-                  background: role === value ? 'rgba(139,92,246,0.15)' : '#1a1a1d',
-                  border: role === value ? '1.5px solid #8B5CF6' : '1px solid rgba(255,255,255,0.08)',
-                  boxShadow: role === value ? '0 0 20px rgba(139,92,246,0.2)' : 'none',
+                  background: role === value ? 'rgba(255,104,3,0.12)' : '#120a02',
+                  border: role === value ? '1.5px solid #FF6803' : '1px solid rgba(255,104,3,0.10)',
+                  boxShadow: role === value ? '0 0 20px rgba(255,104,3,0.14)' : 'none',
                 }}
               >
-                <div className="mb-2.5" style={{ color: role === value ? '#A78BFA' : '#52525b' }}>
+                <div className="mb-2.5" style={{ color: role === value ? '#BFBFBF' : '#1c1008' }}>
                   {icon}
                 </div>
-                <div className="text-sm font-semibold" style={{ color: role === value ? '#fff' : '#a1a1aa' }}>
+                <div className="text-sm font-semibold" style={{ color: role === value ? '#fff' : '#BFBFBF' }}>
                   {label}
                 </div>
-                <div className="text-xs mt-0.5" style={{ color: role === value ? '#A78BFA' : '#52525b' }}>
+                <div className="text-xs mt-0.5" style={{ color: role === value ? '#BFBFBF' : '#1c1008' }}>
                   {sub}
                 </div>
               </button>
@@ -192,13 +186,13 @@ export default function Register() {
             Continue →
           </button>
 
-          <p className="mt-5 text-center text-sm" style={{ color: '#52525b' }}>
+          <p className="mt-5 text-center text-sm" style={{ color: '#6b5445' }}>
             Already have an account?{' '}
             <button
               type="button"
               onClick={() => goTo('/login')}
               className="font-semibold hover:underline underline-offset-2"
-              style={{ color: '#A78BFA' }}
+              style={{ color: '#BFBFBF' }}
             >
               Sign in
             </button>
@@ -209,11 +203,11 @@ export default function Register() {
   }
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center p-4 py-10" style={{ background: '#0a0a0b' }}>
+    <div className="min-h-screen flex flex-col items-center justify-center p-4 py-10" style={{ background: 'transparent' }}>
       <div className="fixed inset-0 overflow-hidden pointer-events-none">
         <div
           className="animate-orb absolute w-[500px] h-[500px] rounded-full opacity-15"
-          style={{ background: 'radial-gradient(circle, #8B5CF6 0%, transparent 70%)', top: '-150px', right: '-100px' }}
+          style={{ background: 'radial-gradient(circle, #FF6803 0%, transparent 70%)', top: '-150px', right: '-100px' }}
         />
       </div>
 
@@ -222,7 +216,7 @@ export default function Register() {
           <div className="animate-float text-3xl">🔒</div>
           <span className="text-2xl font-bold text-white tracking-tight">SafeLancer</span>
         </div>
-        <div className="text-sm" style={{ color: '#a1a1aa' }}>Create your account</div>
+        <div className="text-sm" style={{ color: '#BFBFBF' }}>Create your account</div>
       </div>
 
       <div className={`relative z-10 rounded-2xl p-8 w-full max-w-md ${cx}`} style={cardStyle}>
@@ -232,7 +226,7 @@ export default function Register() {
             type="button"
             onClick={() => setStep('role')}
             className="flex items-center gap-1 text-xs transition-colors"
-            style={{ color: '#71717a' }}
+            style={{ color: '#BFBFBF' }}
           >
             <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7"/>
@@ -240,13 +234,13 @@ export default function Register() {
             Change
           </button>
         </div>
-        <p className="text-sm mb-6" style={{ color: '#71717a' }}>
+        <p className="text-sm mb-6" style={{ color: '#BFBFBF' }}>
           Signing up as a{' '}
-          <span className="font-medium capitalize" style={{ color: '#A78BFA' }}>{role}</span>
+          <span className="font-medium capitalize" style={{ color: '#BFBFBF' }}>{role}</span>
         </p>
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <label className="block text-sm font-medium mb-1.5" style={{ color: '#a1a1aa' }}>Name</label>
+            <label className="block text-sm font-medium mb-1.5" style={{ color: '#BFBFBF' }}>Name</label>
             <input
               type="text"
               required
@@ -257,7 +251,7 @@ export default function Register() {
             />
           </div>
           <div>
-            <label className="block text-sm font-medium mb-1.5" style={{ color: '#a1a1aa' }}>Email</label>
+            <label className="block text-sm font-medium mb-1.5" style={{ color: '#BFBFBF' }}>Email</label>
             <input
               type="email"
               required
@@ -268,7 +262,7 @@ export default function Register() {
             />
           </div>
           <div>
-            <label className="block text-sm font-medium mb-1.5" style={{ color: '#a1a1aa' }}>Password</label>
+            <label className="block text-sm font-medium mb-1.5" style={{ color: '#BFBFBF' }}>Password</label>
             <div className="relative">
               <input
                 type={showPassword ? 'text' : 'password'}
@@ -282,7 +276,7 @@ export default function Register() {
                 type="button"
                 onClick={() => setShowPassword(!showPassword)}
                 className="absolute right-3 top-1/2 -translate-y-1/2 text-xs font-medium"
-                style={{ color: '#71717a' }}
+                style={{ color: '#BFBFBF' }}
               >
                 {showPassword ? 'Hide' : 'Show'}
               </button>
@@ -294,7 +288,7 @@ export default function Register() {
                     <div
                       key={i}
                       className="h-1 flex-1 rounded-full transition-all duration-300"
-                      style={{ background: i <= strength.score ? strength.color : 'rgba(255,255,255,0.08)' }}
+                      style={{ background: i <= strength.score ? strength.color : 'rgba(255,104,3,0.10)' }}
                     />
                   ))}
                 </div>
@@ -305,7 +299,7 @@ export default function Register() {
             )}
           </div>
           <div>
-            <label className="block text-sm font-medium mb-1.5" style={{ color: '#a1a1aa' }}>Confirm Password</label>
+            <label className="block text-sm font-medium mb-1.5" style={{ color: '#BFBFBF' }}>Confirm Password</label>
             <div className="relative">
               <input
                 type={showConfirm ? 'text' : 'password'}
@@ -326,7 +320,7 @@ export default function Register() {
                 type="button"
                 onClick={() => setShowConfirm(!showConfirm)}
                 className="absolute right-3 top-1/2 -translate-y-1/2 text-xs font-medium"
-                style={{ color: '#71717a' }}
+                style={{ color: '#BFBFBF' }}
               >
                 {showConfirm ? 'Hide' : 'Show'}
               </button>
@@ -337,8 +331,8 @@ export default function Register() {
           </div>
 
           {role === 'freelancer' && (
-            <div className="space-y-3 pt-4 mt-2" style={{ borderTop: '1px solid rgba(255,255,255,0.06)' }}>
-              <p className="text-xs font-medium" style={{ color: '#52525b' }}>
+            <div className="space-y-3 pt-4 mt-2" style={{ borderTop: '1px solid rgba(255,104,3,0.06)' }}>
+              <p className="text-xs font-medium" style={{ color: '#6b5445' }}>
                 Verification (optional but recommended)
               </p>
               {[
@@ -347,7 +341,7 @@ export default function Register() {
                 { key: 'portfolio', label: 'Portfolio / Website URL', placeholder: 'https://yourportfolio.com' },
               ].map(({ key, label, placeholder }) => (
                 <div key={key}>
-                  <label className="block text-xs mb-1" style={{ color: '#71717a' }}>{label}</label>
+                  <label className="block text-xs mb-1" style={{ color: '#BFBFBF' }}>{label}</label>
                   <input
                     type="url"
                     value={form[key]}
@@ -368,21 +362,21 @@ export default function Register() {
         {role === 'client' && (
           <>
             <div className="flex items-center gap-3 my-5">
-              <div className="flex-1 h-px" style={{ background: 'rgba(255,255,255,0.06)' }} />
-              <span className="text-xs" style={{ color: '#52525b' }}>or sign up with Google</span>
-              <div className="flex-1 h-px" style={{ background: 'rgba(255,255,255,0.06)' }} />
+              <div className="flex-1 h-px" style={{ background: 'rgba(255,104,3,0.06)' }} />
+              <span className="text-xs" style={{ color: '#6b5445' }}>or sign up with Google</span>
+              <div className="flex-1 h-px" style={{ background: 'rgba(255,104,3,0.06)' }} />
             </div>
 
             <a
               href={`${API_URL}/api/auth/google?role=client`}
               className="w-full flex items-center justify-center gap-2.5 rounded-xl py-2.5 text-sm font-medium transition-all"
               style={{
-                background: '#1a1a1d',
-                border: '1px solid rgba(255,255,255,0.08)',
+                background: '#120a02',
+                border: '1px solid rgba(255,104,3,0.10)',
                 color: '#d4d4d8',
               }}
-              onMouseEnter={e => e.currentTarget.style.borderColor = 'rgba(139,92,246,0.4)'}
-              onMouseLeave={e => e.currentTarget.style.borderColor = 'rgba(255,255,255,0.08)'}
+              onMouseEnter={e => e.currentTarget.style.borderColor = 'rgba(174,58,2,0.40)'}
+              onMouseLeave={e => e.currentTarget.style.borderColor = 'rgba(255,104,3,0.10)'}
             >
               <svg className="w-4 h-4" viewBox="0 0 24 24">
                 <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
@@ -395,13 +389,13 @@ export default function Register() {
           </>
         )}
 
-        <p className="mt-5 text-center text-sm" style={{ color: '#52525b' }}>
+        <p className="mt-5 text-center text-sm" style={{ color: '#6b5445' }}>
           Already have an account?{' '}
           <button
             type="button"
             onClick={() => goTo('/login')}
             className="font-semibold hover:underline underline-offset-2"
-            style={{ color: '#A78BFA' }}
+            style={{ color: '#BFBFBF' }}
           >
             Sign in
           </button>

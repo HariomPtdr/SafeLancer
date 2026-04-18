@@ -31,9 +31,9 @@ export default function GoogleComplete() {
 
   if (!pending) {
     return (
-      <div className="min-h-screen flex items-center justify-center" style={{ background: '#0a0a0b' }}>
+      <div className="min-h-screen flex items-center justify-center" style={{ background: 'transparent' }}>
         <div className="text-center">
-          <p className="text-sm mb-4" style={{ color: '#a1a1aa' }}>Invalid session. Please try signing in again.</p>
+          <p className="text-sm mb-4" style={{ color: '#BFBFBF' }}>Invalid session. Please try signing in again.</p>
           <a href="/login" className="text-white font-medium underline underline-offset-2 text-sm">Back to login</a>
         </div>
       </div>
@@ -41,16 +41,16 @@ export default function GoogleComplete() {
   }
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center p-4" style={{ background: '#0a0a0b' }}>
+    <div className="min-h-screen flex flex-col items-center justify-center p-4" style={{ background: 'transparent' }}>
 
       <div className="mb-8 text-center">
         <div className="text-xl font-bold text-white tracking-tight">SafeLancer</div>
-        <div className="text-sm mt-1" style={{ color: '#a1a1aa' }}>One last step</div>
+        <div className="text-sm mt-1" style={{ color: '#BFBFBF' }}>One last step</div>
       </div>
 
       <div className="dark-card p-8 w-full max-w-sm">
         <h1 className="text-base font-semibold text-white mb-1">How will you use SafeLancer?</h1>
-        <p className="text-sm mb-6" style={{ color: '#a1a1aa' }}>Choose your role to complete your account setup.</p>
+        <p className="text-sm mb-6" style={{ color: '#BFBFBF' }}>Choose your role to complete your account setup.</p>
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <div className="grid grid-cols-2 gap-2">
@@ -61,13 +61,13 @@ export default function GoogleComplete() {
                 onClick={() => setRole(r)}
                 className={`py-3 px-3 rounded-lg border text-left transition-all ${
                   role === r
-                    ? 'border-[#8B5CF6] bg-[#8B5CF6]/10 text-white'
-                    : 'text-white hover:border-[#8B5CF6]/50'
+                    ? 'border-[#FF6803] bg-[#FF6803]/10 text-white'
+                    : 'text-white hover:border-[#FF6803]/50'
                 }`}
-                style={role !== r ? { borderColor: 'rgba(255,255,255,0.08)', background: '#1a1a1d' } : {}}
+                style={role !== r ? { borderColor: 'rgba(255,104,3,0.10)', background: '#120a02' } : {}}
               >
                 <div className="text-sm font-semibold capitalize">{r === 'client' ? 'Client' : 'Freelancer'}</div>
-                <div className={`text-xs mt-0.5 ${role === r ? 'text-purple-300' : ''}`} style={role !== r ? { color: '#71717a' } : {}}>
+                <div className={`text-xs mt-0.5 ${role === r ? 'text-purple-300' : ''}`} style={role !== r ? { color: '#BFBFBF' } : {}}>
                   {r === 'client' ? 'I hire talent' : 'I do the work'}
                 </div>
               </button>

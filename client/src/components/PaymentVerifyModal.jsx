@@ -103,25 +103,25 @@ export default function PaymentVerifyModal({ onClose, onVerified }) {
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
       <div className="absolute inset-0 bg-black/60 backdrop-blur-sm" onClick={isBlocking ? undefined : onClose} />
-      <div className="relative rounded-2xl shadow-xl w-full max-w-md overflow-hidden" style={{ background: '#111113', border: '1px solid rgba(255,255,255,0.08)' }}>
+      <div className="relative rounded-2xl shadow-xl w-full max-w-md overflow-hidden" style={{ background: '#111113', border: '1px solid rgba(255,104,3,0.10)' }}>
 
         {/* Header */}
-        <div className="flex items-center justify-between px-6 py-4" style={{ borderBottom: '1px solid rgba(255,255,255,0.06)' }}>
+        <div className="flex items-center justify-between px-6 py-4" style={{ borderBottom: '1px solid rgba(255,104,3,0.06)' }}>
           <div className="flex items-center gap-2.5">
-            <div className="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0" style={{ background: 'linear-gradient(135deg, #8B5CF6, #6D28D9)' }}>
+            <div className="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0" style={{ background: 'linear-gradient(135deg, #FF6803, #AE3A02)' }}>
               <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
               </svg>
             </div>
             <div>
               <h2 className="text-sm font-semibold text-white">Verify Payment Method</h2>
-              <p className="text-xs" style={{ color: '#52525b' }}>Powered by Razorpay</p>
+              <p className="text-xs" style={{ color: '#6b5445' }}>Powered by Razorpay</p>
             </div>
           </div>
           {!isBlocking && (
-            <button onClick={onClose} className="transition-colors" style={{ color: '#52525b' }}
-              onMouseEnter={e => e.currentTarget.style.color = '#a1a1aa'}
-              onMouseLeave={e => e.currentTarget.style.color = '#52525b'}>
+            <button onClick={onClose} className="transition-colors" style={{ color: '#6b5445' }}
+              onMouseEnter={e => e.currentTarget.style.color = '#BFBFBF'}
+              onMouseLeave={e => e.currentTarget.style.color = '#1c1008'}>
               <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
               </svg>
@@ -134,7 +134,7 @@ export default function PaymentVerifyModal({ onClose, onVerified }) {
           {/* Step: info */}
           {step === 'info' && (
             <div className="space-y-5">
-              <div className="rounded-xl p-4 space-y-3" style={{ background: '#1a1a1d', border: '1px solid rgba(255,255,255,0.06)' }}>
+              <div className="rounded-xl p-4 space-y-3" style={{ background: '#120a02', border: '1px solid rgba(255,104,3,0.06)' }}>
                 <p className="text-sm font-semibold text-white">How it works</p>
                 {[
                   { step: '1', title: 'Choose payment method', desc: 'UPI, debit/credit card, or net banking' },
@@ -143,17 +143,17 @@ export default function PaymentVerifyModal({ onClose, onVerified }) {
                   { step: '4', title: 'Verified badge applied', desc: 'Payment Verified badge shows on your profile' },
                 ].map(item => (
                   <div key={item.step} className="flex items-start gap-3">
-                    <div className="w-6 h-6 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5" style={{ background: '#8B5CF6' }}>
+                    <div className="w-6 h-6 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5" style={{ background: '#FF6803' }}>
                       <span className="text-[10px] text-white font-bold">{item.step}</span>
                     </div>
                     <div>
                       <p className="text-xs font-semibold text-white">{item.title}</p>
-                      <p className="text-xs mt-0.5" style={{ color: '#52525b' }}>{item.desc}</p>
+                      <p className="text-xs mt-0.5" style={{ color: '#6b5445' }}>{item.desc}</p>
                     </div>
                   </div>
                 ))}
               </div>
-              <p className="text-xs text-center" style={{ color: '#52525b' }}>No recurring charges. One-time verification only.</p>
+              <p className="text-xs text-center" style={{ color: '#6b5445' }}>No recurring charges. One-time verification only.</p>
               <button onClick={handleStartVerification}
                 className="btn-purple w-full font-semibold py-3 rounded-xl text-sm transition-colors">
                 Pay ₹1 to verify
@@ -166,23 +166,23 @@ export default function PaymentVerifyModal({ onClose, onVerified }) {
             <div className="space-y-4">
               <div>
                 <p className="text-sm font-semibold text-white mb-0.5">Choose payment method</p>
-                <p className="text-xs" style={{ color: '#52525b' }}>Select how you'd like to pay ₹1 for verification</p>
+                <p className="text-xs" style={{ color: '#6b5445' }}>Select how you'd like to pay ₹1 for verification</p>
               </div>
               <div className="space-y-2">
                 {TEST_METHODS.map(m => (
                   <button key={m.id} onClick={() => setSelectedMethod(m.id)}
                     className="w-full flex items-center gap-3 rounded-xl px-4 py-3 transition-colors text-left"
                     style={selectedMethod === m.id
-                      ? { background: 'rgba(139,92,246,0.15)', border: '1px solid rgba(139,92,246,0.4)' }
-                      : { background: '#1a1a1d', border: '1px solid rgba(255,255,255,0.06)' }
+                      ? { background: 'rgba(255,104,3,0.12)', border: '1px solid rgba(174,58,2,0.40)' }
+                      : { background: '#120a02', border: '1px solid rgba(255,104,3,0.06)' }
                     }>
                     <span className="text-xl leading-none">{m.icon}</span>
                     <div>
                       <p className="text-sm font-semibold text-white">{m.label}</p>
-                      <p className="text-xs mt-0.5" style={{ color: '#52525b' }}>{m.sub}</p>
+                      <p className="text-xs mt-0.5" style={{ color: '#6b5445' }}>{m.sub}</p>
                     </div>
                     {selectedMethod === m.id && (
-                      <svg className="w-4 h-4 ml-auto flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" style={{ color: '#A78BFA' }}>
+                      <svg className="w-4 h-4 ml-auto flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" style={{ color: '#BFBFBF' }}>
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M5 13l4 4L19 7" />
                       </svg>
                     )}
@@ -192,9 +192,9 @@ export default function PaymentVerifyModal({ onClose, onVerified }) {
               <div className="pt-1 flex gap-2">
                 <button onClick={() => setStep('info')}
                   className="text-sm font-medium px-4 py-2.5 rounded-xl transition-colors"
-                  style={{ border: '1px solid rgba(255,255,255,0.08)', background: '#1a1a1d', color: '#a1a1aa' }}
-                  onMouseEnter={e => e.currentTarget.style.background = 'rgba(255,255,255,0.04)'}
-                  onMouseLeave={e => e.currentTarget.style.background = '#1a1a1d'}>
+                  style={{ border: '1px solid rgba(255,104,3,0.10)', background: '#120a02', color: '#BFBFBF' }}
+                  onMouseEnter={e => e.currentTarget.style.background = 'rgba(255,104,3,0.06)'}
+                  onMouseLeave={e => e.currentTarget.style.background = '#120a02'}>
                   Back
                 </button>
                 <button onClick={handleTestPay} disabled={!selectedMethod}
@@ -209,11 +209,11 @@ export default function PaymentVerifyModal({ onClose, onVerified }) {
           {step === 'processing' && (
             <div className="py-10 text-center space-y-4">
               <div className="relative mx-auto w-16 h-16">
-                <div className="w-16 h-16 border-4 rounded-full" style={{ borderColor: 'rgba(255,255,255,0.06)' }} />
-                <div className="absolute inset-0 w-16 h-16 border-4 border-t-[#8B5CF6] rounded-full animate-spin" style={{ borderColor: 'transparent', borderTopColor: '#8B5CF6' }} />
+                <div className="w-16 h-16 border-4 rounded-full" style={{ borderColor: 'rgba(255,104,3,0.06)' }} />
+                <div className="absolute inset-0 w-16 h-16 border-4 border-t-[#FF6803] rounded-full animate-spin" style={{ borderColor: 'transparent', borderTopColor: '#FF6803' }} />
               </div>
               <p className="text-sm font-semibold text-white">Processing payment…</p>
-              <p className="text-xs" style={{ color: '#52525b' }}>Please wait while we verify your payment</p>
+              <p className="text-xs" style={{ color: '#6b5445' }}>Please wait while we verify your payment</p>
             </div>
           )}
 
@@ -227,9 +227,9 @@ export default function PaymentVerifyModal({ onClose, onVerified }) {
               </div>
               <div>
                 <p className="text-base font-semibold text-white">Payment method verified!</p>
-                <p className="text-xs mt-1" style={{ color: '#a1a1aa' }}>The ₹1 has been refunded to your account</p>
+                <p className="text-xs mt-1" style={{ color: '#BFBFBF' }}>The ₹1 has been refunded to your account</p>
               </div>
-              <div className="rounded-xl px-4 py-3 text-left space-y-1.5" style={{ background: '#1a1a1d', border: '1px solid rgba(255,255,255,0.06)' }}>
+              <div className="rounded-xl px-4 py-3 text-left space-y-1.5" style={{ background: '#120a02', border: '1px solid rgba(255,104,3,0.06)' }}>
                 {[
                   'Payment Verified badge is now live on your profile',
                   'Freelancers can see you are a verified client',
@@ -239,7 +239,7 @@ export default function PaymentVerifyModal({ onClose, onVerified }) {
                     <svg className="w-3.5 h-3.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" style={{ color: '#10b981' }}>
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M5 13l4 4L19 7" />
                     </svg>
-                    <span className="text-xs" style={{ color: '#a1a1aa' }}>{item}</span>
+                    <span className="text-xs" style={{ color: '#BFBFBF' }}>{item}</span>
                   </div>
                 ))}
               </div>
@@ -269,9 +269,9 @@ export default function PaymentVerifyModal({ onClose, onVerified }) {
                 </button>
                 <button onClick={onClose}
                   className="flex-1 font-medium py-2.5 rounded-xl text-sm transition-colors"
-                  style={{ border: '1px solid rgba(255,255,255,0.08)', background: '#1a1a1d', color: '#a1a1aa' }}
-                  onMouseEnter={e => e.currentTarget.style.background = 'rgba(255,255,255,0.04)'}
-                  onMouseLeave={e => e.currentTarget.style.background = '#1a1a1d'}>
+                  style={{ border: '1px solid rgba(255,104,3,0.10)', background: '#120a02', color: '#BFBFBF' }}
+                  onMouseEnter={e => e.currentTarget.style.background = 'rgba(255,104,3,0.06)'}
+                  onMouseLeave={e => e.currentTarget.style.background = '#120a02'}>
                   Cancel
                 </button>
               </div>

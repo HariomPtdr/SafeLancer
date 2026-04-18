@@ -73,7 +73,7 @@ export default function SkillSelector({ selected = [], onChange, maxSkills = 15,
       <div
         onClick={() => { setOpen(true); inputRef.current?.focus() }}
         className={`min-h-[48px] rounded-lg px-3 py-2 flex flex-wrap gap-2 cursor-text transition-colors ${
-          open ? 'border border-[#8B5CF6]' :
+          open ? 'border border-[#FF6803]' :
           error ? 'border border-red-500' :
           'border border-white/[0.08] hover:border-white/20'
         }`}
@@ -83,16 +83,16 @@ export default function SkillSelector({ selected = [], onChange, maxSkills = 15,
           <span
             key={skill}
             className="flex items-center gap-1 text-sm font-medium px-2.5 py-1 rounded-md"
-            style={{ background: 'rgba(139,92,246,0.1)', color: '#A78BFA', border: '1px solid rgba(139,92,246,0.2)' }}
+            style={{ background: 'rgba(255,104,3,0.10)', color: '#BFBFBF', border: '1px solid rgba(255,104,3,0.14)' }}
           >
             {skill}
             <button
               type="button"
               onMouseDown={e => { e.preventDefault(); remove(skill) }}
               className="font-bold text-base leading-none ml-0.5 transition-colors"
-              style={{ color: '#A78BFA' }}
+              style={{ color: '#BFBFBF' }}
               onMouseEnter={e => e.currentTarget.style.color = '#ef4444'}
-              onMouseLeave={e => e.currentTarget.style.color = '#A78BFA'}
+              onMouseLeave={e => e.currentTarget.style.color = '#BFBFBF'}
             >
               ×
             </button>
@@ -112,9 +112,9 @@ export default function SkillSelector({ selected = [], onChange, maxSkills = 15,
 
       {/* Dropdown */}
       {open && (
-        <div className="absolute z-50 mt-1 w-full rounded-xl shadow-lg overflow-hidden" style={{ background: '#111113', border: '1px solid rgba(255,255,255,0.08)' }}>
+        <div className="absolute z-50 mt-1 w-full rounded-xl shadow-lg overflow-hidden" style={{ background: '#111113', border: '1px solid rgba(255,104,3,0.10)' }}>
           {displayList.length === 0 && !showCreate && trimmed && (
-            <p className="px-4 py-3 text-sm italic" style={{ color: '#52525b' }}>No matching skills found</p>
+            <p className="px-4 py-3 text-sm italic" style={{ color: '#6b5445' }}>No matching skills found</p>
           )}
 
           <div className="max-h-52 overflow-y-auto">
@@ -124,9 +124,9 @@ export default function SkillSelector({ selected = [], onChange, maxSkills = 15,
                 type="button"
                 onMouseDown={e => { e.preventDefault(); add(skill) }}
                 className="w-full text-left px-4 py-2.5 text-sm transition-colors"
-                style={{ color: '#a1a1aa' }}
-                onMouseEnter={e => { e.currentTarget.style.background = 'rgba(255,255,255,0.04)'; e.currentTarget.style.color = '#f4f4f5' }}
-                onMouseLeave={e => { e.currentTarget.style.background = 'transparent'; e.currentTarget.style.color = '#a1a1aa' }}
+                style={{ color: '#BFBFBF' }}
+                onMouseEnter={e => { e.currentTarget.style.background = 'rgba(255,104,3,0.06)'; e.currentTarget.style.color = '#f4f4f5' }}
+                onMouseLeave={e => { e.currentTarget.style.background = 'transparent'; e.currentTarget.style.color = '#BFBFBF' }}
               >
                 {skill}
               </button>
@@ -138,17 +138,17 @@ export default function SkillSelector({ selected = [], onChange, maxSkills = 15,
               type="button"
               onMouseDown={e => { e.preventDefault(); add(trimmed) }}
               className="w-full text-left px-4 py-3 text-sm font-semibold transition-colors flex items-center gap-2"
-              style={{ color: '#f4f4f5', borderTop: '1px solid rgba(255,255,255,0.06)' }}
-              onMouseEnter={e => e.currentTarget.style.background = 'rgba(255,255,255,0.04)'}
+              style={{ color: '#f4f4f5', borderTop: '1px solid rgba(255,104,3,0.06)' }}
+              onMouseEnter={e => e.currentTarget.style.background = 'rgba(255,104,3,0.06)'}
               onMouseLeave={e => e.currentTarget.style.background = 'transparent'}
             >
-              <span className="w-5 h-5 flex items-center justify-center text-white rounded-md text-xs font-bold" style={{ background: '#8B5CF6' }}>+</span>
+              <span className="w-5 h-5 flex items-center justify-center text-white rounded-md text-xs font-bold" style={{ background: '#FF6803' }}>+</span>
               Create skill "{trimmed}"
             </button>
           )}
 
           {selected.length >= maxSkills && (
-            <div className="px-4 py-2 text-xs" style={{ color: '#f59e0b', background: 'rgba(245,158,11,0.08)', borderTop: '1px solid rgba(255,255,255,0.06)' }}>
+            <div className="px-4 py-2 text-xs" style={{ color: '#FF6803', background: 'rgba(245,158,11,0.08)', borderTop: '1px solid rgba(255,104,3,0.06)' }}>
               Maximum {maxSkills} skills reached
             </div>
           )}
@@ -158,9 +158,9 @@ export default function SkillSelector({ selected = [], onChange, maxSkills = 15,
       <div className="flex items-center justify-between mt-1.5">
         {error
           ? <p className="text-xs text-red-500">{error}</p>
-          : <p className="text-xs" style={{ color: '#52525b' }}>Search from list or type a custom skill and press Create</p>
+          : <p className="text-xs" style={{ color: '#6b5445' }}>Search from list or type a custom skill and press Create</p>
         }
-        <p className="text-xs" style={{ color: '#52525b' }}>{selected.length}/{maxSkills}</p>
+        <p className="text-xs" style={{ color: '#6b5445' }}>{selected.length}/{maxSkills}</p>
       </div>
     </div>
   )

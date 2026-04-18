@@ -56,53 +56,36 @@ export default function Login() {
   return (
     <div
       className="min-h-screen flex flex-col items-center justify-center p-4"
-      style={{ background: '#0a0a0b' }}
+      style={{ background: 'transparent' }}
     >
-      {/* Background orbs */}
-      <div className="fixed inset-0 overflow-hidden pointer-events-none">
-        <div
-          className="animate-orb absolute w-[600px] h-[600px] rounded-full opacity-20"
-          style={{
-            background: 'radial-gradient(circle, #8B5CF6 0%, transparent 70%)',
-            top: '-200px', left: '-200px',
-          }}
-        />
-        <div
-          className="animate-orb absolute w-[400px] h-[400px] rounded-full opacity-10"
-          style={{
-            background: 'radial-gradient(circle, #6D28D9 0%, transparent 70%)',
-            bottom: '-100px', right: '-100px',
-            animationDelay: '-4s',
-          }}
-        />
-      </div>
-
       {/* Logo */}
       <div className={`mb-8 text-center relative z-10 ${hx}`}>
-        <div className="flex items-center justify-center gap-2.5 mb-2">
-          <div className="animate-float text-3xl">🔒</div>
-          <span className="text-2xl font-bold text-white tracking-tight">SafeLancer</span>
+        <div className="flex items-center justify-center gap-2.5 mb-3">
+          <div className="animate-float text-3xl" style={{ filter: 'drop-shadow(0 0 12px rgba(255,104,3,0.7))' }}>🔒</div>
+          <span className="text-2xl font-bold tracking-tight" style={{ background: 'linear-gradient(135deg,#FF6803,#AE3A02)', WebkitBackgroundClip: 'text', WebkitTextFillColor: "transparent" }}>SafeLancer</span>
         </div>
-        <div className="text-sm" style={{ color: '#a1a1aa' }}>Cryptographic Escrow · Zero Trust</div>
+        <div className="text-sm" style={{ color: '#6b5445' }}>Cryptographic Escrow · Zero Trust</div>
       </div>
 
       {/* Card */}
       <div
         className={`relative z-10 rounded-2xl p-8 w-full max-w-md ${cx}`}
         style={{
-          background: '#111113',
-          border: '1px solid rgba(255,255,255,0.08)',
-          boxShadow: '0 20px 60px rgba(0,0,0,0.5)',
+          background: 'rgba(18,10,2,0.85)',
+          backdropFilter: 'blur(28px) saturate(1.5)',
+          WebkitBackdropFilter: 'blur(28px) saturate(1.5)',
+          border: '1px solid rgba(255,104,3,0.16)',
+          boxShadow: '0 24px 80px rgba(0,0,0,0.6), 0 0 40px rgba(255,104,3,0.08), inset 0 1px 0 rgba(255,255,255,0.06)',
         }}
       >
         <h1 className="text-lg font-semibold text-white mb-1">Sign in</h1>
-        <p className="text-sm mb-6" style={{ color: '#71717a' }}>
+        <p className="text-sm mb-6" style={{ color: '#BFBFBF' }}>
           Enter your credentials to access your portal
         </p>
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <label className="block text-sm font-medium mb-1.5" style={{ color: '#a1a1aa' }}>
+            <label className="block text-sm font-medium mb-1.5" style={{ color: '#BFBFBF' }}>
               Email
             </label>
             <input
@@ -116,7 +99,7 @@ export default function Login() {
           </div>
 
           <div>
-            <label className="block text-sm font-medium mb-1.5" style={{ color: '#a1a1aa' }}>
+            <label className="block text-sm font-medium mb-1.5" style={{ color: '#BFBFBF' }}>
               Password
             </label>
             <div className="relative">
@@ -132,7 +115,7 @@ export default function Login() {
                 type="button"
                 onClick={() => setShowPassword(!showPassword)}
                 className="absolute right-3 top-1/2 -translate-y-1/2 text-xs font-medium transition-colors"
-                style={{ color: '#71717a' }}
+                style={{ color: '#BFBFBF' }}
               >
                 {showPassword ? 'Hide' : 'Show'}
               </button>
@@ -149,21 +132,21 @@ export default function Login() {
         </form>
 
         <div className="flex items-center gap-3 my-5">
-          <div className="flex-1 h-px" style={{ background: 'rgba(255,255,255,0.06)' }} />
-          <span className="text-xs" style={{ color: '#52525b' }}>or</span>
-          <div className="flex-1 h-px" style={{ background: 'rgba(255,255,255,0.06)' }} />
+          <div className="flex-1 h-px" style={{ background: 'rgba(255,104,3,0.06)' }} />
+          <span className="text-xs" style={{ color: '#6b5445' }}>or</span>
+          <div className="flex-1 h-px" style={{ background: 'rgba(255,104,3,0.06)' }} />
         </div>
 
         <a
           href={`${API_URL}/api/auth/google`}
           className="w-full flex items-center justify-center gap-2.5 rounded-xl py-2.5 text-sm font-medium transition-all"
           style={{
-            background: '#1a1a1d',
-            border: '1px solid rgba(255,255,255,0.08)',
+            background: '#120a02',
+            border: '1px solid rgba(255,104,3,0.10)',
             color: '#d4d4d8',
           }}
-          onMouseEnter={e => e.currentTarget.style.borderColor = 'rgba(139,92,246,0.4)'}
-          onMouseLeave={e => e.currentTarget.style.borderColor = 'rgba(255,255,255,0.08)'}
+          onMouseEnter={e => e.currentTarget.style.borderColor = 'rgba(255,104,3,0.45)'}
+          onMouseLeave={e => e.currentTarget.style.borderColor = 'rgba(255,104,3,0.10)'}
         >
           <svg className="w-4 h-4" viewBox="0 0 24 24">
             <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
@@ -174,13 +157,13 @@ export default function Login() {
           Continue with Google
         </a>
 
-        <p className="mt-5 text-center text-sm" style={{ color: '#52525b' }}>
+        <p className="mt-5 text-center text-sm" style={{ color: '#6b5445' }}>
           Don't have an account?{' '}
           <button
             type="button"
             onClick={() => goTo('/register')}
             className="font-semibold hover:underline underline-offset-2 transition-colors"
-            style={{ color: '#A78BFA' }}
+            style={{ color: '#BFBFBF' }}
           >
             Sign up
           </button>

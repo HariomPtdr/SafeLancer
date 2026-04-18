@@ -72,12 +72,12 @@ const COMM_LABELS = {
 
 function InfoRow({ icon, label, value }) {
   return (
-    <div className="flex items-center gap-4 rounded-xl px-4 py-3" style={{ background: '#1a1a1d', border: '1px solid rgba(255,255,255,0.06)' }}>
-      <div className="w-10 h-10 rounded-xl flex items-center justify-center text-white flex-shrink-0" style={{ background: 'linear-gradient(135deg, #8B5CF6, #6D28D9)' }}>
+    <div className="flex items-center gap-4 rounded-xl px-4 py-3" style={{ background: '#120a02', border: '1px solid rgba(255,104,3,0.06)' }}>
+      <div className="w-10 h-10 rounded-xl flex items-center justify-center text-white flex-shrink-0" style={{ background: 'linear-gradient(135deg, #FF6803, #AE3A02)' }}>
         {icon}
       </div>
       <div className="min-w-0">
-        <p className="text-xs mb-0.5" style={{ color: '#52525b' }}>{label}</p>
+        <p className="text-xs mb-0.5" style={{ color: '#6b5445' }}>{label}</p>
         <p className="text-sm font-semibold text-white truncate">{value}</p>
       </div>
     </div>
@@ -106,15 +106,15 @@ export default function ClientProfile() {
   }, [userId])
 
   if (loading) return (
-    <div className="min-h-screen" style={{ background: '#0a0a0b' }}><Navbar />
+    <div className="min-h-screen" style={{ background: 'transparent' }}><Navbar />
       <div className="flex justify-center py-20">
-        <div className="animate-spin h-6 w-6 border-2 border-[#8B5CF6] border-t-transparent rounded-full" />
+        <div className="animate-spin h-6 w-6 border-2 border-[#FF6803] border-t-transparent rounded-full" />
       </div>
     </div>
   )
   if (!profile) return (
-    <div className="min-h-screen" style={{ background: '#0a0a0b' }}><Navbar />
-      <p className="text-center py-12 text-sm" style={{ color: '#52525b' }}>Profile not found</p>
+    <div className="min-h-screen" style={{ background: 'transparent' }}><Navbar />
+      <p className="text-center py-12 text-sm" style={{ color: '#6b5445' }}>Profile not found</p>
     </div>
   )
 
@@ -133,11 +133,11 @@ export default function ClientProfile() {
     : null
 
   return (
-    <div className="min-h-screen" style={{ background: '#0a0a0b' }}>
+    <div className="min-h-screen" style={{ background: 'transparent' }}>
       <Navbar />
 
       {/* Cover */}
-      <div className="h-36" style={{ background: 'linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%)' }} />
+      <div className="h-36" style={{ background: 'linear-gradient(135deg, #120a02 0%, #120a02 50%, #1c1008 100%)' }} />
 
       <div className="max-w-4xl mx-auto px-6 pb-16">
 
@@ -151,39 +151,39 @@ export default function ClientProfile() {
                     className={`w-20 h-20 object-cover -mt-14 flex-shrink-0 ${avatarShape}`}
                     style={{ border: '4px solid #111113', boxShadow: '0 4px 20px rgba(0,0,0,0.5)' }} />
                 : <div className={`w-20 h-20 -mt-14 flex items-center justify-center text-white text-2xl font-bold flex-shrink-0 select-none ${avatarShape}`}
-                    style={{ background: 'linear-gradient(135deg, #8B5CF6, #6D28D9)', border: '4px solid #111113', boxShadow: '0 4px 20px rgba(0,0,0,0.5)' }}>
+                    style={{ background: 'linear-gradient(135deg, #FF6803, #AE3A02)', border: '4px solid #111113', boxShadow: '0 4px 20px rgba(0,0,0,0.5)' }}>
                     {profile.user?.name?.[0]?.toUpperCase()}
                   </div>
               }
               <div className="pb-0.5">
                 <h1 className="text-xl font-bold text-white">{profile.user?.name}</h1>
                 {isBusiness && profile.companyName && (
-                  <p className="text-sm mt-0.5" style={{ color: '#a1a1aa' }}>{profile.companyName}</p>
+                  <p className="text-sm mt-0.5" style={{ color: '#BFBFBF' }}>{profile.companyName}</p>
                 )}
                 <div className="flex flex-wrap items-center gap-2 mt-1.5">
                   {profile.clientType && (
-                    <span className="text-xs px-2.5 py-1 rounded-full font-medium" style={{ background: '#1a1a1d', color: '#a1a1aa', border: '1px solid rgba(255,255,255,0.08)' }}>
+                    <span className="text-xs px-2.5 py-1 rounded-full font-medium" style={{ background: '#120a02', color: '#BFBFBF', border: '1px solid rgba(255,104,3,0.10)' }}>
                       {isIndividual ? 'Individual' : 'Business'}
                     </span>
                   )}
                   {isBusiness && profile.industry && (
-                    <span className="text-xs px-2.5 py-1 rounded-full font-medium" style={{ background: '#1a1a1d', color: '#a1a1aa', border: '1px solid rgba(255,255,255,0.08)' }}>
+                    <span className="text-xs px-2.5 py-1 rounded-full font-medium" style={{ background: '#120a02', color: '#BFBFBF', border: '1px solid rgba(255,104,3,0.10)' }}>
                       {profile.industry}
                     </span>
                   )}
                   {profile.paymentVerified && (
-                    <span className="text-xs px-2.5 py-1 rounded-full font-medium flex items-center gap-1.5" style={{ background: 'rgba(139,92,246,0.1)', color: '#A78BFA', border: '1px solid rgba(139,92,246,0.2)' }}>
+                    <span className="text-xs px-2.5 py-1 rounded-full font-medium flex items-center gap-1.5" style={{ background: 'rgba(255,104,3,0.10)', color: '#BFBFBF', border: '1px solid rgba(255,104,3,0.14)' }}>
                       {Icons.shield}
                       Payment Verified
                     </span>
                   )}
                   {avgRating && (
-                    <span className="flex items-center gap-1 font-semibold text-sm" style={{ color: '#A78BFA' }}>
+                    <span className="flex items-center gap-1 font-semibold text-sm" style={{ color: '#BFBFBF' }}>
                       <svg className="w-3.5 h-3.5 fill-current" viewBox="0 0 20 20">
                         <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
                       </svg>
                       {avgRating}
-                      <span className="font-normal text-xs" style={{ color: '#52525b' }}>({ratings.length})</span>
+                      <span className="font-normal text-xs" style={{ color: '#6b5445' }}>({ratings.length})</span>
                     </span>
                   )}
                 </div>
@@ -193,27 +193,27 @@ export default function ClientProfile() {
 
           {/* Bio */}
           {profile.bio && (
-            <p className="mt-5 text-sm leading-relaxed pt-4" style={{ color: '#a1a1aa', borderTop: '1px solid rgba(255,255,255,0.06)' }}>{profile.bio}</p>
+            <p className="mt-5 text-sm leading-relaxed pt-4" style={{ color: '#BFBFBF', borderTop: '1px solid rgba(255,104,3,0.06)' }}>{profile.bio}</p>
           )}
 
           {/* Links */}
           {(profile.linkedinUrl || profile.websiteUrl) && (
-            <div className="flex flex-wrap items-center gap-3 mt-4 pt-4" style={{ borderTop: '1px solid rgba(255,255,255,0.06)' }}>
+            <div className="flex flex-wrap items-center gap-3 mt-4 pt-4" style={{ borderTop: '1px solid rgba(255,104,3,0.06)' }}>
               {profile.linkedinUrl && (
                 <a href={profile.linkedinUrl} target="_blank" rel="noreferrer"
                   className="inline-flex items-center gap-2 text-sm font-medium transition-colors rounded-lg px-3 py-1.5"
-                  style={{ color: '#a1a1aa', border: '1px solid rgba(255,255,255,0.08)', background: '#1a1a1d' }}
+                  style={{ color: '#BFBFBF', border: '1px solid rgba(255,104,3,0.10)', background: '#120a02' }}
                   onMouseEnter={e => { e.currentTarget.style.color = '#f4f4f5'; e.currentTarget.style.borderColor = 'rgba(255,255,255,0.2)' }}
-                  onMouseLeave={e => { e.currentTarget.style.color = '#a1a1aa'; e.currentTarget.style.borderColor = 'rgba(255,255,255,0.08)' }}>
+                  onMouseLeave={e => { e.currentTarget.style.color = '#BFBFBF'; e.currentTarget.style.borderColor = 'rgba(255,104,3,0.10)' }}>
                   {Icons.linkedin} LinkedIn
                 </a>
               )}
               {profile.websiteUrl && (
                 <a href={profile.websiteUrl} target="_blank" rel="noreferrer"
                   className="inline-flex items-center gap-2 text-sm font-medium transition-colors rounded-lg px-3 py-1.5"
-                  style={{ color: '#a1a1aa', border: '1px solid rgba(255,255,255,0.08)', background: '#1a1a1d' }}
+                  style={{ color: '#BFBFBF', border: '1px solid rgba(255,104,3,0.10)', background: '#120a02' }}
                   onMouseEnter={e => { e.currentTarget.style.color = '#f4f4f5'; e.currentTarget.style.borderColor = 'rgba(255,255,255,0.2)' }}
-                  onMouseLeave={e => { e.currentTarget.style.color = '#a1a1aa'; e.currentTarget.style.borderColor = 'rgba(255,255,255,0.08)' }}>
+                  onMouseLeave={e => { e.currentTarget.style.color = '#BFBFBF'; e.currentTarget.style.borderColor = 'rgba(255,104,3,0.10)' }}>
                   {Icons.globe} Website
                 </a>
               )}
@@ -231,9 +231,9 @@ export default function ClientProfile() {
               { value: profile.projectsCompleted || 0, label: 'Completed' },
               { value: profile.avgBudget > 0 ? `₹${Math.round(profile.avgBudget / 1000)}k` : '—', label: 'Avg Budget' },
             ].map((stat, idx) => (
-              <div key={stat.label} className="py-4 px-2 text-center" style={idx > 0 ? { borderLeft: '1px solid rgba(255,255,255,0.06)' } : {}}>
+              <div key={stat.label} className="py-4 px-2 text-center" style={idx > 0 ? { borderLeft: '1px solid rgba(255,104,3,0.06)' } : {}}>
                 <div className="text-xl font-bold text-white">{stat.value}</div>
-                <div className="text-xs mt-0.5 leading-tight" style={{ color: '#52525b' }}>{stat.label}</div>
+                <div className="text-xs mt-0.5 leading-tight" style={{ color: '#6b5445' }}>{stat.label}</div>
               </div>
             ))}
           </div>
@@ -267,11 +267,11 @@ export default function ClientProfile() {
         <div className="dark-card p-5 mb-4">
           <div className="flex items-center justify-between mb-3">
             <h2 className="text-sm font-semibold text-white">Badges & Achievements</h2>
-            <span className="text-xs" style={{ color: '#52525b' }}>{earnedBadges.length} / {totalBadges} earned</span>
+            <span className="text-xs" style={{ color: '#6b5445' }}>{earnedBadges.length} / {totalBadges} earned</span>
           </div>
 
           {earnedBadges.length === 0 && (
-            <p className="text-sm italic" style={{ color: '#52525b' }}>No badges earned yet.</p>
+            <p className="text-sm italic" style={{ color: '#6b5445' }}>No badges earned yet.</p>
           )}
 
           {earnedBadges.length > 0 && (

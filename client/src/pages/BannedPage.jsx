@@ -43,7 +43,7 @@ export default function BannedPage() {
             setTimeout(() => { window.location.href = '/' }, 1500)
           } catch { toast.error('Payment confirmation failed. Contact support.') }
         },
-        theme: { color: '#8B5CF6' }
+        theme: { color: '#FF6803' }
       }
       const rzp = new window.Razorpay(options)
       rzp.open()
@@ -55,7 +55,7 @@ export default function BannedPage() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center p-6" style={{ background: '#0a0a0b' }}>
+    <div className="min-h-screen flex items-center justify-center p-6" style={{ background: 'transparent' }}>
       <div className="dark-card p-8 max-w-md w-full text-center" style={{ border: '1px solid rgba(239,68,68,0.3)' }}>
         <div className="w-14 h-14 rounded-full flex items-center justify-center mx-auto mb-4" style={{ background: 'rgba(239,68,68,0.1)' }}>
           <svg className="w-7 h-7 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -64,7 +64,7 @@ export default function BannedPage() {
         </div>
 
         <h1 className="text-xl font-bold text-white mb-2">Account Suspended</h1>
-        <p className="text-sm mb-5" style={{ color: '#a1a1aa' }}>Your account has been temporarily suspended due to a policy violation.</p>
+        <p className="text-sm mb-5" style={{ color: '#BFBFBF' }}>Your account has been temporarily suspended due to a policy violation.</p>
 
         {banInfo.reason && (
           <div className="rounded-xl p-4 mb-5 text-left" style={{ background: 'rgba(239,68,68,0.08)', border: '1px solid rgba(239,68,68,0.2)' }}>
@@ -74,8 +74,8 @@ export default function BannedPage() {
         )}
 
         {banInfo.penaltyDue > 0 && (
-          <div className="rounded-xl p-4 mb-5" style={{ background: '#1a1a1d', border: '1px solid rgba(255,255,255,0.08)' }}>
-            <p className="text-xs mb-1" style={{ color: '#a1a1aa' }}>Penalty Due</p>
+          <div className="rounded-xl p-4 mb-5" style={{ background: '#120a02', border: '1px solid rgba(255,104,3,0.10)' }}>
+            <p className="text-xs mb-1" style={{ color: '#BFBFBF' }}>Penalty Due</p>
             <p className="text-2xl font-bold text-white">₹{banInfo.penaltyDue?.toLocaleString()}</p>
           </div>
         )}
@@ -87,9 +87,9 @@ export default function BannedPage() {
         >
           {loading ? 'Processing...' : banInfo.penaltyDue > 0 ? `Pay Penalty — ₹${banInfo.penaltyDue?.toLocaleString()}` : 'Clear Penalty & Restore Access'}
         </button>
-        <p className="text-xs" style={{ color: '#52525b' }}>
+        <p className="text-xs" style={{ color: '#6b5445' }}>
           Need help?{' '}
-          <a href="mailto:support@safelancer.in" style={{ color: '#a1a1aa' }} className="hover:text-white transition-colors">Contact support</a>
+          <a href="mailto:support@safelancer.in" style={{ color: '#BFBFBF' }} className="hover:text-white transition-colors">Contact support</a>
         </p>
       </div>
     </div>

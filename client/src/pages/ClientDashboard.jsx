@@ -15,27 +15,33 @@ function StatCard({ label, value, accent }) {
 
   return (
     <div
-      className="dark-card card-lift p-4"
-      style={accent ? {
-        background: 'linear-gradient(135deg, rgba(139,92,246,0.2) 0%, rgba(109,40,217,0.1) 100%)',
-        border: '1px solid rgba(139,92,246,0.3)',
-      } : {}}
+      className="card-lift p-4 rounded-2xl"
+      style={{
+        background: accent
+          ? 'linear-gradient(135deg, rgba(255,104,3,0.18) 0%, rgba(174,58,2,0.12) 100%)'
+          : 'rgba(18,10,2,0.60)',
+        border: accent ? '1px solid rgba(255,104,3,0.35)' : '1px solid rgba(255,104,3,0.10)',
+        backdropFilter: 'blur(16px)',
+        boxShadow: accent ? '0 0 24px rgba(255,104,3,0.15), inset 0 1px 0 rgba(255,255,255,0.06)' : 'inset 0 1px 0 rgba(255,255,255,0.04)',
+      }}
     >
       <div
         className="text-2xl font-bold stat-number mb-0.5"
-        style={{ color: accent ? '#A78BFA' : '#fff' }}
+        style={{ color: accent ? '#FF6803' : '#F5EDE4', textShadow: accent ? '0 0 20px rgba(255,104,3,0.4)' : 'none' }}
       >
         {animated}
       </div>
-      <div className="text-xs" style={{ color: '#71717a' }}>{label}</div>
+      <div className="text-xs font-medium" style={{ color: '#6b5445' }}>{label}</div>
     </div>
   )
 }
 
 const sectionLabel = (text) => (
-  <h2 className="text-[11px] font-semibold uppercase tracking-widest mb-3" style={{ color: '#52525b' }}>
-    {text}
-  </h2>
+  <div className="flex items-center gap-3 mb-4">
+    <div className="h-px flex-1" style={{ background: 'rgba(255,104,3,0.12)' }} />
+    <h2 className="text-[10px] font-bold uppercase tracking-[0.15em]" style={{ color: '#BFBFBF' }}>{text}</h2>
+    <div className="h-px flex-1" style={{ background: 'rgba(255,104,3,0.12)' }} />
+  </div>
 )
 
 export default function ClientDashboard() {
@@ -95,7 +101,7 @@ export default function ClientDashboard() {
           } catch { toast.error('Payment verification failed.') }
         },
         prefill: { name: user.name, email: user.email },
-        theme: { color: '#8B5CF6' },
+        theme: { color: '#FF6803' },
         modal: { ondismiss: () => toast('Payment cancelled. Go to the contract to complete advance payment.') }
       }
       const rzp = new window.Razorpay(options)
@@ -124,7 +130,7 @@ export default function ClientDashboard() {
   }
 
   if (loading) return (
-    <div className="min-h-screen" style={{ background: '#0a0a0b' }}>
+    <div className="min-h-screen" style={{ background: 'transparent' }}>
       <Navbar />
       <div className="flex items-center justify-center h-64 flex-col gap-4">
         <div className="w-48 h-4 shimmer-skeleton" />
@@ -139,22 +145,19 @@ export default function ClientDashboard() {
   )
 
   return (
-    <div className="min-h-screen" style={{ background: '#0a0a0b' }}>
+    <div className="min-h-screen" style={{ background: 'transparent' }}>
       <Navbar />
       <div className="max-w-5xl mx-auto p-6">
 
-        {/* Header */}
-        <div className="flex items-center justify-between mb-6 animate-fade-in-up">
-          <div>
-            <h1 className="text-xl font-semibold text-white">Welcome, {user.name}</h1>
-            <p className="text-sm mt-0.5" style={{ color: '#52525b' }}>Manage your contracts and jobs</p>
-          </div>
-          <Link
-            to="/jobs/post"
-            className="btn-purple px-4 py-2 text-sm"
-          >
-            + Post Job
-          </Link>
+        {/* Dashboard header */}
+        <div style={{ marginBottom: '32px', padding: '28px 32px', borderRadius: '20px', background: 'linear-gradient(135deg, rgba(18,10,2,0.90) 0%, rgba(28,16,8,0.85) 100%)', border: '1px solid rgba(255,104,3,0.18)', backdropFilter: 'blur(24px)', boxShadow: '0 0 60px rgba(255,104,3,0.08), inset 0 1px 0 rgba(255,255,255,0.06)', position: 'relative', overflow: 'hidden' }}>
+          <div style={{ position: 'absolute', top: -60, right: -60, width: 200, height: 200, background: 'radial-gradient(circle, rgba(255,104,3,0.12) 0%, transparent 70%)', borderRadius: '50%', pointerEvents: 'none' }} />
+          <p style={{ fontSize: '10px', fontWeight: 700, color: '#BFBFBF', letterSpacing: '0.18em', textTransform: 'uppercase', marginBottom: '8px', opacity: 0.9 }}>Client Portal</p>
+          <h1 style={{ fontSize: '28px', fontWeight: 800, color: '#F5EDE4', marginBottom: '6px', lineHeight: 1.2 }}>
+            Welcome back, <span style={{ background: 'linear-gradient(135deg,#FF6803,#AE3A02)', WebkitBackgroundClip: 'text', WebkitTextFillColor: "transparent" }}>{user.name}</span>
+          </h1>
+          <p style={{ fontSize: '13px', color: '#6b5445' }}>Manage your contracts, jobs, and team</p>
+          <button onClick={() => navigate('/jobs/post')} className="btn-purple" style={{ marginTop: '18px', padding: '10px 24px', fontSize: '13px', boxShadow: '0 4px 20px rgba(255,104,3,0.30)' }}>+ Post Job</button>
         </div>
 
         {/* Profile card */}
@@ -165,10 +168,10 @@ export default function ClientDashboard() {
                   src={portfolio.avatarUrl.startsWith('http') ? portfolio.avatarUrl : `${FILE_BASE}${portfolio.avatarUrl}`}
                   alt="avatar"
                   className="w-12 h-12 rounded-xl object-cover flex-shrink-0"
-                  style={{ border: '1px solid rgba(255,255,255,0.08)' }}
+                  style={{ border: '1px solid rgba(255,104,3,0.10)' }}
                 />
               : <div className="w-12 h-12 rounded-xl flex items-center justify-center text-white text-lg font-bold flex-shrink-0"
-                  style={{ background: 'linear-gradient(135deg, #8B5CF6, #6D28D9)' }}>
+                  style={{ background: 'linear-gradient(135deg, #FF6803, #AE3A02)' }}>
                   {user.name?.[0]?.toUpperCase()}
                 </div>
             }
@@ -180,17 +183,17 @@ export default function ClientDashboard() {
                 )}
               </div>
               {portfolio?.bio
-                ? <p className="text-xs line-clamp-1" style={{ color: '#71717a' }}>{portfolio.bio}</p>
-                : <p className="text-xs italic" style={{ color: '#52525b' }}>No bio yet — complete your profile</p>
+                ? <p className="text-xs line-clamp-1" style={{ color: '#BFBFBF' }}>{portfolio.bio}</p>
+                : <p className="text-xs italic" style={{ color: '#6b5445' }}>No bio yet — complete your profile</p>
               }
               <div className="flex items-center gap-2 mt-1.5">
-                <div className="flex-1 rounded-full h-1 overflow-hidden" style={{ background: 'rgba(255,255,255,0.06)' }}>
+                <div className="flex-1 rounded-full h-1 overflow-hidden" style={{ background: 'rgba(255,104,3,0.06)' }}>
                   <div
                     className="h-1 rounded-full transition-all"
-                    style={{ width: `${calcCompletion('client', portfolio)}%`, background: 'linear-gradient(90deg, #8B5CF6, #A78BFA)' }}
+                    style={{ width: `${calcCompletion('client', portfolio)}%`, background: 'linear-gradient(90deg, #FF6803, #AE3A02)' }}
                   />
                 </div>
-                <span className="text-[10px] font-medium flex-shrink-0" style={{ color: '#52525b' }}>
+                <span className="text-[10px] font-medium flex-shrink-0" style={{ color: '#6b5445' }}>
                   {calcCompletion('client', portfolio)}% complete
                 </span>
               </div>
@@ -222,14 +225,14 @@ export default function ClientDashboard() {
               return (
                 <div key={b._id} className="dark-card card-lift p-4 mb-2 flex items-center gap-4">
                   <div className="w-10 h-10 rounded-xl flex items-center justify-center text-white flex-shrink-0"
-                    style={{ background: 'rgba(139,92,246,0.2)', border: '1px solid rgba(139,92,246,0.3)' }}>
-                    <svg className="w-5 h-5" fill="none" stroke="#A78BFA" viewBox="0 0 24 24">
+                    style={{ background: 'rgba(255,104,3,0.14)', border: '1px solid rgba(255,104,3,0.25)' }}>
+                    <svg className="w-5 h-5" fill="none" stroke="#BFBFBF" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
                     </svg>
                   </div>
                   <div className="flex-1 min-w-0">
                     <div className="font-semibold text-sm text-white">{b.freelancer?.name}</div>
-                    <div className="text-sm mt-0.5" style={{ color: '#71717a' }}>
+                    <div className="text-sm mt-0.5" style={{ color: '#BFBFBF' }}>
                       {b.job.title} · ₹{b.job.budget?.toLocaleString()}
                       {b.freelancer?.rating > 0 && ` · ★ ${b.freelancer.rating}`}
                     </div>
@@ -246,7 +249,7 @@ export default function ClientDashboard() {
                       onClick={() => quickAction(b.job._id, b._id, 'reject')}
                       disabled={isLoading('reject')}
                       className="px-3 py-1.5 rounded-lg text-sm font-medium transition-all disabled:opacity-50"
-                      style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.08)', color: '#71717a' }}
+                      style={{ background: 'rgba(255,104,3,0.06)', border: '1px solid rgba(255,104,3,0.10)', color: '#BFBFBF' }}
                     >
                       Reject
                     </button>
@@ -261,29 +264,29 @@ export default function ClientDashboard() {
         <section className="mb-6">
           {sectionLabel('Active Contracts')}
           {activeContracts.length === 0
-            ? <div className="dark-card p-6 text-center text-sm" style={{ color: '#52525b' }}>
+            ? <div className="dark-card p-6 text-center text-sm" style={{ color: '#6b5445' }}>
                 No active contracts yet
               </div>
             : activeContracts.map(c => (
               <div key={c._id} className="dark-card card-lift p-4 mb-2 flex items-center gap-4">
                 <div className="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0"
-                  style={{ background: 'rgba(139,92,246,0.15)', border: '1px solid rgba(139,92,246,0.25)' }}>
-                  <svg className="w-5 h-5" fill="none" stroke="#8B5CF6" viewBox="0 0 24 24">
+                  style={{ background: 'rgba(255,104,3,0.12)', border: '1px solid rgba(255,104,3,0.20)' }}>
+                  <svg className="w-5 h-5" fill="none" stroke="#FF6803" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
                   </svg>
                 </div>
                 <div className="flex-1 min-w-0">
                   <div className="font-semibold text-sm text-white">{c.job?.title || 'Contract'}</div>
-                  <div className="text-sm mt-0.5" style={{ color: '#71717a' }}>
+                  <div className="text-sm mt-0.5" style={{ color: '#BFBFBF' }}>
                     with {c.freelancer?.name} · ₹{c.amount?.toLocaleString()} · {c.milestoneCount} phases
                   </div>
                 </div>
                 <Link
-                  to={`/contracts/${c._id}`}
+                  to={`/contracts/${c._id}`} data-cursor="contract"
                   className="px-4 py-1.5 rounded-lg text-sm font-medium transition-all flex-shrink-0"
-                  style={{ background: 'rgba(139,92,246,0.15)', border: '1px solid rgba(139,92,246,0.25)', color: '#A78BFA' }}
-                  onMouseEnter={e => { e.currentTarget.style.background = 'rgba(139,92,246,0.25)' }}
-                  onMouseLeave={e => { e.currentTarget.style.background = 'rgba(139,92,246,0.15)' }}
+                  style={{ background: 'rgba(255,104,3,0.12)', border: '1px solid rgba(255,104,3,0.20)', color: '#BFBFBF' }}
+                  onMouseEnter={e => { e.currentTarget.style.background = 'rgba(255,104,3,0.20)' }}
+                  onMouseLeave={e => { e.currentTarget.style.background = 'rgba(255,104,3,0.12)' }}
                 >
                   View Contract
                 </Link>
@@ -296,9 +299,9 @@ export default function ClientDashboard() {
         <section>
           {sectionLabel('My Posted Jobs')}
           {jobs.length === 0
-            ? <div className="dark-card p-6 text-center text-sm" style={{ color: '#52525b' }}>
+            ? <div className="dark-card p-6 text-center text-sm" style={{ color: '#6b5445' }}>
                 No jobs yet.{' '}
-                <Link to="/jobs/post" className="font-medium" style={{ color: '#A78BFA' }}>Post your first job</Link>
+                <Link to="/jobs/post" className="font-medium" style={{ color: '#BFBFBF' }}>Post your first job</Link>
               </div>
             : jobs.map(j => {
               const bids = j.bids || []
@@ -310,19 +313,19 @@ export default function ClientDashboard() {
               return (
                 <div key={j._id} className="dark-card card-lift p-4 mb-2 flex items-center gap-4">
                   <div className="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0"
-                    style={{ background: '#1a1a1d', border: '1px solid rgba(255,255,255,0.08)' }}>
-                    <svg className="w-5 h-5" fill="none" stroke="#71717a" viewBox="0 0 24 24">
+                    style={{ background: '#120a02', border: '1px solid rgba(255,104,3,0.10)' }}>
+                    <svg className="w-5 h-5" fill="none" stroke="#BFBFBF" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                     </svg>
                   </div>
                   <div className="flex-1 min-w-0">
                     <div className="font-semibold text-sm text-white">{j.title}</div>
-                    <div className="text-sm mt-0.5" style={{ color: '#71717a' }}>
+                    <div className="text-sm mt-0.5" style={{ color: '#BFBFBF' }}>
                       ₹{j.budget?.toLocaleString()} · <span className="capitalize">{j.status}</span>
                     </div>
-                    <div className="flex gap-3 mt-1.5 text-xs" style={{ color: '#52525b' }}>
+                    <div className="flex gap-3 mt-1.5 text-xs" style={{ color: '#6b5445' }}>
                       {counts.applied > 0 && <span>{counts.applied} applied</span>}
-                      {counts.shortlisted > 0 && <span style={{ color: '#A78BFA' }}>{counts.shortlisted} shortlisted</span>}
+                      {counts.shortlisted > 0 && <span style={{ color: '#BFBFBF' }}>{counts.shortlisted} shortlisted</span>}
                       {counts.hired > 0 && <span style={{ color: '#22c55e' }}>{counts.hired} hired</span>}
                       {bids.length === 0 && <span>No applications yet</span>}
                     </div>
@@ -330,9 +333,9 @@ export default function ClientDashboard() {
                   <Link
                     to={`/jobs/${j._id}`}
                     className="px-4 py-1.5 rounded-lg text-sm font-medium transition-all flex-shrink-0"
-                    style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.08)', color: '#a1a1aa' }}
-                    onMouseEnter={e => { e.currentTarget.style.background = 'rgba(255,255,255,0.08)' }}
-                    onMouseLeave={e => { e.currentTarget.style.background = 'rgba(255,255,255,0.04)' }}
+                    style={{ background: 'rgba(255,104,3,0.06)', border: '1px solid rgba(255,104,3,0.10)', color: '#BFBFBF' }}
+                    onMouseEnter={e => { e.currentTarget.style.background = 'rgba(255,104,3,0.10)' }}
+                    onMouseLeave={e => { e.currentTarget.style.background = 'rgba(255,104,3,0.06)' }}
                   >
                     Manage
                   </Link>

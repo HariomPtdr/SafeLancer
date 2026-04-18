@@ -45,12 +45,12 @@ export default function FreelancerBrowse() {
   const clearFilters = () => applyFilters(EMPTY)
 
   return (
-    <div className="min-h-screen" style={{ background: '#0a0a0b' }}>
+    <div className="min-h-screen" style={{ background: 'transparent' }}>
       <Navbar />
       <div className="max-w-5xl mx-auto p-6">
-        <button onClick={() => navigate(-1)} className="flex items-center gap-1.5 text-sm font-medium mb-4 transition-colors" style={{ color: '#a1a1aa' }}
+        <button onClick={() => navigate(-1)} className="flex items-center gap-1.5 text-sm font-medium mb-4 transition-colors" style={{ color: '#BFBFBF' }}
           onMouseEnter={e => e.currentTarget.style.color = '#f4f4f5'}
-          onMouseLeave={e => e.currentTarget.style.color = '#a1a1aa'}>
+          onMouseLeave={e => e.currentTarget.style.color = '#BFBFBF'}>
           <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" /></svg>
           Back
         </button>
@@ -88,9 +88,9 @@ export default function FreelancerBrowse() {
             </button>
             <button onClick={clearFilters}
               className="px-4 py-2 rounded-lg text-sm font-medium transition-colors text-white"
-              style={{ border: '1px solid rgba(255,255,255,0.08)', background: '#1a1a1d' }}
-              onMouseEnter={e => e.currentTarget.style.background = 'rgba(255,255,255,0.04)'}
-              onMouseLeave={e => e.currentTarget.style.background = '#1a1a1d'}>
+              style={{ border: '1px solid rgba(255,104,3,0.10)', background: '#120a02' }}
+              onMouseEnter={e => e.currentTarget.style.background = 'rgba(255,104,3,0.06)'}
+              onMouseLeave={e => e.currentTarget.style.background = '#120a02'}>
               Clear
             </button>
           </div>
@@ -98,10 +98,10 @@ export default function FreelancerBrowse() {
 
         {loading
           ? <div className="flex justify-center py-12">
-              <div className="animate-spin h-6 w-6 border-2 border-[#8B5CF6] border-t-transparent rounded-full" />
+              <div className="animate-spin h-6 w-6 border-2 border-[#FF6803] border-t-transparent rounded-full" />
             </div>
           : freelancers.length === 0
-          ? <div className="text-center py-12 text-sm" style={{ color: '#52525b' }}>No freelancers found. Try different filters.</div>
+          ? <div className="text-center py-12 text-sm" style={{ color: '#6b5445' }}>No freelancers found. Try different filters.</div>
           : <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               {freelancers.map(f => {
                 const avatarUrl = f.avatarUrl
@@ -112,8 +112,8 @@ export default function FreelancerBrowse() {
                     {/* Header */}
                     <div className="flex items-start gap-3 mb-3">
                       {avatarUrl
-                        ? <img src={avatarUrl} alt={f.user?.name} className="w-11 h-11 rounded-full object-cover flex-shrink-0" style={{ border: '1px solid rgba(255,255,255,0.08)' }} />
-                        : <div className="w-11 h-11 rounded-full flex items-center justify-center text-white font-semibold text-base flex-shrink-0" style={{ background: '#8B5CF6' }}>
+                        ? <img src={avatarUrl} alt={f.user?.name} className="w-11 h-11 rounded-full object-cover flex-shrink-0" style={{ border: '1px solid rgba(255,104,3,0.10)' }} />
+                        : <div className="w-11 h-11 rounded-full flex items-center justify-center text-white font-semibold text-base flex-shrink-0" style={{ background: '#FF6803' }}>
                             {f.user?.name?.[0]?.toUpperCase()}
                           </div>
                       }
@@ -121,12 +121,12 @@ export default function FreelancerBrowse() {
                         <h2 className="font-semibold text-white text-sm leading-tight">{f.user?.name}</h2>
                         <div className="flex items-center gap-2 mt-1 flex-wrap">
                           {f.user?.rating > 0 && (
-                            <span className="text-sm font-medium" style={{ color: '#A78BFA' }}>★ {f.user.rating.toFixed(1)}</span>
+                            <span className="text-sm font-medium" style={{ color: '#BFBFBF' }}>★ {f.user.rating.toFixed(1)}</span>
                           )}
                           {f.user?.totalJobsCompleted > 0 && (
-                            <span className="text-xs" style={{ color: '#52525b' }}>{f.user.totalJobsCompleted} jobs</span>
+                            <span className="text-xs" style={{ color: '#6b5445' }}>{f.user.totalJobsCompleted} jobs</span>
                           )}
-                          <span className="capitalize text-xs px-2 py-0.5 rounded-md font-medium" style={{ background: '#1a1a1d', color: '#a1a1aa', border: '1px solid rgba(255,255,255,0.08)' }}>
+                          <span className="capitalize text-xs px-2 py-0.5 rounded-md font-medium" style={{ background: '#120a02', color: '#BFBFBF', border: '1px solid rgba(255,104,3,0.10)' }}>
                             {f.availability || 'full-time'}
                           </span>
                         </div>
@@ -135,17 +135,17 @@ export default function FreelancerBrowse() {
 
                     {/* Bio */}
                     {f.bio && (
-                      <p className="text-xs leading-relaxed line-clamp-2 mb-3" style={{ color: '#a1a1aa' }}>{f.bio}</p>
+                      <p className="text-xs leading-relaxed line-clamp-2 mb-3" style={{ color: '#BFBFBF' }}>{f.bio}</p>
                     )}
 
                     {/* Skills */}
                     {f.skills?.length > 0 && (
                       <div className="flex flex-wrap gap-1 mb-4">
                         {f.skills.slice(0, 5).map(s => (
-                          <span key={s} className="px-2 py-0.5 rounded text-xs" style={{ background: 'rgba(139,92,246,0.1)', color: '#A78BFA', border: '1px solid rgba(139,92,246,0.2)' }}>{s}</span>
+                          <span key={s} className="px-2 py-0.5 rounded text-xs" style={{ background: 'rgba(255,104,3,0.10)', color: '#BFBFBF', border: '1px solid rgba(255,104,3,0.14)' }}>{s}</span>
                         ))}
                         {f.skills.length > 5 && (
-                          <span className="text-xs px-1" style={{ color: '#52525b' }}>+{f.skills.length - 5} more</span>
+                          <span className="text-xs px-1" style={{ color: '#6b5445' }}>+{f.skills.length - 5} more</span>
                         )}
                       </div>
                     )}
@@ -154,9 +154,9 @@ export default function FreelancerBrowse() {
                     <div className="mt-auto">
                       <Link to={`/freelancers/${f.user?._id}`}
                         className="block w-full px-3 py-2 rounded-lg text-xs font-medium text-center transition-colors text-white"
-                        style={{ border: '1px solid rgba(255,255,255,0.08)', background: '#1a1a1d' }}
-                        onMouseEnter={e => e.currentTarget.style.background = 'rgba(255,255,255,0.04)'}
-                        onMouseLeave={e => e.currentTarget.style.background = '#1a1a1d'}>
+                        style={{ border: '1px solid rgba(255,104,3,0.10)', background: '#120a02' }}
+                        onMouseEnter={e => e.currentTarget.style.background = 'rgba(255,104,3,0.06)'}
+                        onMouseLeave={e => e.currentTarget.style.background = '#120a02'}>
                         View Profile
                       </Link>
                     </div>

@@ -299,7 +299,7 @@ function ProfileCard({ portfolio, user, fullUser, completion, onEdit, onCompleti
               background: 'radial-gradient(circle, rgba(174,58,2,0.14) 0%, transparent 70%)',
             }} />
           </div>
-          <div className="px-5 pb-5">
+          <div className="px-5 pb-5" style={{ position: 'relative', zIndex: 1 }}>
             <div className="flex items-start justify-between -mt-8 mb-2">
               <Avatar url={portfolio?.avatarUrl} name={user?.name} size={20} shape={avatarShape}
                 className="border-4 shadow flex-shrink-0" style={{ borderColor: '#120a02', boxShadow: '0 0 0 2px rgba(255,104,3,0.25)' }} />

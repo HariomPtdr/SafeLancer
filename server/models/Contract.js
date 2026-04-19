@@ -3,7 +3,6 @@ const crypto = require('crypto');
 
 const contractSchema = new mongoose.Schema({
   job: { type: mongoose.Schema.Types.ObjectId, ref: 'Job', required: true },
-  negotiation: { type: mongoose.Schema.Types.ObjectId, ref: 'Negotiation' },
   client: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
   freelancer: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
   amount: { type: Number, required: true },
@@ -12,10 +11,11 @@ const contractSchema = new mongoose.Schema({
   milestoneCount:  { type: Number, default: 3 },
   advancePercent:  { type: Number, default: 10 },
   hashId: { type: String, unique: true },
-  status: { type: String, enum: ['active', 'completed', 'withdrawn', 'disputed'], default: 'active' },
+  status: { type: String, enum: ['pending_advance', 'active', 'completed', 'withdrawn', 'disputed'], default: 'pending_advance' },
   startedAt: { type: Date, default: Date.now },
   completedAt: Date,
-  withdrawnAt: Date
+  withdrawnAt: Date,
+  withdrawnBy: { type: String, enum: ['client', 'freelancer', null], default: null }
 }, { timestamps: true });
 
 contractSchema.pre('save', function(next) {

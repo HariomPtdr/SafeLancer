@@ -1,4 +1,5 @@
 import { useState, useRef, useEffect } from 'react'
+import { createPortal } from 'react-dom'
 
 const SKILL_LIST = [
   // Frontend
@@ -31,6 +32,7 @@ const SKILL_LIST = [
 export default function SkillSelector({ selected = [], onChange, maxSkills = 15, error }) {
   const [query, setQuery] = useState('')
   const [open, setOpen] = useState(false)
+  const [dropdownPos, setDropdownPos] = useState({ top: 0, left: 0, width: 0 })
   const containerRef = useRef(null)
   const inputRef = useRef(null)
 
@@ -59,6 +61,17 @@ export default function SkillSelector({ selected = [], onChange, maxSkills = 15,
 
   const remove = (skill) => onChange(selected.filter(s => s !== skill))
 
+  const updateDropdownPos = () => {
+    if (containerRef.current) {
+      const rect = containerRef.current.getBoundingClientRect()
+      setDropdownPos({
+        top: rect.bottom + window.scrollY + 4,
+        left: rect.left + window.scrollX,
+        width: rect.width,
+      })
+    }
+  }
+
   useEffect(() => {
     const handler = (e) => {
       if (containerRef.current && !containerRef.current.contains(e.target)) setOpen(false)
@@ -67,27 +80,43 @@ export default function SkillSelector({ selected = [], onChange, maxSkills = 15,
     return () => document.removeEventListener('mousedown', handler)
   }, [])
 
+  useEffect(() => {
+    if (open) updateDropdownPos()
+  }, [open])
+
+  useEffect(() => {
+    if (!open) return
+    const onScroll = () => updateDropdownPos()
+    window.addEventListener('scroll', onScroll, true)
+    return () => window.removeEventListener('scroll', onScroll, true)
+  }, [open])
+
   return (
     <div ref={containerRef} className="relative">
       {/* Tag input box */}
       <div
         onClick={() => { setOpen(true); inputRef.current?.focus() }}
-        className={`min-h-[48px] border rounded-lg px-3 py-2 flex flex-wrap gap-2 cursor-text transition-colors ${
-          open ? 'border-zinc-400' :
-          error ? 'border-red-400' :
-          'border-zinc-200 hover:border-zinc-300'
+        className={`min-h-[48px] rounded-lg px-3 py-2 flex flex-wrap gap-2 cursor-text transition-colors ${
+          open ? 'border border-[#FF6803]' :
+          error ? 'border border-red-500' :
+          'border border-white/[0.08] hover:border-white/20'
         }`}
+        style={{ background: '#111113' }}
       >
         {selected.map(skill => (
           <span
             key={skill}
-            className="flex items-center gap-1 bg-zinc-100 text-zinc-700 text-sm font-medium px-2.5 py-1 rounded-md"
+            className="flex items-center gap-1 text-sm font-medium px-2.5 py-1 rounded-md"
+            style={{ background: 'rgba(255,104,3,0.10)', color: '#BFBFBF', border: '1px solid rgba(255,104,3,0.14)' }}
           >
             {skill}
             <button
               type="button"
               onMouseDown={e => { e.preventDefault(); remove(skill) }}
-              className="text-zinc-400 hover:text-red-500 font-bold text-base leading-none ml-0.5 transition-colors"
+              className="font-bold text-base leading-none ml-0.5 transition-colors"
+              style={{ color: '#BFBFBF' }}
+              onMouseEnter={e => e.currentTarget.style.color = '#ef4444'}
+              onMouseLeave={e => e.currentTarget.style.color = '#BFBFBF'}
             >
               ×
             </button>
@@ -100,15 +129,27 @@ export default function SkillSelector({ selected = [], onChange, maxSkills = 15,
           onFocus={() => setOpen(true)}
           placeholder={selected.length === 0 ? 'Search skills or type to create new...' : selected.length < maxSkills ? 'Add more skills...' : ''}
           disabled={selected.length >= maxSkills}
-          className="flex-1 min-w-[180px] outline-none text-sm text-zinc-700 placeholder-zinc-400 bg-transparent py-1"
+          className="flex-1 min-w-[180px] outline-none text-sm bg-transparent py-1"
+          style={{ color: '#f4f4f5' }}
         />
       </div>
 
-      {/* Dropdown */}
-      {open && (
-        <div className="absolute z-50 mt-1 w-full bg-white border border-zinc-200 rounded-xl shadow-lg overflow-hidden">
+      {/* Dropdown rendered via portal to escape stacking context from backdrop-filter */}
+      {open && createPortal(
+        <div
+          className="rounded-xl shadow-lg overflow-hidden"
+          style={{
+            position: 'absolute',
+            top: dropdownPos.top,
+            left: dropdownPos.left,
+            width: dropdownPos.width,
+            zIndex: 9999,
+            background: '#111113',
+            border: '1px solid rgba(255,104,3,0.10)',
+          }}
+        >
           {displayList.length === 0 && !showCreate && trimmed && (
-            <p className="px-4 py-3 text-sm text-zinc-400 italic">No matching skills found</p>
+            <p className="px-4 py-3 text-sm italic" style={{ color: '#6b5445' }}>No matching skills found</p>
           )}
 
           <div className="max-h-52 overflow-y-auto">
@@ -117,7 +158,10 @@ export default function SkillSelector({ selected = [], onChange, maxSkills = 15,
                 key={skill}
                 type="button"
                 onMouseDown={e => { e.preventDefault(); add(skill) }}
-                className="w-full text-left px-4 py-2.5 text-sm text-zinc-700 hover:bg-zinc-50 transition-colors"
+                className="w-full text-left px-4 py-2.5 text-sm transition-colors"
+                style={{ color: '#BFBFBF' }}
+                onMouseEnter={e => { e.currentTarget.style.background = 'rgba(255,104,3,0.06)'; e.currentTarget.style.color = '#f4f4f5' }}
+                onMouseLeave={e => { e.currentTarget.style.background = 'transparent'; e.currentTarget.style.color = '#BFBFBF' }}
               >
                 {skill}
               </button>
@@ -128,27 +172,31 @@ export default function SkillSelector({ selected = [], onChange, maxSkills = 15,
             <button
               type="button"
               onMouseDown={e => { e.preventDefault(); add(trimmed) }}
-              className="w-full text-left px-4 py-3 text-sm font-semibold text-zinc-900 hover:bg-zinc-50 border-t border-zinc-100 transition-colors flex items-center gap-2"
+              className="w-full text-left px-4 py-3 text-sm font-semibold transition-colors flex items-center gap-2"
+              style={{ color: '#f4f4f5', borderTop: '1px solid rgba(255,104,3,0.06)' }}
+              onMouseEnter={e => e.currentTarget.style.background = 'rgba(255,104,3,0.06)'}
+              onMouseLeave={e => e.currentTarget.style.background = 'transparent'}
             >
-              <span className="w-5 h-5 flex items-center justify-center bg-zinc-900 text-white rounded-md text-xs font-bold">+</span>
+              <span className="w-5 h-5 flex items-center justify-center text-white rounded-md text-xs font-bold" style={{ background: '#FF6803' }}>+</span>
               Create skill "{trimmed}"
             </button>
           )}
 
           {selected.length >= maxSkills && (
-            <div className="px-4 py-2 text-xs text-amber-600 bg-amber-50 border-t border-zinc-100">
+            <div className="px-4 py-2 text-xs" style={{ color: '#FF6803', background: 'rgba(245,158,11,0.08)', borderTop: '1px solid rgba(255,104,3,0.06)' }}>
               Maximum {maxSkills} skills reached
             </div>
           )}
-        </div>
+        </div>,
+        document.body
       )}
 
       <div className="flex items-center justify-between mt-1.5">
         {error
           ? <p className="text-xs text-red-500">{error}</p>
-          : <p className="text-xs text-zinc-400">Search from list or type a custom skill and press Create</p>
+          : <p className="text-xs" style={{ color: '#6b5445' }}>Search from list or type a custom skill and press Create</p>
         }
-        <p className="text-xs text-zinc-400">{selected.length}/{maxSkills}</p>
+        <p className="text-xs" style={{ color: '#6b5445' }}>{selected.length}/{maxSkills}</p>
       </div>
     </div>
   )

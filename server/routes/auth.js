@@ -6,6 +6,7 @@ const User = require('../models/User');
 const Portfolio = require('../models/Portfolio');
 const auth = require('../middleware/auth');
 const { calcCompletion } = require('../utils/profileCompletion');
+const isTestMode = require('../utils/isTestMode');
 
 const FRONTEND_URL = process.env.CLIENT_URL || 'http://localhost:5173';
 const BACKEND_URL = process.env.SERVER_URL || 'http://localhost:5001';
@@ -226,8 +227,8 @@ router.get('/me', auth, async (req, res) => {
     const portfolio = await Portfolio.findOne({ user: req.user.id });
 
     if (portfolio) {
-      // Always recalculate completion from actual field values — never trust the stored value
-      const freshPct = calcCompletion(portfolio.role, portfolio);
+      // Always recalculate using the User's role — portfolio.role can be stale/mismatched
+      const freshPct = calcCompletion(user.role, portfolio);
       if (freshPct !== portfolio.completionPercent) {
         portfolio.completionPercent = freshPct;
         await Portfolio.findByIdAndUpdate(portfolio._id, { $set: { completionPercent: freshPct } });
@@ -235,6 +236,56 @@ router.get('/me', auth, async (req, res) => {
     }
 
     res.json({ user, portfolio });
+  } catch (err) {
+    res.status(500).json({ message: 'Server error' });
+  }
+});
+
+// POST /api/auth/pay-penalty — user pays penalty to get unbanned (test mode: instant clear)
+router.post('/pay-penalty', auth, async (req, res) => {
+  try {
+    const user = await User.findById(req.user.id);
+    if (!user) return res.status(404).json({ message: 'User not found' });
+    if (!user.isBanned && user.penaltyDue === 0) {
+      return res.json({ message: 'No penalty due', isBanned: false });
+    }
+
+    if (isTestMode()) {
+      user.penaltyDue = 0;
+      user.isBanned = false;
+      user.banReason = '';
+      await user.save();
+      return res.json({ message: 'Penalty cleared (test mode). Account restored.', isBanned: false });
+    }
+
+    // Live mode: create Razorpay order for penalty amount
+    const Razorpay = require('razorpay');
+    const razorpay = new Razorpay({ key_id: process.env.RAZORPAY_KEY_ID, key_secret: process.env.RAZORPAY_KEY_SECRET });
+    const order = await razorpay.orders.create({
+      amount: Math.round(user.penaltyDue * 100),
+      currency: 'INR',
+      receipt: `penalty-${user._id}`,
+      notes: { userId: user._id.toString(), type: 'penalty' }
+    });
+    res.json({ orderId: order.id, amount: user.penaltyDue, razorpayKeyId: process.env.RAZORPAY_KEY_ID });
+  } catch (err) {
+    res.status(500).json({ message: 'Server error', error: err.message });
+  }
+});
+
+// POST /api/auth/pay-penalty/confirm — confirm penalty payment and unban
+router.post('/pay-penalty/confirm', auth, async (req, res) => {
+  try {
+    const { razorpay_order_id, razorpay_payment_id, razorpay_signature } = req.body;
+    const crypto = require('crypto');
+    const body = razorpay_order_id + '|' + razorpay_payment_id;
+    const expectedSig = crypto.createHmac('sha256', process.env.RAZORPAY_KEY_SECRET).update(body).digest('hex');
+    if (expectedSig !== razorpay_signature) return res.status(400).json({ message: 'Invalid signature' });
+
+    const user = await User.findByIdAndUpdate(req.user.id, {
+      penaltyDue: 0, isBanned: false, banReason: ''
+    }, { new: true });
+    res.json({ message: 'Penalty paid. Account restored.', user });
   } catch (err) {
     res.status(500).json({ message: 'Server error' });
   }

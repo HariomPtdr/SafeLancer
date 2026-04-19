@@ -1,5 +1,11 @@
 import axios from 'axios'
 
+export const getAdminStats = () => api.get('/api/admin/stats');
+export const getPendingFreelancers = () => api.get('/api/admin/freelancers/pending');
+export const verifyFreelancer = (userId, status, adminNote) => 
+  api.post(`/api/admin/freelancers/${userId}/verify`, { status, adminNote });
+export const getAllUsers = () => api.get('/api/admin/users');
+
 const api = axios.create({
   baseURL: import.meta.env.VITE_API_URL || 'http://localhost:5001',
 })
@@ -16,6 +22,13 @@ api.interceptors.response.use(
     if (err.response?.status === 401) {
       localStorage.clear()
       window.location.href = '/'
+    }
+    if (err.response?.status === 403 && err.response?.data?.banned) {
+      localStorage.setItem('banInfo', JSON.stringify({
+        reason: err.response.data.reason,
+        penaltyDue: err.response.data.penaltyDue
+      }))
+      window.location.href = '/banned'
     }
     return Promise.reject(err)
   }

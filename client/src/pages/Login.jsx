@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import api from '../api'
 import toast from 'react-hot-toast'
 import { calcCompletion } from '../utils/profileCompletion'
+import { LogoMark } from '../components/SafeLancerLogo'
 
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5001'
 
@@ -54,45 +55,68 @@ export default function Login() {
   const hx = exiting ? 'auth-head-exit' : 'auth-head-enter'
 
   return (
-    <div className="min-h-screen bg-zinc-100 flex flex-col items-center justify-center p-4">
-
-      <div className={`mb-8 text-center ${hx}`}>
-        <div className="text-xl font-bold text-zinc-900 tracking-tight">FreeLock</div>
-        <div className="text-sm text-zinc-500 mt-1">Secure Freelancing Platform</div>
+    <div
+      className="min-h-screen flex flex-col items-center justify-center p-4"
+      style={{ background: 'transparent' }}
+    >
+      {/* Logo */}
+      <div className={`mb-8 text-center relative z-10 ${hx}`}>
+        <div className="flex items-center justify-center gap-2.5 mb-3">
+          <div style={{ filter: 'drop-shadow(0 0 10px rgba(255,104,3,0.55))' }}><LogoMark size={34} /></div>
+          <span className="text-2xl font-bold tracking-tight" style={{ background: 'linear-gradient(135deg,#FF6803,#AE3A02)', WebkitBackgroundClip: 'text', WebkitTextFillColor: "transparent" }}>SafeLancer</span>
+        </div>
+        <div className="text-sm" style={{ color: '#6b5445' }}>Secure freelancing, guaranteed payments</div>
       </div>
 
-      <div className={`bg-white rounded-xl border border-zinc-200 p-8 w-full max-w-md shadow-sm ${cx}`}>
-        <h1 className="text-base font-semibold text-zinc-900 mb-1">Sign in</h1>
-        <p className="text-sm text-zinc-500 mb-6">Enter your credentials to access your portals</p>
+      {/* Card */}
+      <div
+        className={`relative z-10 rounded-2xl p-8 w-full max-w-md ${cx}`}
+        style={{
+          background: 'rgba(18,10,2,0.85)',
+          backdropFilter: 'blur(28px) saturate(1.5)',
+          WebkitBackdropFilter: 'blur(28px) saturate(1.5)',
+          border: '1px solid rgba(255,104,3,0.16)',
+          boxShadow: '0 24px 80px rgba(0,0,0,0.6), 0 0 40px rgba(255,104,3,0.08), inset 0 1px 0 rgba(255,255,255,0.06)',
+        }}
+      >
+        <h1 className="text-lg font-semibold text-white mb-1">Sign in</h1>
+        <p className="text-sm mb-6" style={{ color: '#BFBFBF' }}>
+          Enter your credentials to access your portal
+        </p>
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <label className="block text-sm font-medium text-zinc-700 mb-1.5">Email</label>
+            <label className="block text-sm font-medium mb-1.5" style={{ color: '#BFBFBF' }}>
+              Email
+            </label>
             <input
               type="email"
               required
               value={form.email}
               onChange={e => setForm({ ...form, email: e.target.value })}
-              className="w-full border border-zinc-200 rounded-lg px-3 py-2.5 text-sm text-zinc-900 placeholder:text-zinc-400 focus:outline-none focus:border-zinc-400 transition-colors"
+              className="dark-input w-full px-3 py-2.5 text-sm"
               placeholder="you@company.com"
             />
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-zinc-700 mb-1.5">Password</label>
+            <label className="block text-sm font-medium mb-1.5" style={{ color: '#BFBFBF' }}>
+              Password
+            </label>
             <div className="relative">
               <input
                 type={showPassword ? 'text' : 'password'}
                 required
                 value={form.password}
                 onChange={e => setForm({ ...form, password: e.target.value })}
-                className="w-full border border-zinc-200 rounded-lg px-3 py-2.5 pr-12 text-sm text-zinc-900 placeholder:text-zinc-400 focus:outline-none focus:border-zinc-400 transition-colors"
+                className="dark-input w-full px-3 py-2.5 pr-14 text-sm"
                 placeholder="Enter your password"
               />
               <button
                 type="button"
                 onClick={() => setShowPassword(!showPassword)}
-                className="absolute right-3 top-1/2 -translate-y-1/2 text-zinc-400 hover:text-zinc-700 text-xs font-medium"
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-xs font-medium transition-colors"
+                style={{ color: '#BFBFBF' }}
               >
                 {showPassword ? 'Hide' : 'Show'}
               </button>
@@ -102,21 +126,28 @@ export default function Login() {
           <button
             type="submit"
             disabled={loading}
-            className="w-full bg-zinc-900 hover:bg-zinc-800 text-white font-medium py-2.5 rounded-lg text-sm transition-colors disabled:opacity-50"
+            className="btn-purple w-full py-2.5 text-sm mt-2"
           >
-            {loading ? 'Signing in...' : 'Sign in'}
+            {loading ? 'Signing in…' : 'Sign in'}
           </button>
         </form>
 
         <div className="flex items-center gap-3 my-5">
-          <div className="flex-1 h-px bg-zinc-100" />
-          <span className="text-xs text-zinc-400">or</span>
-          <div className="flex-1 h-px bg-zinc-100" />
+          <div className="flex-1 h-px" style={{ background: 'rgba(255,104,3,0.06)' }} />
+          <span className="text-xs" style={{ color: '#6b5445' }}>or</span>
+          <div className="flex-1 h-px" style={{ background: 'rgba(255,104,3,0.06)' }} />
         </div>
 
         <a
           href={`${API_URL}/api/auth/google`}
-          className="w-full flex items-center justify-center gap-2.5 border border-zinc-200 rounded-lg py-2.5 text-sm font-medium text-zinc-700 hover:bg-zinc-50 transition-colors"
+          className="w-full flex items-center justify-center gap-2.5 rounded-xl py-2.5 text-sm font-medium transition-all"
+          style={{
+            background: '#120a02',
+            border: '1px solid rgba(255,104,3,0.10)',
+            color: '#d4d4d8',
+          }}
+          onMouseEnter={e => e.currentTarget.style.borderColor = 'rgba(255,104,3,0.45)'}
+          onMouseLeave={e => e.currentTarget.style.borderColor = 'rgba(255,104,3,0.10)'}
         >
           <svg className="w-4 h-4" viewBox="0 0 24 24">
             <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
@@ -127,12 +158,13 @@ export default function Login() {
           Continue with Google
         </a>
 
-        <p className="mt-5 text-center text-zinc-500 text-sm">
+        <p className="mt-5 text-center text-sm" style={{ color: '#6b5445' }}>
           Don't have an account?{' '}
           <button
             type="button"
             onClick={() => goTo('/register')}
-            className="text-zinc-900 font-semibold hover:underline underline-offset-2"
+            className="font-semibold hover:underline underline-offset-2 transition-colors"
+            style={{ color: '#BFBFBF' }}
           >
             Sign up
           </button>

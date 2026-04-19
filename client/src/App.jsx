@@ -1,3 +1,4 @@
+import VerificationPending from './pages/verificationpending'
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
 import { Toaster } from 'react-hot-toast'
 import ProtectedRoute from './components/ProtectedRoute'
@@ -10,16 +11,25 @@ import JobBoard from './pages/JobBoard'
 import JobDetail from './pages/JobDetail'
 import PostJob from './pages/PostJob'
 import ContractDashboard from './pages/ContractDashboard'
-import NegotiationRoom from './pages/NegotiationRoom'
 import FreelancerProfile from './pages/FreelancerProfile'
+import FreelancerBrowse from './pages/FreelancerBrowse'
 import ClientProfile from './pages/ClientProfile'
-import ChatRoom from './pages/ChatRoom'
-import InterviewRoom from './pages/InterviewRoom'
 import VerifyHash from './pages/VerifyHash'
 import AdminDashboard from './pages/AdminDashboard'
 import AuthCallback from './pages/AuthCallback'
 import GoogleComplete from './pages/GoogleComplete'
 import PaymentSettings from './pages/PaymentSettings'
+import BannedPage from './pages/BannedPage'
+import LandingPage from './pages/LandingPage'
+import ThreeBackground from './components/ThreeBackground'
+import CustomCursor from './components/CustomCursor'
+import { useLocation } from 'react-router-dom'
+
+function ThreeBackgroundGated() {
+  const { pathname } = useLocation()
+  if (pathname === '/') return null
+  return <ThreeBackground />
+}
 
 function DashboardRedirect() {
   const user = JSON.parse(localStorage.getItem('user') || '{}')
@@ -28,9 +38,17 @@ function DashboardRedirect() {
   return <Navigate to="/dashboard/client" replace />
 }
 
+function SmartRoot() {
+  const token = localStorage.getItem('token')
+  if (!token) return <LandingPage />
+  return <DashboardRedirect />
+}
+
 export default function App() {
   return (
     <BrowserRouter>
+      <CustomCursor />
+      <ThreeBackgroundGated />
       <Toaster
         position="top-right"
         toastOptions={{
@@ -40,7 +58,7 @@ export default function App() {
             border: '1px solid #e4e4e7',
             borderRadius: '10px',
             fontSize: '13px',
-            fontFamily: "-apple-system, BlinkMacSystemFont, 'Inter', 'Segoe UI', sans-serif",
+            fontFamily: "'Inter', -apple-system, sans-serif",
             boxShadow: '0 4px 16px rgba(0,0,0,0.08)',
             padding: '10px 14px',
           },
@@ -49,20 +67,22 @@ export default function App() {
           duration: 3000,
         }}
       />
+      <div style={{ position: 'relative', zIndex: 1 }}>
       <Routes>
         {/* Public */}
+        <Route path="/verification-pending" element={<VerificationPending />} />
+        <Route path="/banned" element={<BannedPage />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/verify/:hash" element={<VerifyHash />} />
         <Route path="/auth/callback" element={<AuthCallback />} />
         <Route path="/auth/google/complete" element={<GoogleComplete />} />
 
-        {/* Auto-redirect based on role */}
-        <Route path="/" element={<ProtectedRoute><DashboardRedirect /></ProtectedRoute>} />
+        {/* Home: landing page for guests, dashboard redirect for logged-in */}
+        <Route path="/" element={<SmartRoot />} />
 
         {/* Onboarding */}
         <Route path="/profile/setup" element={<ProtectedRoute><ProfileSetup /></ProtectedRoute>} />
-        <Route path="/payments" element={<ProtectedRoute><PaymentSettings /></ProtectedRoute>} />
 
         {/* Dashboards */}
         <Route path="/dashboard/client" element={<ProtectedRoute role="client"><ClientDashboard /></ProtectedRoute>} />
@@ -74,18 +94,16 @@ export default function App() {
         <Route path="/jobs/:id" element={<ProtectedRoute><JobDetail /></ProtectedRoute>} />
 
         {/* Freelancers */}
+        <Route path="/freelancers" element={<ProtectedRoute><FreelancerBrowse /></ProtectedRoute>} />
         <Route path="/freelancers/:userId" element={<ProtectedRoute><FreelancerProfile /></ProtectedRoute>} />
         <Route path="/clients/:userId" element={<ProtectedRoute><ClientProfile /></ProtectedRoute>} />
 
         {/* Contracts & Milestones */}
         <Route path="/contracts/:id" element={<ProtectedRoute><ContractDashboard /></ProtectedRoute>} />
 
-        {/* Negotiations */}
-        <Route path="/negotiations/:id" element={<ProtectedRoute><NegotiationRoom /></ProtectedRoute>} />
 
-        {/* Chat & Video */}
-        <Route path="/chat/:contractId" element={<ProtectedRoute><ChatRoom /></ProtectedRoute>} />
-        <Route path="/interview/:meetingRoomId" element={<ProtectedRoute><InterviewRoom /></ProtectedRoute>} />
+        {/* Payment Settings */}
+        <Route path="/payments" element={<ProtectedRoute><PaymentSettings /></ProtectedRoute>} />
 
         {/* Admin */}
         <Route path="/admin" element={<ProtectedRoute role="admin"><AdminDashboard /></ProtectedRoute>} />
@@ -93,6 +111,7 @@ export default function App() {
         {/* Fallback */}
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
+      </div>
     </BrowserRouter>
   )
 }

@@ -1,10 +1,9 @@
 /**
  * Calculates profile completion percentage from the portfolio document.
- * Keep this in sync with the client-side calcCompletion in ProfileSetup.jsx.
+ * Keep this in sync with the client-side calcCompletion in profileCompletion.js.
  *
  * Freelancer (100%):
- *   base(20) + bio(20) + skills(20) + githubUrl(15) + linkedinUrl(5) +
- *   portfolioUrl(5) + projectSamples(10) + resumeUrl(5)
+ *   base(20) + bio(20) + skills(20) + githubUrl(25) + linkedinUrl(10) + portfolioUrl(5)
  *
  * Individual client (100%):
  *   base(20) + bio(15) + avatarUrl(15) + location(15) + yearsHiring(15) + linkedinUrl(10) + preferredComm(10)
@@ -17,43 +16,41 @@
 function calcCompletion(role, data) {
   if (role === 'freelancer') {
     let pct = 20
-    if (data.bio) pct += 20
-    if (data.skills && data.skills.length > 0) pct += 20
-    if (data.githubUrl) pct += 15
-    if (data.linkedinUrl) pct += 5
-    if (data.portfolioUrl) pct += 5
-    if (data.projectSamples && data.projectSamples.length > 0) pct += 10
-    if (data.resumeUrl) pct += 5
+    if (data.bio?.trim()) pct += 20
+    if (Array.isArray(data.skills) && data.skills.length > 0) pct += 20
+    if (data.githubUrl?.trim()) pct += 25
+    if (data.linkedinUrl?.trim()) pct += 10
+    if (data.portfolioUrl?.trim()) pct += 5
     return Math.min(100, pct)
   } else {
     if (data.clientType === 'individual') {
       let pct = 20
-      if (data.bio) pct += 15
-      if (data.avatarUrl) pct += 15
-      if (data.location) pct += 15
-      if (data.yearsHiring) pct += 15
-      if (data.linkedinUrl) pct += 10
-      if (data.preferredComm) pct += 10
+      if (data.bio?.trim()) pct += 15
+      if (data.avatarUrl?.trim()) pct += 15
+      if (data.location?.trim()) pct += 15
+      if (data.yearsHiring?.trim()) pct += 15
+      if (data.linkedinUrl?.trim()) pct += 10
+      if (data.preferredComm?.trim()) pct += 10
       if (data.paymentVerified) pct += 10
       return Math.min(100, pct)
     } else if (data.clientType === 'business') {
       let pct = 5
-      if (data.bio) pct += 10
-      if (data.avatarUrl) pct += 10
-      if (data.location) pct += 10
-      if (data.yearsHiring) pct += 10
-      if (data.companyName) pct += 10
-      if (data.industry) pct += 10
-      if (data.companySize) pct += 10
-      if (data.websiteUrl) pct += 5
-      if (data.linkedinUrl) pct += 5
-      if (data.preferredComm) pct += 5
+      if (data.bio?.trim()) pct += 10
+      if (data.avatarUrl?.trim()) pct += 10
+      if (data.location?.trim()) pct += 10
+      if (data.yearsHiring?.trim()) pct += 10
+      if (data.companyName?.trim()) pct += 10
+      if (data.industry?.trim()) pct += 10
+      if (data.companySize?.trim()) pct += 10
+      if (data.websiteUrl?.trim()) pct += 5
+      if (data.linkedinUrl?.trim()) pct += 5
+      if (data.preferredComm?.trim()) pct += 5
       if (data.paymentVerified) pct += 10
       return Math.min(100, pct)
     } else {
       // clientType not yet chosen — show minimal base
       let pct = 20
-      if (data.bio) pct += 10
+      if (data.bio?.trim()) pct += 10
       return Math.min(30, pct)
     }
   }

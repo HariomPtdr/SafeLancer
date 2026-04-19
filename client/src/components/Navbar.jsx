@@ -337,7 +337,7 @@ export default function Navbar() {
               className="text-sm font-medium transition-colors"
               style={{ color: '#6b5445', background: 'none', border: 'none' }}
               onMouseEnter={e => e.currentTarget.style.color = '#ef4444'}
-              onMouseLeave={e => e.currentTarget.style.color = '#1c1008'}
+              onMouseLeave={e => e.currentTarget.style.color = '#6b5445'}
             >
               Logout
             </button>

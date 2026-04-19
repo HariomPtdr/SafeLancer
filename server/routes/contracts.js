@@ -84,12 +84,16 @@ function computeWithdrawPreview(contract, milestones, withdrawingRole) {
       freelancerPenalty = penalty;
     }
 
+    // Advance follows the same rule as scenario 1:
+    // client withdraws → freelancer keeps advance; freelancer withdraws before 50% → refund to client
+    const advanceGoesTo = (past50 || withdrawingRole === 'client') ? 'freelancer' : 'client';
+
     return {
       scenario: 2,
       withdrawingRole,
       advanceFunded,
       advanceAmount,
-      advanceGoesTo: 'freelancer',
+      advanceGoesTo,
       activePhaseNumber: activePhase.milestoneNumber,
       activePhaseTitle: activePhase.title,
       activePhaseId: activePhase._id,

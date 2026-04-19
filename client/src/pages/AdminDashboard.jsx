@@ -83,7 +83,7 @@ function DisputeDetail({ disputeId, onClose, onResolved }) {
           </div>
           <button onClick={onClose} className="transition-colors" style={{ color: '#6b5445' }}
             onMouseEnter={e => e.currentTarget.style.color = '#BFBFBF'}
-            onMouseLeave={e => e.currentTarget.style.color = '#1c1008'}>
+            onMouseLeave={e => e.currentTarget.style.color = '#6b5445'}>
             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
             </svg>
@@ -428,7 +428,7 @@ function PaymentsTab() {
               ? { background: '#111113', color: '#f4f4f5', border: '1px solid rgba(255,104,3,0.10)' }
               : { color: '#6b5445' }}
             onMouseEnter={e => { if (view !== v.key) e.currentTarget.style.color = '#BFBFBF' }}
-            onMouseLeave={e => { if (view !== v.key) e.currentTarget.style.color = '#1c1008' }}>
+            onMouseLeave={e => { if (view !== v.key) e.currentTarget.style.color = '#6b5445' }}>
             {v.label}
           </button>
         ))}
@@ -845,7 +845,7 @@ export default function AdminDashboard() {
                 ? { color: '#f4f4f5', borderBottom: '2px solid #FF6803' }
                 : { color: '#6b5445' }}
               onMouseEnter={e => { if (activeTab !== tab.key) e.currentTarget.style.color = '#BFBFBF' }}
-              onMouseLeave={e => { if (activeTab !== tab.key) e.currentTarget.style.color = '#1c1008' }}>
+              onMouseLeave={e => { if (activeTab !== tab.key) e.currentTarget.style.color = '#6b5445' }}>
               {tab.label}
             </button>
           ))}

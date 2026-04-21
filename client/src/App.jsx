@@ -1,6 +1,26 @@
+import { Component } from 'react'
 import VerificationPending from './pages/verificationpending'
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
 import { Toaster } from 'react-hot-toast'
+
+class ErrorBoundary extends Component {
+  state = { error: null }
+  static getDerivedStateFromError(e) { return { error: e } }
+  componentDidCatch(e, info) { console.error('[ErrorBoundary]', e.message, info.componentStack) }
+  render() {
+    if (this.state.error) return (
+      <div style={{ padding: 32, fontFamily: 'monospace', color: '#f87171' }}>
+        <b>Something went wrong:</b>
+        <pre style={{ fontSize: 12, marginTop: 8 }}>{this.state.error.message}</pre>
+        <button onClick={() => { this.setState({ error: null }); window.location.reload() }}
+          style={{ marginTop: 16, padding: '8px 16px', cursor: 'pointer' }}>
+          Reload
+        </button>
+      </div>
+    )
+    return this.props.children
+  }
+}
 import ProtectedRoute from './components/ProtectedRoute'
 import Login from './pages/Login'
 import Register from './pages/Register'
@@ -46,6 +66,7 @@ function SmartRoot() {
 
 export default function App() {
   return (
+    <ErrorBoundary>
     <BrowserRouter>
       <CustomCursor />
       <ThreeBackgroundGated />
@@ -113,5 +134,6 @@ export default function App() {
       </Routes>
       </div>
     </BrowserRouter>
+    </ErrorBoundary>
   )
 }

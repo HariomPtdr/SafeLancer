@@ -70,14 +70,51 @@ export default function StaticLayout({ children, title, subtitle }) {
       </main>
 
       {/* Footer */}
-      <div style={{ borderTop: `1px solid ${T.border}`, padding: '32px 5%', display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '16px' }}>
-        <span style={{ fontSize: '12px', color: T.faint }}>© 2025 SafeLancer. All rights reserved.</span>
-        <div style={{ display: 'flex', gap: '20px', flexWrap: 'wrap' }}>
-          {[['Security', '/security'], ['Contact', '/contact']].map(([l, h]) => (
-            <a key={l} href={h} style={{ fontSize: '12px', color: T.faint, textDecoration: 'none' }}
-              onMouseEnter={e => e.target.style.color = T.muted}
-              onMouseLeave={e => e.target.style.color = T.faint}>{l}</a>
-          ))}
+      <div style={{ borderTop: `1px solid ${T.border}`, padding: '40px 5%', display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(140px,1fr))', gap: '32px' }}>
+        {/* Brand */}
+        <div>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '10px', cursor: 'pointer' }} onClick={() => nav('/')}>
+            <div style={{ width: '24px', height: '24px', borderRadius: '6px', background: T.gradB, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '12px' }}>🔒</div>
+            <span style={{ fontWeight: 800, fontSize: '14px', letterSpacing: '-0.04em', color: T.text }}>SafeLancer</span>
+          </div>
+          <p style={{ fontSize: '11px', color: T.faint, lineHeight: 1.6, margin: '0 0 10px' }}>Cryptographic escrow for the future of work.</p>
+          <span style={{ fontSize: '11px', color: T.faint }}>© 2025 SafeLancer</span>
+        </div>
+
+        {/* Home sections */}
+        <div>
+          <div style={{ fontSize: '10px', fontWeight: 700, letterSpacing: '0.14em', textTransform: 'uppercase', color: `${T.blue}80`, marginBottom: '14px' }}>Platform</div>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '9px' }}>
+            {[['How It Works', '/#how-it-works'], ['Features', '/#features'], ['Pricing', '/#pricing']].map(([l, h]) => (
+              <a key={l} href={h} style={{ fontSize: '12px', color: T.faint, textDecoration: 'none', transition: 'color .15s' }}
+                onMouseEnter={e => e.target.style.color = T.muted}
+                onMouseLeave={e => e.target.style.color = T.faint}>{l}</a>
+            ))}
+          </div>
+        </div>
+
+        {/* Company */}
+        <div>
+          <div style={{ fontSize: '10px', fontWeight: 700, letterSpacing: '0.14em', textTransform: 'uppercase', color: `${T.blue}80`, marginBottom: '14px' }}>Company</div>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '9px' }}>
+            {[['About', '/about'], ['Blog', '/blog']].map(([l, h]) => (
+              <a key={l} href={h} style={{ fontSize: '12px', color: T.faint, textDecoration: 'none', transition: 'color .15s' }}
+                onMouseEnter={e => e.target.style.color = T.muted}
+                onMouseLeave={e => e.target.style.color = T.faint}>{l}</a>
+            ))}
+          </div>
+        </div>
+
+        {/* Legal */}
+        <div>
+          <div style={{ fontSize: '10px', fontWeight: 700, letterSpacing: '0.14em', textTransform: 'uppercase', color: `${T.blue}80`, marginBottom: '14px' }}>Legal</div>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '9px' }}>
+            {[['Security', '/security'], ['Contact', '/contact']].map(([l, h]) => (
+              <a key={l} href={h} style={{ fontSize: '12px', color: T.faint, textDecoration: 'none', transition: 'color .15s' }}
+                onMouseEnter={e => e.target.style.color = T.muted}
+                onMouseLeave={e => e.target.style.color = T.faint}>{l}</a>
+            ))}
+          </div>
         </div>
       </div>
     </div>

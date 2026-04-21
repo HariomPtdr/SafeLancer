@@ -8,7 +8,6 @@ const channels = [
   { icon: '💬', title: 'General Enquiries', email: 'hello@safelancer.in', desc: 'Questions about the platform, how escrow works, or anything else.' },
   { icon: '🛡️', title: 'Security', email: 'security@safelancer.in', desc: 'Report a vulnerability or security concern.' },
   { icon: '⚖️', title: 'Legal', email: 'legal@safelancer.in', desc: 'Legal notices, terms questions, or compliance matters.' },
-  { icon: '📰', title: 'Press', email: 'press@safelancer.in', desc: 'Media inquiries, interviews, and press kit requests.' },
 ]
 
 const inputStyle = {
@@ -17,14 +16,32 @@ const inputStyle = {
   outline: 'none', boxSizing: 'border-box', fontFamily: 'inherit',
 }
 
+const API = import.meta.env.VITE_API_URL || 'http://localhost:5000'
+
 export default function ContactPage() {
   const isMobile = useIsMobile()
   const [form, setForm] = useState({ name: '', email: '', subject: '', message: '' })
   const [sent, setSent] = useState(false)
+  const [loading, setLoading] = useState(false)
+  const [error, setError] = useState('')
 
-  const handleSubmit = e => {
+  const handleSubmit = async e => {
     e.preventDefault()
-    setSent(true)
+    setLoading(true)
+    setError('')
+    try {
+      const res = await fetch(`${API}/api/contact`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(form),
+      })
+      if (!res.ok) throw new Error('Failed to send')
+      setSent(true)
+    } catch {
+      setError('Something went wrong. Please try emailing us directly.')
+    } finally {
+      setLoading(false)
+    }
   }
 
   return (
@@ -80,8 +97,9 @@ export default function ContactPage() {
                 <label style={{ fontSize: '12px', color: T.muted, fontWeight: 600, display: 'block', marginBottom: '6px' }}>Message</label>
                 <textarea required rows={6} value={form.message} onChange={e => setForm({ ...form, message: e.target.value })} placeholder="Tell us more..." style={{ ...inputStyle, resize: 'vertical', minHeight: '140px' }} />
               </div>
-              <button type="submit" style={{ background: T.gradB, color: '#fff', border: 'none', borderRadius: '10px', padding: '13px', fontSize: '14px', fontWeight: 700, cursor: 'pointer', letterSpacing: '-0.01em' }}>
-                Send Message →
+              {error && <p style={{ fontSize: '13px', color: '#f87171', margin: 0 }}>{error}</p>}
+              <button type="submit" disabled={loading} style={{ background: T.gradB, color: '#fff', border: 'none', borderRadius: '10px', padding: '13px', fontSize: '14px', fontWeight: 700, cursor: loading ? 'not-allowed' : 'pointer', opacity: loading ? 0.7 : 1, letterSpacing: '-0.01em' }}>
+                {loading ? 'Sending...' : 'Send Message →'}
               </button>
             </form>
           )}

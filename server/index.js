@@ -41,6 +41,7 @@ app.use('/api/ratings', require('./routes/ratings'));
 app.use('/api/messages', require('./routes/messages'));
 app.use('/api/transactions', require('./routes/transactions'));
 app.use('/api/admin', require('./routes/admin'));
+app.use('/api/contact', require('./routes/contact'));
 
 app.get('/api/health', (req, res) => res.json({ status: 'ok', time: new Date() }));
 

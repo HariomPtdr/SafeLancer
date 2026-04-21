@@ -738,6 +738,61 @@ function PaymentsTab() {
   )
 }
 
+function ContactMessagesTab() {
+  const [msgs, setMsgs] = useState([])
+  const [loading, setLoading] = useState(true)
+  const [expanded, setExpanded] = useState(null)
+
+  useEffect(() => {
+    api.get('/api/contact')
+      .then(r => setMsgs(Array.isArray(r.data) ? r.data : []))
+      .catch(() => toast.error('Failed to load messages'))
+      .finally(() => setLoading(false))
+  }, [])
+
+  const markRead = async (id) => {
+    await api.patch(`/api/contact/${id}/read`)
+    setMsgs(prev => prev.map(m => m._id === id ? { ...m, read: true } : m))
+  }
+
+  if (loading) return (
+    <div className="flex justify-center py-8">
+      <div className="animate-spin h-6 w-6 border-2 border-t-transparent rounded-full"
+        style={{ borderColor: '#FF6803', borderTopColor: 'transparent' }} />
+    </div>
+  )
+
+  if (msgs.length === 0) return (
+    <div className="dark-card p-6 text-center text-sm" style={{ color: '#6b5445' }}>No contact messages yet.</div>
+  )
+
+  return (
+    <div className="space-y-3">
+      <h2 className="text-sm font-semibold mb-3" style={{ color: '#6b5445' }}>Contact Form Messages ({msgs.length})</h2>
+      {msgs.map(m => (
+        <div key={m._id} className="dark-card p-4"
+          style={{ borderLeft: m.read ? '3px solid rgba(255,104,3,0.15)' : '3px solid #FF6803', cursor: 'pointer' }}
+          onClick={() => { setExpanded(expanded === m._id ? null : m._id); if (!m.read) markRead(m._id) }}>
+          <div className="flex items-center justify-between gap-3 flex-wrap">
+            <div>
+              <span className="font-semibold text-white text-sm">{m.name}</span>
+              <span className="text-xs ml-2" style={{ color: '#6b5445' }}>{m.email}</span>
+              {!m.read && <span className="ml-2 text-xs px-1.5 py-0.5 rounded font-bold" style={{ background: 'rgba(255,104,3,0.15)', color: '#FF6803' }}>NEW</span>}
+            </div>
+            <span className="text-xs" style={{ color: '#6b5445' }}>{new Date(m.createdAt).toLocaleString()}</span>
+          </div>
+          <div className="text-sm mt-1" style={{ color: '#BFBFBF' }}>{m.subject}</div>
+          {expanded === m._id && (
+            <div className="mt-3 p-3 rounded-lg text-sm" style={{ background: 'rgba(255,255,255,0.03)', color: '#BFBFBF', whiteSpace: 'pre-wrap', lineHeight: 1.65 }}>
+              {m.message}
+            </div>
+          )}
+        </div>
+      ))}
+    </div>
+  )
+}
+
 export default function AdminDashboard() {
   const [activeTab, setActiveTab] = useState('verification')
   const [pendingFreelancers, setPendingFreelancers] = useState([])
@@ -837,6 +892,7 @@ export default function AdminDashboard() {
             { key: 'verification', label: `Verification${stats?.pendingVerifications > 0 ? ` (${stats.pendingVerifications})` : ''}` },
             { key: 'disputes', label: `Disputes${openDisputes.length > 0 ? ` (${openDisputes.length})` : ''}` },
             { key: 'payments', label: 'Payments' },
+            { key: 'messages', label: 'Messages' },
             { key: 'stats', label: 'Stats' },
           ].map(tab => (
             <button key={tab.key} onClick={() => setActiveTab(tab.key)}
@@ -1034,6 +1090,9 @@ export default function AdminDashboard() {
 
         {/* Tab: Payments */}
         {activeTab === 'payments' && <PaymentsTab />}
+
+        {/* Tab: Messages */}
+        {activeTab === 'messages' && <ContactMessagesTab />}
 
         {/* Tab: Stats */}
         {activeTab === 'stats' && stats && (

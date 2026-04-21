@@ -216,8 +216,8 @@ export default function LandingPage() {
         {/* Mobile nav dropdown */}
         {navOpen && (
           <div style={{ padding: '16px 6% 24px', borderTop: `1px solid ${T.border}`, background: 'rgba(4,4,12,0.96)', display: 'flex', flexDirection: 'column', gap: '8px' }}>
-            {[['How It Works','#how-it-works'],['Features','#features'],['Pricing','#pricing']].map(([l,h]) => (
-              <a key={l} href={h} onClick={() => setNavOpen(false)} style={{ display: 'block', padding: '12px 8px', fontSize: '15px', fontWeight: 500, color: T.muted, textDecoration: 'none' }}>{l}</a>
+            {[['How It Works','how-it-works'],['Features','features'],['Pricing','pricing']].map(([l,id]) => (
+              <a key={l} href={`#${id}`} onClick={e => { e.preventDefault(); setNavOpen(false); setTimeout(() => document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' }), 50) }} style={{ display: 'block', padding: '12px 8px', fontSize: '15px', fontWeight: 500, color: T.muted, textDecoration: 'none' }}>{l}</a>
             ))}
             <div style={{ display: 'flex', gap: '10px', marginTop: '8px' }}>
               <button onClick={() => { nav('/login'); setNavOpen(false) }} style={{ flex: 1, background: 'none', border: `1px solid ${T.border}`, fontSize: '13px', fontWeight: 500, color: T.muted, cursor: 'pointer', padding: '11px', borderRadius: '9px' }}>Log in</button>
@@ -277,23 +277,6 @@ export default function LandingPage() {
             </button>
           </div>
 
-          {/* Trust row */}
-          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '16px', marginTop: '24px', animation: 'i-blur .8s ease 3.7s both', flexWrap: 'wrap' }}>
-            <div style={{ display: 'flex' }}>
-              {[T.blue, T.violet, T.cyan, '#10B981'].map((c, i) => (
-                <div key={i} style={{ width: '32px', height: '32px', borderRadius: '50%', border: `2px solid ${T.bg}`, background: `${c}`, marginLeft: i ? '-10px' : '0', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '11px', fontWeight: 700, color: '#fff' }}>
-                  {['F','C','F','C'][i]}
-                </div>
-              ))}
-            </div>
-            <span style={{ fontSize: '13px', color: T.muted }}>
-              <strong style={{ color: T.text, fontWeight: 700 }}>1,247+</strong> contracts secured this month
-            </span>
-            <span style={{ width: '4px', height: '4px', borderRadius: '50%', background: T.muted }} />
-            <span style={{ fontSize: '13px', color: T.muted }}>
-              <strong style={{ color: '#10B981', fontWeight: 700 }}>₹2.4Cr</strong> in escrow
-            </span>
-          </div>
         </div>
 
         {/* Ticker — pinned inside hero at bottom */}

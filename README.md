@@ -227,20 +227,6 @@ Comprehensive documentation available in the [GitHub Wiki](https://github.com/Ha
 
 ---
 
-## Team
-
-Built during a hackathon by 6 developers:
-
-| Name |
-|------|
-| Hariom Patidar |
-| Divya Jain |
-| Harman Singh |
-| Khushal Patidar |
-| Harsh Patil |
-| Dimple Wadhwani |
-
----
 
 ## License
 

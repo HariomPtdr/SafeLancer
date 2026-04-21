@@ -73,7 +73,7 @@ export default function StaticLayout({ children, title, subtitle }) {
       <div style={{ borderTop: `1px solid ${T.border}`, padding: '32px 5%', display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '16px' }}>
         <span style={{ fontSize: '12px', color: T.faint }}>© 2025 SafeLancer. All rights reserved.</span>
         <div style={{ display: 'flex', gap: '20px', flexWrap: 'wrap' }}>
-          {[['Privacy', '/privacy'], ['Terms', '/terms'], ['Security', '/security'], ['Contact', '/contact']].map(([l, h]) => (
+          {[['Security', '/security'], ['Contact', '/contact']].map(([l, h]) => (
             <a key={l} href={h} style={{ fontSize: '12px', color: T.faint, textDecoration: 'none' }}
               onMouseEnter={e => e.target.style.color = T.muted}
               onMouseLeave={e => e.target.style.color = T.faint}>{l}</a>

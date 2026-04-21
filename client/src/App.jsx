@@ -43,10 +43,6 @@ import BannedPage from './pages/BannedPage'
 import LandingPage from './pages/LandingPage'
 import AboutPage from './pages/AboutPage'
 import BlogPage from './pages/BlogPage'
-import CareersPage from './pages/CareersPage'
-import PressPage from './pages/PressPage'
-import PrivacyPage from './pages/PrivacyPage'
-import TermsPage from './pages/TermsPage'
 import SecurityPage from './pages/SecurityPage'
 import ContactPage from './pages/ContactPage'
 import ThreeBackground from './components/ThreeBackground'
@@ -140,10 +136,6 @@ export default function App() {
         {/* Static pages */}
         <Route path="/about"    element={<AboutPage />} />
         <Route path="/blog"     element={<BlogPage />} />
-        <Route path="/careers"  element={<CareersPage />} />
-        <Route path="/press"    element={<PressPage />} />
-        <Route path="/privacy"  element={<PrivacyPage />} />
-        <Route path="/terms"    element={<TermsPage />} />
         <Route path="/security" element={<SecurityPage />} />
         <Route path="/contact"  element={<ContactPage />} />
 

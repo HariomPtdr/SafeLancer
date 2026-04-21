@@ -466,68 +466,67 @@ export default function LandingPage() {
       {/* ╔══════════════════════════════════════════════════════
           PRICING
       ══════════════════════════════════════════════════════╗ */}
-      <section id="pricing" style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '80px 6%', borderTop: `1px solid ${T.border}`, position: 'relative', overflow: 'hidden' }}>
+      <section id="pricing" style={{ height: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '0 6%', borderTop: `1px solid ${T.border}`, position: 'relative', overflow: 'hidden' }}>
         <div style={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%,-50%)', width: '900px', height: '600px', background: `radial-gradient(ellipse, ${T.blue}0a 0%, transparent 65%)`, pointerEvents: 'none', filter: 'blur(60px)' }} />
         <div style={{ position: 'absolute', inset: 0, background: `repeating-linear-gradient(0deg, transparent, transparent 39px, ${T.border}40 40px), repeating-linear-gradient(90deg, transparent, transparent 39px, ${T.border}40 40px)`, opacity: 0.2, pointerEvents: 'none', maskImage: 'radial-gradient(ellipse 80% 60% at 50% 50%, black 30%, transparent 100%)' }} />
 
         <div style={{ position: 'relative', maxWidth: '960px', margin: '0 auto', width: '100%' }}>
           <Reveal>
-            <p style={{ fontSize: '11px', fontWeight: 700, letterSpacing: '0.18em', textTransform: 'uppercase', color: T.blue, marginBottom: '16px', textAlign: 'center' }}>Simple Pricing</p>
-            <h2 style={{ fontWeight: 900, fontSize: 'clamp(36px,6vw,80px)', letterSpacing: '-0.06em', lineHeight: 0.92, color: T.text, marginBottom: '20px', textAlign: 'center' }}>
-              Only pay when<br />
-              <span style={{ background: T.gradB, WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>work is done.</span>
+            <p style={{ fontSize: '11px', fontWeight: 700, letterSpacing: '0.18em', textTransform: 'uppercase', color: T.blue, marginBottom: '8px', textAlign: 'center' }}>Simple Pricing</p>
+            <h2 style={{ fontWeight: 900, fontSize: 'clamp(28px,4.5vw,60px)', letterSpacing: '-0.06em', lineHeight: 0.95, color: T.text, marginBottom: '10px', textAlign: 'center' }}>
+              Only pay when <span style={{ background: T.gradB, WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>work is done.</span>
             </h2>
-            <p style={{ fontSize: '16px', color: T.muted, lineHeight: 1.7, maxWidth: '480px', margin: '0 auto 64px', textAlign: 'center' }}>
+            <p style={{ fontSize: '13px', color: T.muted, lineHeight: 1.6, maxWidth: '440px', margin: '0 auto 24px', textAlign: 'center' }}>
               No subscriptions. No setup fees. A small platform fee — split equally — only on successful transactions.
             </p>
           </Reveal>
 
           {/* Fee split cards */}
           <Reveal delay={80}>
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(260px,1fr))', gap: '16px', marginBottom: '24px' }}>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(220px,1fr))', gap: '12px', marginBottom: '14px' }}>
               {/* Client fee */}
-              <div style={{ background: 'rgba(255,104,3,0.06)', border: `1px solid ${T.blue}35`, borderRadius: '20px', padding: '36px 32px', textAlign: 'center' }}>
-                <div style={{ width: '48px', height: '48px', borderRadius: '14px', background: `${T.blue}18`, border: `1px solid ${T.blue}30`, display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 20px', fontSize: '22px' }}>💼</div>
-                <div style={{ fontSize: '11px', fontWeight: 700, letterSpacing: '0.14em', textTransform: 'uppercase', color: T.blue, marginBottom: '12px' }}>Client</div>
-                <div style={{ fontSize: 'clamp(52px,8vw,80px)', fontWeight: 900, letterSpacing: '-0.06em', lineHeight: 1, background: T.gradB, WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', marginBottom: '12px' }}>2%</div>
-                <p style={{ fontSize: '13px', color: T.muted, lineHeight: 1.65, margin: 0 }}>Deducted from the escrow amount when you fund a milestone. No hidden charges.</p>
+              <div style={{ background: 'rgba(255,104,3,0.06)', border: `1px solid ${T.blue}35`, borderRadius: '16px', padding: '20px 24px', textAlign: 'center' }}>
+                <div style={{ fontSize: '18px', marginBottom: '8px' }}>💼</div>
+                <div style={{ fontSize: '10px', fontWeight: 700, letterSpacing: '0.14em', textTransform: 'uppercase', color: T.blue, marginBottom: '6px' }}>Client</div>
+                <div style={{ fontSize: 'clamp(40px,6vw,64px)', fontWeight: 900, letterSpacing: '-0.06em', lineHeight: 1, background: T.gradB, WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', marginBottom: '8px' }}>2%</div>
+                <p style={{ fontSize: '12px', color: T.muted, lineHeight: 1.55, margin: 0 }}>Added when you fund a milestone. No hidden charges.</p>
               </div>
 
               {/* Plus divider */}
               <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '12px' }}>
-                  <div style={{ width: '48px', height: '48px', borderRadius: '50%', background: `${T.blue}10`, border: `1px solid ${T.blue}25`, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '22px', fontWeight: 900, color: T.blue }}>+</div>
-                  <span style={{ fontSize: '11px', color: T.faint, fontWeight: 600, letterSpacing: '0.1em', textTransform: 'uppercase' }}>Combined</span>
-                  <div style={{ fontSize: '28px', fontWeight: 900, letterSpacing: '-0.05em', color: T.text }}>4%</div>
-                  <span style={{ fontSize: '11px', color: T.faint }}>total platform fee</span>
+                <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '6px' }}>
+                  <div style={{ width: '40px', height: '40px', borderRadius: '50%', background: `${T.blue}10`, border: `1px solid ${T.blue}25`, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '18px', fontWeight: 900, color: T.blue }}>+</div>
+                  <span style={{ fontSize: '10px', color: T.faint, fontWeight: 600, letterSpacing: '0.1em', textTransform: 'uppercase' }}>Combined</span>
+                  <div style={{ fontSize: '24px', fontWeight: 900, letterSpacing: '-0.05em', color: T.text }}>4%</div>
+                  <span style={{ fontSize: '10px', color: T.faint }}>total fee</span>
                 </div>
               </div>
 
               {/* Freelancer fee */}
-              <div style={{ background: 'rgba(174,58,2,0.06)', border: `1px solid rgba(174,58,2,0.35)`, borderRadius: '20px', padding: '36px 32px', textAlign: 'center' }}>
-                <div style={{ width: '48px', height: '48px', borderRadius: '14px', background: 'rgba(174,58,2,0.15)', border: '1px solid rgba(174,58,2,0.30)', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 20px', fontSize: '22px' }}>🧑‍💻</div>
-                <div style={{ fontSize: '11px', fontWeight: 700, letterSpacing: '0.14em', textTransform: 'uppercase', color: '#AE3A02', marginBottom: '12px' }}>Freelancer</div>
-                <div style={{ fontSize: 'clamp(52px,8vw,80px)', fontWeight: 900, letterSpacing: '-0.06em', lineHeight: 1, background: 'linear-gradient(135deg,#AE3A02,#FF6803)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', marginBottom: '12px' }}>2%</div>
-                <p style={{ fontSize: '13px', color: T.muted, lineHeight: 1.65, margin: 0 }}>Deducted from your payout when the client approves your milestone delivery.</p>
+              <div style={{ background: 'rgba(174,58,2,0.06)', border: `1px solid rgba(174,58,2,0.35)`, borderRadius: '16px', padding: '20px 24px', textAlign: 'center' }}>
+                <div style={{ fontSize: '18px', marginBottom: '8px' }}>🧑‍💻</div>
+                <div style={{ fontSize: '10px', fontWeight: 700, letterSpacing: '0.14em', textTransform: 'uppercase', color: '#AE3A02', marginBottom: '6px' }}>Freelancer</div>
+                <div style={{ fontSize: 'clamp(40px,6vw,64px)', fontWeight: 900, letterSpacing: '-0.06em', lineHeight: 1, background: 'linear-gradient(135deg,#AE3A02,#FF6803)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', marginBottom: '8px' }}>2%</div>
+                <p style={{ fontSize: '12px', color: T.muted, lineHeight: 1.55, margin: 0 }}>Deducted from your payout when the client approves delivery.</p>
               </div>
             </div>
           </Reveal>
 
           {/* Example calculation */}
-          <Reveal delay={160}>
-            <div style={{ background: 'rgba(255,255,255,0.03)', border: `1px solid ${T.border}`, borderRadius: '16px', padding: '28px 32px', marginBottom: '48px' }}>
-              <p style={{ fontSize: '11px', fontWeight: 700, letterSpacing: '0.14em', textTransform: 'uppercase', color: T.faint, marginBottom: '20px', textAlign: 'center' }}>Example — ₹10,000 milestone</p>
-              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(160px,1fr))', gap: '0', background: T.border, borderRadius: '12px', overflow: 'hidden' }}>
+          <Reveal delay={140}>
+            <div style={{ background: 'rgba(255,255,255,0.03)', border: `1px solid ${T.border}`, borderRadius: '12px', padding: '16px 24px', marginBottom: '20px' }}>
+              <p style={{ fontSize: '10px', fontWeight: 700, letterSpacing: '0.14em', textTransform: 'uppercase', color: T.faint, marginBottom: '12px', textAlign: 'center' }}>Example — ₹10,000 milestone</p>
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4,1fr)', gap: '1px', background: T.border, borderRadius: '8px', overflow: 'hidden' }}>
                 {[
                   { label: 'Contract value', value: '₹10,000', color: T.text },
-                  { label: 'Client pays', value: '₹10,200', sub: '+2% = ₹200', color: T.blue },
-                  { label: 'Freelancer receives', value: '₹9,800', sub: '-2% = ₹200', color: '#10B981' },
-                  { label: 'Platform fee', value: '₹400', sub: '2% + 2%', color: T.faint },
+                  { label: 'Client pays', value: '₹10,200', sub: '+₹200', color: T.blue },
+                  { label: 'Freelancer gets', value: '₹9,800', sub: '-₹200', color: '#10B981' },
+                  { label: 'Platform fee', value: '₹400', sub: '2%+2%', color: T.faint },
                 ].map(item => (
-                  <div key={item.label} style={{ background: '#0B0501', padding: '20px', textAlign: 'center' }}>
-                    <div style={{ fontSize: '10px', color: T.faint, fontWeight: 600, letterSpacing: '0.08em', textTransform: 'uppercase', marginBottom: '8px' }}>{item.label}</div>
-                    <div style={{ fontSize: '20px', fontWeight: 800, color: item.color, letterSpacing: '-0.03em' }}>{item.value}</div>
-                    {item.sub && <div style={{ fontSize: '11px', color: T.faint, marginTop: '4px' }}>{item.sub}</div>}
+                  <div key={item.label} style={{ background: '#0B0501', padding: '14px 10px', textAlign: 'center' }}>
+                    <div style={{ fontSize: '9px', color: T.faint, fontWeight: 600, letterSpacing: '0.06em', textTransform: 'uppercase', marginBottom: '6px' }}>{item.label}</div>
+                    <div style={{ fontSize: '16px', fontWeight: 800, color: item.color, letterSpacing: '-0.03em' }}>{item.value}</div>
+                    {item.sub && <div style={{ fontSize: '10px', color: T.faint, marginTop: '3px' }}>{item.sub}</div>}
                   </div>
                 ))}
               </div>
@@ -535,15 +534,15 @@ export default function LandingPage() {
           </Reveal>
 
           {/* CTA */}
-          <Reveal delay={220} y={24}>
+          <Reveal delay={200} y={20}>
             <div style={{ textAlign: 'center' }}>
-              <button onClick={() => nav('/register')} style={{ background: T.gradB, color: '#fff', border: 'none', borderRadius: '14px', padding: '18px 48px', fontSize: '15px', fontWeight: 700, cursor: 'pointer', boxShadow: `0 8px 48px ${T.blue}50`, transition: 'transform .2s, box-shadow .2s', display: 'inline-flex', alignItems: 'center', gap: '10px' }}
-                onMouseEnter={e => { e.currentTarget.style.transform = 'translateY(-3px)'; e.currentTarget.style.boxShadow = `0 20px 60px ${T.blue}65` }}
-                onMouseLeave={e => { e.currentTarget.style.transform = ''; e.currentTarget.style.boxShadow = `0 8px 48px ${T.blue}50` }}>
+              <button onClick={() => nav('/register')} style={{ background: T.gradB, color: '#fff', border: 'none', borderRadius: '12px', padding: '14px 40px', fontSize: '14px', fontWeight: 700, cursor: 'pointer', boxShadow: `0 8px 40px ${T.blue}45`, transition: 'transform .2s, box-shadow .2s', display: 'inline-flex', alignItems: 'center', gap: '9px' }}
+                onMouseEnter={e => { e.currentTarget.style.transform = 'translateY(-3px)'; e.currentTarget.style.boxShadow = `0 20px 60px ${T.blue}60` }}
+                onMouseLeave={e => { e.currentTarget.style.transform = ''; e.currentTarget.style.boxShadow = `0 8px 40px ${T.blue}45` }}>
                 Start for Free — No subscription needed
-                <svg width="16" height="16" fill="none" viewBox="0 0 16 16"><path d="M3 8h10M8 3l5 5-5 5" stroke="#fff" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                <svg width="15" height="15" fill="none" viewBox="0 0 15 15"><path d="M3 7.5h9M7.5 3l4.5 4.5-4.5 4.5" stroke="#fff" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round"/></svg>
               </button>
-              <p style={{ fontSize: '12px', color: T.faint, marginTop: '14px' }}>Free to sign up · Pay only on successful transactions</p>
+              <p style={{ fontSize: '11px', color: T.faint, marginTop: '10px' }}>Free to sign up · Pay only on successful transactions</p>
             </div>
           </Reveal>
         </div>

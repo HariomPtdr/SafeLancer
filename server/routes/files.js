@@ -5,7 +5,7 @@ const crypto = require('crypto');
 const PDFDocument = require('pdfkit');
 const Milestone = require('../models/Milestone');
 const auth = require('../middleware/auth');
-const { uploadToImageKit } = require('../utils/imagekit');
+const { uploadToS3 } = require('../utils/s3');
 
 const upload = multer({ storage: multer.memoryStorage(), limits: { fileSize: 50 * 1024 * 1024 } });
 
@@ -15,7 +15,7 @@ router.post('/upload', auth, upload.single('file'), async (req, res) => {
     if (!req.file) return res.status(400).json({ message: 'No file uploaded' });
     const buffer = req.file.buffer;
     const fileHash = crypto.createHash('sha256').update(buffer).digest('hex');
-    const fileUrl = await uploadToImageKit(buffer, req.file.originalname, '/safelancer/files');
+    const fileUrl = await uploadToS3(buffer, req.file.originalname, 'files', req.file.mimetype);
     res.json({ fileHash, fileUrl, fileName: req.file.originalname, message: 'File uploaded and hashed' });
   } catch (err) {
     res.status(500).json({ message: 'Server error', error: err.message });

@@ -7,7 +7,7 @@ const Portfolio = require('../models/Portfolio');
 const auth = require('../middleware/auth');
 const { calcCompletion } = require('../utils/profileCompletion');
 const isTestMode = require('../utils/isTestMode');
-const { uploadToImageKit } = require('../utils/imagekit');
+const { uploadToS3 } = require('../utils/s3');
 
 function razorpayClient() {
   const Razorpay = require('razorpay');
@@ -75,7 +75,7 @@ router.post('/update', auth, async (req, res) => {
 router.post('/upload-avatar', auth, upload.single('avatar'), async (req, res) => {
   try {
     if (!req.file) return res.status(400).json({ message: 'No file uploaded' });
-    const avatarUrl = await uploadToImageKit(req.file.buffer, req.file.originalname, '/safelancer/avatars');
+    const avatarUrl = await uploadToS3(req.file.buffer, req.file.originalname, 'avatars', req.file.mimetype);
     const existing = await Portfolio.findOne({ user: req.user.id });
     const portfolio = await Portfolio.findOneAndUpdate(
       { user: req.user.id },
@@ -342,7 +342,7 @@ router.post('/upload-sample', auth, upload.single('file'), async (req, res) => {
     if (!req.file) return res.status(400).json({ message: 'No file uploaded' });
     const buffer = req.file.buffer;
     const fileHash = crypto.createHash('sha256').update(buffer).digest('hex');
-    const fileUrl = await uploadToImageKit(buffer, req.file.originalname, '/safelancer/samples');
+    const fileUrl = await uploadToS3(buffer, req.file.originalname, 'samples', req.file.mimetype);
     const sample = {
       title: req.body.title || req.file.originalname,
       description: req.body.description || '',
@@ -368,7 +368,7 @@ router.post('/upload-sample', auth, upload.single('file'), async (req, res) => {
 router.post('/upload-resume', auth, upload.single('resume'), async (req, res) => {
   try {
     if (!req.file) return res.status(400).json({ message: 'No file uploaded' });
-    const resumeUrl = await uploadToImageKit(req.file.buffer, req.file.originalname, '/safelancer/resumes');
+    const resumeUrl = await uploadToS3(req.file.buffer, req.file.originalname, 'resumes', req.file.mimetype);
     const portfolio = await Portfolio.findOneAndUpdate(
       { user: req.user.id },
       { $set: { resumeUrl } },

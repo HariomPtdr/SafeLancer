@@ -9,7 +9,7 @@ const Dispute = require('../models/Dispute');
 const auth = require('../middleware/auth');
 const { milestoneTransition } = require('../services/stateMachine');
 const { analyzeVideo } = require('../utils/realityDefender');
-const { uploadToImageKit } = require('../utils/imagekit');
+const { uploadToS3 } = require('../utils/s3');
 const { performRelease } = require('../services/releaseService');
 const isTestMode = require('../utils/isTestMode');
 
@@ -181,12 +181,12 @@ router.post('/:id/submit', auth, upload.fields([{ name: 'file', maxCount: 1 }, {
     if (files.file?.[0]) {
       const codeBuffer = files.file[0].buffer;
       milestone.submissionFileHash = crypto.createHash('sha256').update(codeBuffer).digest('hex');
-      milestone.submissionFileUrl = await uploadToImageKit(codeBuffer, files.file[0].originalname, '/safelancer/submissions');
+      milestone.submissionFileUrl = await uploadToS3(codeBuffer, files.file[0].originalname, 'submissions', files.file[0].mimetype);
     }
     if (files.video?.[0]) {
       const videoBuffer = files.video[0].buffer;
       milestone.submissionVideoHash = crypto.createHash('sha256').update(videoBuffer).digest('hex');
-      milestone.submissionVideoUrl = await uploadToImageKit(videoBuffer, files.video[0].originalname, '/safelancer/submissions');
+      milestone.submissionVideoUrl = await uploadToS3(videoBuffer, files.video[0].originalname, 'submissions', files.video[0].mimetype);
     }
     await milestone.save();
 
@@ -506,23 +506,25 @@ router.get('/file/:milestoneId/:type', async (req, res) => {
     const storedUrl = req.params.type === 'video' ? milestone.submissionVideoUrl : milestone.submissionFileUrl;
     if (!storedUrl) return res.status(404).json({ message: 'File not uploaded yet' });
 
-    // If it's a full URL (CDN / ImageKit), redirect to it
+    // S3 URL — generate a 1-hour presigned URL and redirect
     if (storedUrl.startsWith('http://') || storedUrl.startsWith('https://')) {
+      const { getPresignedUrl, S3_CONFIGURED } = require('../utils/s3');
+      if (S3_CONFIGURED) {
+        const signed = await getPresignedUrl(storedUrl, 3600);
+        return res.redirect(signed);
+      }
       return res.redirect(storedUrl);
     }
 
-    // Local file: serve from disk
+    // Local file fallback
     const path = require('path');
     const fs = require('fs');
-    const localPath = path.join(__dirname, '..', storedUrl); // storedUrl = /uploads/xxx
+    const localPath = path.join(__dirname, '..', storedUrl);
     if (!fs.existsSync(localPath)) {
       return res.status(404).json({ message: 'File not found on disk' });
     }
-
-    // Extract original filename from the stored path (strip timestamp prefix)
     const basename = path.basename(localPath);
     const originalName = basename.replace(/^\d+-/, '') || basename;
-
     res.setHeader('Content-Disposition', `attachment; filename="${originalName}"`);
     return res.sendFile(path.resolve(localPath));
   } catch (err) {

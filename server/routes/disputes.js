@@ -6,7 +6,7 @@ const Milestone = require('../models/Milestone');
 const auth = require('../middleware/auth');
 const { performRelease, performSplitRelease, performRefund } = require('../services/releaseService');
 const isTestMode = require('../utils/isTestMode');
-const { uploadToImageKit } = require('../utils/imagekit');
+const { uploadToS3 } = require('../utils/s3');
 
 const upload = multer({ storage: multer.memoryStorage(), limits: { fileSize: 20 * 1024 * 1024 } });
 
@@ -83,7 +83,7 @@ router.post('/:id/evidence-file', auth, upload.single('file'), async (req, res) 
     const dispute = await Dispute.findById(req.params.id);
     if (!dispute) return res.status(404).json({ message: 'Not found' });
     if (dispute.status !== 'open') return res.status(400).json({ message: 'Dispute already resolved' });
-    const fileUrl = req.file ? await uploadToImageKit(req.file.buffer, req.file.originalname, '/safelancer/evidence') : '';
+    const fileUrl = req.file ? await uploadToS3(req.file.buffer, req.file.originalname, 'evidence', req.file.mimetype) : '';
     dispute.evidence.push({
       submittedBy: req.user.id,
       description: req.body.description || req.file?.originalname || 'File evidence',

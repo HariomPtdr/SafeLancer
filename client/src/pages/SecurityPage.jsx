@@ -1,6 +1,6 @@
 import StaticLayout from '../components/StaticLayout'
 
-const T = { blue: '#FF6803', muted: '#BFBFBF', faint: '#6b5445', text: '#F5EDE4', border: 'rgba(255,104,3,0.15)', bg: 'rgba(255,104,3,0.05)' }
+const T = { blue: '#EA580C', muted: '#475569', faint: '#64748B', text: '#0F172A', border: '#E2E8F0', bg: '#FFF7ED' }
 
 const practices = [
   { icon: '🔐', title: 'SHA-256 Deliverable Hashing', body: 'Every file submitted through SafeLancer is cryptographically hashed using SHA-256. The hash is stored immutably — it\'s computationally infeasible to produce a collision. If a file changes even by one byte, the hash changes entirely.' },

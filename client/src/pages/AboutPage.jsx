@@ -1,7 +1,7 @@
 import StaticLayout from '../components/StaticLayout'
 import useIsMobile from '../utils/useIsMobile'
 
-const T = { blue: '#FF6803', muted: '#BFBFBF', faint: '#6b5445', text: '#F5EDE4', border: 'rgba(255,104,3,0.15)', bg: 'rgba(255,104,3,0.05)' }
+const T = { blue: '#EA580C', muted: '#475569', faint: '#64748B', text: '#0F172A', border: '#E2E8F0', bg: '#FFF7ED' }
 
 const values = [
   { icon: '🔐', title: 'Trust First', body: 'Every transaction on SafeLancer is backed by cryptographic escrow. Funds are locked before work begins — neither party can be cheated.' },

@@ -1,6 +1,6 @@
 import StaticLayout from '../components/StaticLayout'
 
-const T = { blue: '#FF6803', muted: '#BFBFBF', faint: '#6b5445', text: '#F5EDE4', border: 'rgba(255,104,3,0.15)', bg: 'rgba(255,104,3,0.05)' }
+const T = { blue: '#EA580C', muted: '#475569', faint: '#64748B', text: '#0F172A', border: '#E2E8F0', bg: '#FFF7ED' }
 
 const sections = [
   {
@@ -53,8 +53,8 @@ export default function TermsPage() {
     >
       <div style={{ maxWidth: '760px' }}>
         <div style={{ background: 'rgba(255,104,3,0.06)', border: '1px solid rgba(255,104,3,0.20)', borderRadius: '14px', padding: '20px 24px', marginBottom: '48px' }}>
-          <p style={{ fontSize: '13px', color: '#BFBFBF', margin: 0, lineHeight: 1.7 }}>
-            <strong style={{ color: '#FF6803' }}>Summary:</strong> SafeLancer holds payments in escrow until work is approved. We charge a 5% fee on successful transactions. Disputes are resolved by our team within 5 business days. Don't use the platform for fraud — we will terminate your account and involve authorities.
+          <p style={{ fontSize: '13px', color: '#475569', margin: 0, lineHeight: 1.7 }}>
+            <strong style={{ color: '#EA580C' }}>Summary:</strong> SafeLancer holds payments in escrow until work is approved. We charge a 5% fee on successful transactions. Disputes are resolved by our team within 5 business days. Don't use the platform for fraud — we will terminate your account and involve authorities.
           </p>
         </div>
 

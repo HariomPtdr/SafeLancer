@@ -1,7 +1,7 @@
 import StaticLayout from '../components/StaticLayout'
 import useIsMobile from '../utils/useIsMobile'
 
-const T = { blue: '#FF6803', muted: '#BFBFBF', faint: '#6b5445', text: '#F5EDE4', border: 'rgba(255,104,3,0.15)', bg: 'rgba(255,104,3,0.05)' }
+const T = { blue: '#EA580C', muted: '#475569', faint: '#64748B', text: '#0F172A', border: '#E2E8F0', bg: '#FFF7ED' }
 
 const perks = [
   { icon: '🌍', title: 'Fully Remote', body: 'Work from anywhere. We operate async-first and trust you to manage your time.' },
@@ -54,7 +54,7 @@ export default function CareersPage() {
         <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
           {openings.map(r => (
             <div key={r.title} style={{ background: T.bg, border: `1px solid ${T.border}`, borderRadius: '14px', padding: '24px 28px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '16px', transition: 'border-color .2s', cursor: 'pointer' }}
-              onMouseEnter={e => e.currentTarget.style.borderColor = '#FF6803'}
+              onMouseEnter={e => e.currentTarget.style.borderColor = '#EA580C'}
               onMouseLeave={e => e.currentTarget.style.borderColor = T.border}>
               <div>
                 <div style={{ fontSize: '10px', fontWeight: 700, color: T.blue, letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: '6px' }}>{r.dept}</div>

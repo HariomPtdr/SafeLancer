@@ -1,6 +1,6 @@
 import StaticLayout from '../components/StaticLayout'
 
-const T = { blue: '#FF6803', muted: '#BFBFBF', faint: '#6b5445', text: '#F5EDE4', border: 'rgba(255,104,3,0.15)', bg: 'rgba(255,104,3,0.05)' }
+const T = { blue: '#EA580C', muted: '#475569', faint: '#64748B', text: '#0F172A', border: '#E2E8F0', bg: '#FFF7ED' }
 
 const sections = [
   {
@@ -91,7 +91,7 @@ export default function PrivacyPage() {
           </section>
         ))}
 
-        <div style={{ background: 'rgba(255,104,3,0.05)', border: '1px solid rgba(255,104,3,0.15)', borderRadius: '14px', padding: '24px', marginTop: '16px' }}>
+        <div style={{ background: '#FFF7ED', border: '1px solid #E2E8F0', borderRadius: '14px', padding: '24px', marginTop: '16px' }}>
           <p style={{ fontSize: '13px', color: T.muted, margin: 0, lineHeight: 1.7 }}>
             This Privacy Policy is governed by the laws of India and complies with the Information Technology Act, 2000 and the Information Technology (Reasonable Security Practices and Procedures and Sensitive Personal Data or Information) Rules, 2011.
           </p>

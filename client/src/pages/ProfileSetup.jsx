@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react'
 import { useNavigate, Link } from 'react-router-dom'
 import api from '../api'
-import ProfileCoverCanvas from '../components/ProfileCoverCanvas'
 import Navbar from '../components/Navbar'
 import SkillSelector from '../components/SkillSelector'
 import toast from 'react-hot-toast'
@@ -290,7 +289,6 @@ function ProfileCard({ portfolio, user, fullUser, completion, onEdit, onCompleti
             borderRadius: '16px 16px 0 0',
             background: 'linear-gradient(135deg, #0f0400 0%, #1a0800 50%, #120600 100%)',
           }}>
-            <ProfileCoverCanvas />
           </div>
           <div className="px-5 pb-5" style={{ position: 'relative', zIndex: 1 }}>
             <div className="flex items-start justify-between -mt-8 mb-2">

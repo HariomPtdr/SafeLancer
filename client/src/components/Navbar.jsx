@@ -2,7 +2,6 @@ import { useState, useEffect, useRef, useCallback } from 'react'
 import { useNavigate, Link, useLocation } from 'react-router-dom'
 import { FREELANCER_BADGES, CLIENT_BADGES, BADGE_COLORS } from '../utils/badges'
 import api from '../api'
-import NavbarCanvas from './NavbarCanvas'
 import { LogoMark } from './SafeLancerLogo'
 
 export default function Navbar() {
@@ -104,8 +103,6 @@ export default function Navbar() {
 
   return (
     <div className="sticky top-0 z-50" style={{ position: 'relative' }}>
-      {/* 3D data-stream canvas — sits behind all nav content */}
-      <NavbarCanvas />
       <nav
         className="px-6 py-3 flex items-center justify-between"
         style={{
@@ -122,10 +119,10 @@ export default function Navbar() {
           onMouseEnter={e => e.currentTarget.style.opacity = '0.82'}
           onMouseLeave={e => e.currentTarget.style.opacity = '1'}>
           <LogoMark size={22} />
-          <span className="text-base font-bold tracking-tight navbar-logo-text" style={{ color: '#F5EDE4' }}>SafeLancer</span>
+          <span className="text-base font-bold tracking-tight" style={{ color: '#F5EDE4' }}>SafeLancer</span>
           <span
             className="text-[9px] px-1.5 py-0.5 rounded font-semibold tracking-wider uppercase"
-            style={{ background: 'rgba(255,104,3,0.14)', color: '#BFBFBF', border: '1px solid rgba(255,104,3,0.25)', animation: 'badge-pulse 2.8s ease-in-out infinite' }}
+            style={{ background: 'rgba(255,104,3,0.14)', color: '#BFBFBF', border: '1px solid rgba(255,104,3,0.25)' }}
           >
             Beta
           </span>
@@ -362,7 +359,6 @@ export default function Navbar() {
         )}
       </nav>
       {/* Animated bottom glow sweep */}
-      <div className="nav-glow-line" />
 
       {/* Mobile drawer */}
       {mobileOpen && user && (

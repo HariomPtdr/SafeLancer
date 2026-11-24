@@ -2,7 +2,7 @@ import { useState } from 'react'
 import StaticLayout from '../components/StaticLayout'
 import useIsMobile from '../utils/useIsMobile'
 
-const T = { blue: '#FF6803', muted: '#BFBFBF', faint: '#6b5445', text: '#F5EDE4', border: 'rgba(255,104,3,0.15)', bg: 'rgba(255,104,3,0.05)', gradB: 'linear-gradient(135deg,#FF6803,#AE3A02)' }
+const T = { blue: '#EA580C', muted: '#475569', faint: '#64748B', text: '#0F172A', border: '#E2E8F0', bg: '#FFF7ED', gradB: 'linear-gradient(135deg,#FF6803,#AE3A02)' }
 
 const channels = [
   { icon: '💬', title: 'General Enquiries', email: 'hello@safelancer.in', desc: 'Questions about the platform, how escrow works, or anything else.' },
@@ -11,8 +11,8 @@ const channels = [
 ]
 
 const inputStyle = {
-  width: '100%', background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,104,3,0.15)',
-  borderRadius: '10px', padding: '12px 16px', fontSize: '14px', color: '#F5EDE4',
+  width: '100%', background: 'rgba(15,23,42,0.03)', border: '1px solid #E2E8F0',
+  borderRadius: '10px', padding: '12px 16px', fontSize: '14px', color: '#0F172A',
   outline: 'none', boxSizing: 'border-box', fontFamily: 'inherit',
 }
 

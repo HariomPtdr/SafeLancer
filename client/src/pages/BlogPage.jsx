@@ -1,7 +1,7 @@
 import StaticLayout from '../components/StaticLayout'
 import { useNavigate } from 'react-router-dom'
 
-const T = { blue: '#FF6803', muted: '#BFBFBF', faint: '#6b5445', text: '#F5EDE4', border: 'rgba(255,104,3,0.15)', bg: 'rgba(255,104,3,0.05)' }
+const T = { blue: '#EA580C', muted: '#475569', faint: '#64748B', text: '#0F172A', border: '#E2E8F0', bg: '#FFF7ED' }
 
 const posts = [
   {
@@ -36,7 +36,7 @@ const posts = [
   },
 ]
 
-const tagColors = { Product: '#FF6803', Guide: '#10B981', Industry: '#AE3A02', Engineering: '#BFBFBF' }
+const tagColors = { Product: '#EA580C', Guide: '#10B981', Industry: '#AE3A02', Engineering: '#475569' }
 
 export default function BlogPage() {
   const nav = useNavigate()
@@ -47,7 +47,7 @@ export default function BlogPage() {
     >
       {/* Featured post */}
       <div style={{ background: T.bg, border: `1px solid ${T.border}`, borderRadius: '20px', padding: '48px', marginBottom: '48px', cursor: 'pointer' }}
-        onMouseEnter={e => e.currentTarget.style.borderColor = '#FF6803'}
+        onMouseEnter={e => e.currentTarget.style.borderColor = '#EA580C'}
         onMouseLeave={e => e.currentTarget.style.borderColor = T.border}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '20px' }}>
           <span style={{ fontSize: '10px', fontWeight: 700, letterSpacing: '0.12em', textTransform: 'uppercase', color: T.blue, background: `${T.blue}18`, padding: '4px 10px', borderRadius: '999px', border: `1px solid ${T.blue}30` }}>Featured</span>
@@ -62,7 +62,7 @@ export default function BlogPage() {
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(300px,1fr))', gap: '20px' }}>
         {posts.slice(1).map(p => (
           <div key={p.title} style={{ background: T.bg, border: `1px solid ${T.border}`, borderRadius: '16px', padding: '28px', cursor: 'pointer', transition: 'border-color .2s' }}
-            onMouseEnter={e => e.currentTarget.style.borderColor = '#FF6803'}
+            onMouseEnter={e => e.currentTarget.style.borderColor = '#EA580C'}
             onMouseLeave={e => e.currentTarget.style.borderColor = T.border}>
             <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '14px' }}>
               <span style={{ fontSize: '10px', fontWeight: 700, letterSpacing: '0.1em', textTransform: 'uppercase', color: tagColors[p.tag], background: `${tagColors[p.tag]}18`, padding: '3px 9px', borderRadius: '999px', border: `1px solid ${tagColors[p.tag]}30` }}>{p.tag}</span>
@@ -80,7 +80,7 @@ export default function BlogPage() {
         <h3 style={{ fontWeight: 900, fontSize: '28px', letterSpacing: '-0.05em', color: T.text, margin: '0 0 10px' }}>Stay in the loop.</h3>
         <p style={{ fontSize: '14px', color: T.muted, margin: '0 0 28px' }}>Get new articles on freelancing and escrow delivered to your inbox.</p>
         <div style={{ display: 'flex', gap: '10px', justifyContent: 'center', maxWidth: '420px', margin: '0 auto' }}>
-          <input type="email" placeholder="you@email.com" style={{ flex: 1, background: 'rgba(255,255,255,0.05)', border: `1px solid ${T.border}`, borderRadius: '10px', padding: '11px 16px', fontSize: '13px', color: T.text, outline: 'none' }} />
+          <input type="email" placeholder="you@email.com" style={{ flex: 1, background: 'rgba(15,23,42,0.04)', border: `1px solid ${T.border}`, borderRadius: '10px', padding: '11px 16px', fontSize: '13px', color: T.text, outline: 'none' }} />
           <button style={{ background: 'linear-gradient(135deg,#FF6803,#AE3A02)', color: '#fff', border: 'none', borderRadius: '10px', padding: '11px 22px', fontSize: '13px', fontWeight: 600, cursor: 'pointer', whiteSpace: 'nowrap' }}>Subscribe</button>
         </div>
       </div>

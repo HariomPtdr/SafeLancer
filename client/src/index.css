@@ -253,17 +253,7 @@ select.dark-input { padding-right: 32px; }
 }
 .stepper-dot.done { background: #22c55e; border-color: #22c55e; }
 
-/* ─── Custom cursor: hide native ─────────────────── */
-*, *::before, *::after { cursor: none !important; }
 
-/* ─── Navbar logo glitch ─────────────────────────── */
-@keyframes glitch-shift {
-  0%,92%,100% { text-shadow: none; clip-path: none; }
-  93% { text-shadow: -2px 0 #FF6803, 2px 0 #AE3A02; clip-path: inset(30% 0 40% 0); }
-  95% { text-shadow:  2px 0 #BFBFBF,-2px 0 #FF6803;  clip-path: inset(60% 0 20% 0); }
-  97% { text-shadow: -1px 0 #AE3A02, 1px 0 #BFBFBF;  clip-path: inset(10% 0 70% 0); }
-}
-.navbar-logo-text { animation: glitch-shift 6s steps(1) infinite; }
 
 /* ─── Navbar badge pulse ─────────────────────────── */
 @keyframes badge-pulse {
@@ -271,23 +261,6 @@ select.dark-input { padding-right: 32px; }
   50%     { box-shadow: 0 0 10px rgba(255,104,3,0.6); }
 }
 
-/* ─── Navbar bottom glow sweep ───────────────────── */
-@keyframes nav-glow-sweep {
-  0%   { background-position: -100% 0; }
-  100% { background-position: 200% 0; }
-}
-.nav-glow-line {
-  height: 1px;
-  background: linear-gradient(90deg,
-    transparent 0%,
-    rgba(255,104,3,0.08) 20%,
-    rgba(191,191,191,0.65) 50%,
-    rgba(255,104,3,0.08) 80%,
-    transparent 100%
-  );
-  background-size: 200% 100%;
-  animation: nav-glow-sweep 3.5s linear infinite;
-}
 
 /* ─── Navbar link underline ──────────────────────── */
 .nav-link-wrap { position: relative; }
@@ -319,12 +292,6 @@ select.dark-input { padding-right: 32px; }
   filter: drop-shadow(0 0 20px rgba(255,104,3,0.4));
 }
 
-/* ═══════════════════════════════════════════════════════
-   TOUCH / MOBILE — restore native cursor
-═══════════════════════════════════════════════════════ */
-@media (hover: none), (pointer: coarse) {
-  *, *::before, *::after { cursor: auto !important; }
-}
 
 /* ═══════════════════════════════════════════════════════
    RESPONSIVE — mobile overrides (≤ 768px)
@@ -394,3 +361,31 @@ select.dark-input { padding-right: 32px; }
   .max-w-md { max-width: 100% !important; }
   .rounded-2xl.p-8 { padding: 20px !important; }
 }
+
+/* ═══════════════════════════════════════════════════════
+   LIGHT UI — public pages (landing, auth, static)
+═══════════════════════════════════════════════════════ */
+.light-ui { background: #ffffff; color: #0f172a; }
+.light-ui input::placeholder,
+.light-ui textarea::placeholder { color: #94a3b8 !important; }
+.input-light {
+  width: 100%;
+  background: #ffffff;
+  border: 1px solid #cbd5e1;
+  color: #0f172a;
+  border-radius: 8px;
+  padding: 10px 12px;
+  font-size: 14px;
+  line-height: 1.5;
+  outline: none;
+  transition: border-color .15s, box-shadow .15s;
+}
+.input-light:focus { border-color: #ea580c; box-shadow: 0 0 0 3px rgba(234,88,12,.15); }
+.btn-primary {
+  display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+  width: 100%; padding: 10px 16px; border-radius: 8px;
+  background: #ea580c; color: #fff; font-size: 14px; font-weight: 600;
+  transition: background-color .15s;
+}
+.btn-primary:hover:not(:disabled) { background: #c2410c; }
+.btn-primary:disabled { opacity: .55; cursor: not-allowed; }

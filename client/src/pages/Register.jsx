@@ -1,8 +1,8 @@
 import { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useSearchParams } from 'react-router-dom'
 import api from '../api'
 import toast from 'react-hot-toast'
-import { LogoMark } from '../components/SafeLancerLogo'
+import AuthShell, { GoogleButton, Divider } from '../components/marketing/AuthShell'
 
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5001'
 
@@ -23,8 +23,8 @@ function getPasswordStrength(password) {
 const ROLES = [
   {
     value: 'client',
-    label: 'Client',
-    sub: 'I hire talent',
+    label: "I'm a client",
+    sub: 'Hiring for a project',
     icon: (
       <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M20 7H4a2 2 0 00-2 2v10a2 2 0 002 2h16a2 2 0 002-2V9a2 2 0 00-2-2zM16 3H8a2 2 0 00-2 2v2h12V5a2 2 0 00-2-2z"/>
@@ -33,8 +33,8 @@ const ROLES = [
   },
   {
     value: 'freelancer',
-    label: 'Freelancer',
-    sub: 'I do the work',
+    label: "I'm a freelancer",
+    sub: 'Looking for work',
     icon: (
       <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17H3a2 2 0 01-2-2V5a2 2 0 012-2h14a2 2 0 012 2v10a2 2 0 01-2 2h-2"/>
@@ -45,8 +45,10 @@ const ROLES = [
 
 export default function Register() {
   const navigate = useNavigate()
-  const [step, setStep] = useState('role')
-  const [role, setRole] = useState('')
+  const [params] = useSearchParams()
+  const presetRole = ['client', 'freelancer'].includes(params.get('role')) ? params.get('role') : ''
+  const [step, setStep] = useState(presetRole ? 'form' : 'role')
+  const [role, setRole] = useState(presetRole)
   const [form, setForm] = useState({
     name: '', email: '', password: '', confirmPassword: '',
     linkedin: '', github: '', portfolio: ''
@@ -131,277 +133,153 @@ export default function Register() {
     }
   }
 
-  const cx = exiting ? 'auth-card-exit' : 'auth-card-enter'
-  const hx = exiting ? 'auth-head-exit' : 'auth-head-enter'
+  const pwToggle = (shown, toggle) => (
+    <button type="button" onClick={toggle}
+      className="absolute right-3 top-1/2 -translate-y-1/2 text-xs font-semibold text-slate-500 hover:text-slate-800">
+      {shown ? 'Hide' : 'Show'}
+    </button>
+  )
 
-  const cardStyle = {
-    background: 'rgba(18,10,2,0.85)',
-    backdropFilter: 'blur(28px) saturate(1.5)',
-    WebkitBackdropFilter: 'blur(28px) saturate(1.5)',
-    border: '1px solid rgba(255,104,3,0.16)',
-    boxShadow: '0 24px 80px rgba(0,0,0,0.6), 0 0 40px rgba(255,104,3,0.08), inset 0 1px 0 rgba(255,255,255,0.06)',
-  }
+  const footer = (
+    <p className="mt-8 text-center text-sm text-slate-600">
+      Already have an account?{' '}
+      <button type="button" onClick={() => goTo('/login')} className="font-semibold text-orange-700 hover:underline underline-offset-4">
+        Log in
+      </button>
+    </p>
+  )
 
   if (step === 'role') {
     return (
-      <div className="min-h-screen flex flex-col items-center justify-center p-4" style={{ background: 'transparent' }}>
-<div className={`mb-8 text-center relative z-10 ${hx}`}>
-          <div className="flex items-center justify-center gap-2.5 mb-3">
-            <div style={{ filter: 'drop-shadow(0 0 10px rgba(255,104,3,0.55))' }}><LogoMark size={34} /></div>
-            <span className="text-2xl font-bold tracking-tight" style={{ background: 'linear-gradient(135deg,#FF6803,#AE3A02)', WebkitBackgroundClip: 'text', WebkitTextFillColor: "transparent" }}>SafeLancer</span>
-          </div>
-          <div className="text-sm" style={{ color: '#6b5445' }}>Escrow-protected freelancing</div>
-        </div>
+      <AuthShell exiting={exiting}>
+        <h1 className="text-2xl font-bold tracking-tight text-slate-900">Join SafeLancer</h1>
+        <p className="mt-1.5 text-sm text-slate-600">How do you want to use SafeLancer?</p>
 
-        <div className={`relative z-10 rounded-2xl p-8 w-full max-w-md ${cx}`} style={cardStyle}>
-          <h1 className="text-lg font-semibold text-white mb-1">Join SafeLancer</h1>
-          <p className="text-sm mb-6" style={{ color: '#BFBFBF' }}>How do you want to use SafeLancer?</p>
-
-          <div className="grid grid-cols-2 gap-3 mb-6">
-            {ROLES.map(({ value, label, sub, icon }) => (
+        <div className="mt-8 grid grid-cols-2 gap-3" role="radiogroup">
+          {ROLES.map(({ value, label, sub, icon }) => {
+            const on = role === value
+            return (
               <button
                 key={value}
                 type="button"
+                role="radio"
+                aria-checked={on}
                 onClick={() => setRole(value)}
-                className="p-4 rounded-xl text-left transition-all"
-                style={{
-                  background: role === value ? 'rgba(255,104,3,0.12)' : '#120a02',
-                  border: role === value ? '1.5px solid #FF6803' : '1px solid rgba(255,104,3,0.10)',
-                  boxShadow: role === value ? '0 0 20px rgba(255,104,3,0.14)' : 'none',
-                }}
+                className={`relative rounded-xl border p-4 text-left transition-colors ${on ? 'border-orange-600 bg-orange-50 ring-1 ring-orange-600' : 'border-slate-300 bg-white hover:border-slate-400'}`}
               >
-                <div className="mb-2.5" style={{ color: role === value ? '#FF6803' : '#6b5445' }}>
-                  {icon}
-                </div>
-                <div className="text-sm font-semibold" style={{ color: role === value ? '#fff' : '#BFBFBF' }}>
-                  {label}
-                </div>
-                <div className="text-xs mt-0.5" style={{ color: role === value ? '#BFBFBF' : '#6b5445' }}>
-                  {sub}
-                </div>
+                <span className={`absolute right-3 top-3 h-4 w-4 rounded-full border ${on ? 'border-[5px] border-orange-600' : 'border-slate-300'}`} />
+                <div className={on ? 'text-orange-600' : 'text-slate-500'}>{icon}</div>
+                <div className="mt-3 text-sm font-semibold text-slate-900">{label}</div>
+                <div className="mt-0.5 text-xs text-slate-500">{sub}</div>
               </button>
-            ))}
-          </div>
-
-          <button onClick={handleContinue} className="btn-purple w-full py-2.5 text-sm">
-            Continue →
-          </button>
-
-          <p className="mt-5 text-center text-sm" style={{ color: '#6b5445' }}>
-            Already have an account?{' '}
-            <button
-              type="button"
-              onClick={() => goTo('/login')}
-              className="font-semibold hover:underline underline-offset-2"
-              style={{ color: '#BFBFBF' }}
-            >
-              Sign in
-            </button>
-          </p>
+            )
+          })}
         </div>
-      </div>
+
+        <button onClick={handleContinue} disabled={!role} className="btn-primary mt-6">
+          {role === 'freelancer' ? 'Apply as a freelancer' : role === 'client' ? 'Join as a client' : 'Create account'}
+        </button>
+        {footer}
+      </AuthShell>
     )
   }
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center p-4 py-10" style={{ background: 'transparent' }}>
-      <div className="fixed inset-0 overflow-hidden pointer-events-none">
-        <div
-          className="animate-orb absolute w-[500px] h-[500px] rounded-full opacity-15"
-          style={{ background: 'radial-gradient(circle, #FF6803 0%, transparent 70%)', top: '-150px', right: '-100px' }}
-        />
+    <AuthShell exiting={exiting}>
+      <div className="flex items-center justify-between">
+        <h1 className="text-2xl font-bold tracking-tight text-slate-900">Create your account</h1>
+        <button type="button" onClick={() => setStep('role')} className="text-sm font-semibold text-orange-700 hover:underline underline-offset-4">
+          Change role
+        </button>
       </div>
+      <p className="mt-1.5 text-sm text-slate-600">
+        Signing up as a <span className="font-semibold text-slate-900">{role}</span>
+      </p>
 
-      <div className={`mb-8 text-center relative z-10 ${hx}`}>
-        <div className="flex items-center justify-center gap-2.5 mb-2">
-          <div style={{ filter: 'drop-shadow(0 0 10px rgba(255,104,3,0.55))' }}><LogoMark size={34} /></div>
-          <span className="text-2xl font-bold text-white tracking-tight">SafeLancer</span>
-        </div>
-        <div className="text-sm" style={{ color: '#BFBFBF' }}>Create your account</div>
-      </div>
+      {role === 'client' && (
+        <>
+          <div className="mt-8">
+            <GoogleButton href={`${API_URL}/api/auth/google?role=client`}>Sign up with Google</GoogleButton>
+          </div>
+          <Divider>or sign up with email</Divider>
+        </>
+      )}
 
-      <div className={`relative z-10 rounded-2xl p-8 w-full max-w-md ${cx}`} style={cardStyle}>
-        <div className="flex items-center justify-between mb-1">
-          <h1 className="text-lg font-semibold text-white">Create an account</h1>
-          <button
-            type="button"
-            onClick={() => setStep('role')}
-            className="flex items-center gap-1 text-xs transition-colors"
-            style={{ color: '#BFBFBF' }}
-          >
-            <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7"/>
-            </svg>
-            Change
-          </button>
+      <form onSubmit={handleSubmit} className={`space-y-4 ${role === 'client' ? '' : 'mt-8'}`}>
+        <div>
+          <label htmlFor="name" className="mb-1.5 block text-sm font-medium text-slate-700">Full name</label>
+          <input id="name" type="text" required autoComplete="name" value={form.name}
+            onChange={e => setForm({ ...form, name: e.target.value })} className="input-light" placeholder="Your name" />
         </div>
-        <p className="text-sm mb-6" style={{ color: '#BFBFBF' }}>
-          Signing up as a{' '}
-          <span className="font-medium capitalize" style={{ color: '#BFBFBF' }}>{role}</span>
-        </p>
-        <form onSubmit={handleSubmit} className="space-y-4">
-          <div>
-            <label className="block text-sm font-medium mb-1.5" style={{ color: '#BFBFBF' }}>Name</label>
-            <input
-              type="text"
-              required
-              value={form.name}
-              onChange={e => setForm({ ...form, name: e.target.value })}
-              className="dark-input w-full px-3 py-2.5 text-sm"
-              placeholder="Your name"
-            />
+        <div>
+          <label htmlFor="email" className="mb-1.5 block text-sm font-medium text-slate-700">Email</label>
+          <input id="email" type="email" required autoComplete="email" value={form.email}
+            onChange={e => setForm({ ...form, email: e.target.value })} className="input-light" placeholder="you@company.com" />
+        </div>
+        <div>
+          <label htmlFor="password" className="mb-1.5 block text-sm font-medium text-slate-700">Password</label>
+          <div className="relative">
+            <input id="password" type={showPassword ? 'text' : 'password'} required autoComplete="new-password" value={form.password}
+              onChange={e => setForm({ ...form, password: e.target.value })} className="input-light pr-16" placeholder="At least 8 characters" />
+            {pwToggle(showPassword, () => setShowPassword(!showPassword))}
           </div>
-          <div>
-            <label className="block text-sm font-medium mb-1.5" style={{ color: '#BFBFBF' }}>Email</label>
-            <input
-              type="email"
-              required
-              value={form.email}
-              onChange={e => setForm({ ...form, email: e.target.value })}
-              className="dark-input w-full px-3 py-2.5 text-sm"
-              placeholder="you@company.com"
-            />
-          </div>
-          <div>
-            <label className="block text-sm font-medium mb-1.5" style={{ color: '#BFBFBF' }}>Password</label>
-            <div className="relative">
-              <input
-                type={showPassword ? 'text' : 'password'}
-                required
-                value={form.password}
-                onChange={e => setForm({ ...form, password: e.target.value })}
-                className="dark-input w-full px-3 py-2.5 pr-14 text-sm"
-                placeholder="Min 8 characters"
-              />
-              <button
-                type="button"
-                onClick={() => setShowPassword(!showPassword)}
-                className="absolute right-3 top-1/2 -translate-y-1/2 text-xs font-medium"
-                style={{ color: '#BFBFBF' }}
-              >
-                {showPassword ? 'Hide' : 'Show'}
-              </button>
-            </div>
-            {form.password && (
-              <div className="mt-2 space-y-1">
-                <div className="flex gap-1">
-                  {[1, 2, 3, 4, 5].map(i => (
-                    <div
-                      key={i}
-                      className="h-1 flex-1 rounded-full transition-all duration-300"
-                      style={{ background: i <= strength.score ? strength.color : 'rgba(255,104,3,0.10)' }}
-                    />
-                  ))}
-                </div>
-                {strength.label && (
-                  <p className="text-xs" style={{ color: strength.color }}>{strength.label}</p>
-                )}
+          {form.password ? (
+            <div className="mt-2">
+              <div className="flex gap-1">
+                {[1, 2, 3, 4, 5].map(i => (
+                  <div key={i} className="h-1 flex-1 rounded-full transition-colors"
+                    style={{ background: i <= strength.score ? strength.color : '#e2e8f0' }} />
+                ))}
               </div>
-            )}
-          </div>
-          <div>
-            <label className="block text-sm font-medium mb-1.5" style={{ color: '#BFBFBF' }}>Confirm Password</label>
-            <div className="relative">
-              <input
-                type={showConfirm ? 'text' : 'password'}
-                required
-                value={form.confirmPassword}
-                onChange={e => setForm({ ...form, confirmPassword: e.target.value })}
-                className="dark-input w-full px-3 py-2.5 pr-14 text-sm"
-                style={{
-                  borderColor: form.confirmPassword
-                    ? form.password !== form.confirmPassword
-                      ? '#ef4444'
-                      : '#22c55e'
-                    : undefined
-                }}
-                placeholder="Repeat password"
-              />
-              <button
-                type="button"
-                onClick={() => setShowConfirm(!showConfirm)}
-                className="absolute right-3 top-1/2 -translate-y-1/2 text-xs font-medium"
-                style={{ color: '#BFBFBF' }}
-              >
-                {showConfirm ? 'Hide' : 'Show'}
-              </button>
+              {strength.label && <p className="mt-1 text-xs font-medium" style={{ color: strength.color }}>{strength.label}</p>}
             </div>
-            {form.confirmPassword && form.password !== form.confirmPassword && (
-              <p className="text-xs mt-1" style={{ color: '#ef4444' }}>Passwords do not match</p>
-            )}
-          </div>
-
-          {role === 'freelancer' && (
-            <div className="space-y-3 pt-4 mt-2" style={{ borderTop: '1px solid rgba(255,104,3,0.06)' }}>
-              <p className="text-xs font-medium" style={{ color: '#6b5445' }}>
-                Verification (optional but recommended)
-              </p>
-              {[
-                { key: 'linkedin', label: 'LinkedIn Profile URL', placeholder: 'https://linkedin.com/in/username' },
-                { key: 'github', label: 'GitHub Profile URL', placeholder: 'https://github.com/username' },
-                { key: 'portfolio', label: 'Portfolio / Website URL', placeholder: 'https://yourportfolio.com' },
-              ].map(({ key, label, placeholder }) => (
-                <div key={key}>
-                  <label className="block text-xs mb-1" style={{ color: '#BFBFBF' }}>{label}</label>
-                  <input
-                    type="url"
-                    value={form[key]}
-                    onChange={e => setForm({ ...form, [key]: e.target.value })}
-                    placeholder={placeholder}
-                    className="dark-input w-full px-3 py-2 text-sm"
-                  />
-                </div>
-              ))}
-            </div>
+          ) : (
+            <p className="mt-1.5 text-xs text-slate-500">Use uppercase, lowercase, a number and a symbol.</p>
           )}
+        </div>
+        <div>
+          <label htmlFor="confirm" className="mb-1.5 block text-sm font-medium text-slate-700">Confirm password</label>
+          <div className="relative">
+            <input id="confirm" type={showConfirm ? 'text' : 'password'} required autoComplete="new-password" value={form.confirmPassword}
+              onChange={e => setForm({ ...form, confirmPassword: e.target.value })}
+              className="input-light pr-16"
+              style={{ borderColor: form.confirmPassword ? (form.password !== form.confirmPassword ? '#ef4444' : '#22c55e') : undefined }}
+              placeholder="Repeat password" />
+            {pwToggle(showConfirm, () => setShowConfirm(!showConfirm))}
+          </div>
+          {form.confirmPassword && form.password !== form.confirmPassword && (
+            <p className="mt-1 text-xs text-red-600">Passwords do not match</p>
+          )}
+        </div>
 
-          <button type="submit" disabled={loading} className="btn-purple w-full py-2.5 text-sm mt-2">
-            {loading ? 'Creating account…' : 'Sign up'}
-          </button>
-        </form>
-
-        {role === 'client' && (
-          <>
-            <div className="flex items-center gap-3 my-5">
-              <div className="flex-1 h-px" style={{ background: 'rgba(255,104,3,0.06)' }} />
-              <span className="text-xs" style={{ color: '#6b5445' }}>or sign up with Google</span>
-              <div className="flex-1 h-px" style={{ background: 'rgba(255,104,3,0.06)' }} />
+        {role === 'freelancer' && (
+          <div className="space-y-3 border-t border-slate-200 pt-5">
+            <div>
+              <p className="text-sm font-semibold text-slate-900">Verification links</p>
+              <p className="mt-0.5 text-xs text-slate-500">Optional, but they help an admin approve your profile faster.</p>
             </div>
-
-            <a
-              href={`${API_URL}/api/auth/google?role=client`}
-              className="w-full flex items-center justify-center gap-2.5 rounded-xl py-2.5 text-sm font-medium transition-all"
-              style={{
-                background: '#120a02',
-                border: '1px solid rgba(255,104,3,0.10)',
-                color: '#d4d4d8',
-              }}
-              onMouseEnter={e => e.currentTarget.style.borderColor = 'rgba(174,58,2,0.40)'}
-              onMouseLeave={e => e.currentTarget.style.borderColor = 'rgba(255,104,3,0.10)'}
-            >
-              <svg className="w-4 h-4" viewBox="0 0 24 24">
-                <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
-                <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
-                <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z"/>
-                <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
-              </svg>
-              Sign up with Google
-            </a>
-          </>
+            {[
+              { key: 'linkedin', label: 'LinkedIn', placeholder: 'https://linkedin.com/in/username' },
+              { key: 'github', label: 'GitHub', placeholder: 'https://github.com/username' },
+              { key: 'portfolio', label: 'Portfolio / website', placeholder: 'https://yourportfolio.com' },
+            ].map(({ key, label, placeholder }) => (
+              <div key={key}>
+                <label htmlFor={key} className="mb-1 block text-xs font-medium text-slate-700">{label}</label>
+                <input id={key} type="url" value={form[key]} onChange={e => setForm({ ...form, [key]: e.target.value })}
+                  placeholder={placeholder} className="input-light" />
+              </div>
+            ))}
+          </div>
         )}
 
-        <p className="mt-5 text-center text-sm" style={{ color: '#6b5445' }}>
-          Already have an account?{' '}
-          <button
-            type="button"
-            onClick={() => goTo('/login')}
-            className="font-semibold hover:underline underline-offset-2"
-            style={{ color: '#BFBFBF' }}
-          >
-            Sign in
-          </button>
+        <button type="submit" disabled={loading} className="btn-primary mt-2">
+          {loading ? 'Creating account…' : role === 'freelancer' ? 'Submit for approval' : 'Create account'}
+        </button>
+        <p className="text-center text-xs text-slate-500">
+          By signing up you agree to our <a href="/terms" className="underline">Terms</a> and <a href="/privacy" className="underline">Privacy Policy</a>.
         </p>
-      </div>
-    </div>
+      </form>
+      {footer}
+    </AuthShell>
   )
 }

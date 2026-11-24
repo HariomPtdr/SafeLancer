@@ -45,15 +45,8 @@ import AboutPage from './pages/AboutPage'
 import BlogPage from './pages/BlogPage'
 import SecurityPage from './pages/SecurityPage'
 import ContactPage from './pages/ContactPage'
-import ThreeBackground from './components/ThreeBackground'
-import CustomCursor from './components/CustomCursor'
-import { useLocation } from 'react-router-dom'
-
-function ThreeBackgroundGated() {
-  const { pathname } = useLocation()
-  if (pathname === '/') return null
-  return <ThreeBackground />
-}
+import PrivacyPage from './pages/PrivacyPage'
+import TermsPage from './pages/TermsPage'
 
 function DashboardRedirect() {
   const user = JSON.parse(localStorage.getItem('user') || '{}')
@@ -72,8 +65,6 @@ export default function App() {
   return (
     <ErrorBoundary>
     <BrowserRouter>
-      <CustomCursor />
-      <ThreeBackgroundGated />
       <Toaster
         position="top-right"
         toastOptions={{
@@ -138,6 +129,8 @@ export default function App() {
         <Route path="/blog"     element={<BlogPage />} />
         <Route path="/security" element={<SecurityPage />} />
         <Route path="/contact"  element={<ContactPage />} />
+        <Route path="/privacy"  element={<PrivacyPage />} />
+        <Route path="/terms"    element={<TermsPage />} />
 
         {/* Fallback */}
         <Route path="*" element={<Navigate to="/" replace />} />

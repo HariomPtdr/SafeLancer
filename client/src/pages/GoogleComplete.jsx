@@ -33,8 +33,8 @@ export default function GoogleComplete() {
     return (
       <div className="min-h-screen flex items-center justify-center" style={{ background: 'transparent' }}>
         <div className="text-center">
-          <p className="text-sm mb-4" style={{ color: '#BFBFBF' }}>Invalid session. Please try signing in again.</p>
-          <a href="/login" className="text-white font-medium underline underline-offset-2 text-sm">Back to login</a>
+          <p className="text-sm mb-4" style={{ color: 'rgb(var(--slate-600))' }}>Invalid session. Please try signing in again.</p>
+          <a href="/login" className="text-slate-900 font-medium underline underline-offset-2 text-sm">Back to login</a>
         </div>
       </div>
     )
@@ -44,13 +44,13 @@ export default function GoogleComplete() {
     <div className="min-h-screen flex flex-col items-center justify-center p-4" style={{ background: 'transparent' }}>
 
       <div className="mb-8 text-center">
-        <div className="text-xl font-bold text-white tracking-tight">SafeLancer</div>
-        <div className="text-sm mt-1" style={{ color: '#BFBFBF' }}>One last step</div>
+        <div className="text-xl font-bold text-slate-900 tracking-tight">SafeLancer</div>
+        <div className="text-sm mt-1" style={{ color: 'rgb(var(--slate-600))' }}>One last step</div>
       </div>
 
       <div className="dark-card p-8 w-full max-w-sm">
-        <h1 className="text-base font-semibold text-white mb-1">How will you use SafeLancer?</h1>
-        <p className="text-sm mb-6" style={{ color: '#BFBFBF' }}>Choose your role to complete your account setup.</p>
+        <h1 className="text-base font-semibold text-slate-900 mb-1">How will you use SafeLancer?</h1>
+        <p className="text-sm mb-6" style={{ color: 'rgb(var(--slate-600))' }}>Choose your role to complete your account setup.</p>
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <div className="grid grid-cols-2 gap-2">
@@ -61,13 +61,13 @@ export default function GoogleComplete() {
                 onClick={() => setRole(r)}
                 className={`py-3 px-3 rounded-lg border text-left transition-all ${
                   role === r
-                    ? 'border-[#FF6803] bg-[#FF6803]/10 text-white'
-                    : 'text-white hover:border-[#FF6803]/50'
+                    ? 'border-[#EA580C] bg-[#EA580C]/10 text-white'
+                    : 'text-white hover:border-[#EA580C]/50'
                 }`}
-                style={role !== r ? { borderColor: 'rgba(255,104,3,0.10)', background: '#120a02' } : {}}
+                style={role !== r ? { borderColor: 'rgb(var(--slate-200))', background: 'rgb(var(--surface))' } : {}}
               >
                 <div className="text-sm font-semibold capitalize">{r === 'client' ? 'Client' : 'Freelancer'}</div>
-                <div className={`text-xs mt-0.5 ${role === r ? 'text-purple-300' : ''}`} style={role !== r ? { color: '#BFBFBF' } : {}}>
+                <div className={`text-xs mt-0.5 ${role === r ? 'text-purple-700' : ''}`} style={role !== r ? { color: 'rgb(var(--slate-600))' } : {}}>
                   {r === 'client' ? 'I hire talent' : 'I do the work'}
                 </div>
               </button>

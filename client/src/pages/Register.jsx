@@ -165,7 +165,7 @@ export default function Register() {
                 role="radio"
                 aria-checked={on}
                 onClick={() => setRole(value)}
-                className={`relative rounded-xl border p-4 text-left transition-colors ${on ? 'border-orange-600 bg-orange-50 ring-1 ring-orange-600' : 'border-slate-300 bg-white hover:border-slate-400'}`}
+                className={`relative rounded-xl border p-4 text-left transition-colors ${on ? 'border-orange-600 bg-orange-50 ring-1 ring-orange-600' : 'border-slate-300 bg-surface hover:border-slate-400'}`}
               >
                 <span className={`absolute right-3 top-3 h-4 w-4 rounded-full border ${on ? 'border-[5px] border-orange-600' : 'border-slate-300'}`} />
                 <div className={on ? 'text-orange-600' : 'text-slate-500'}>{icon}</div>
@@ -228,7 +228,7 @@ export default function Register() {
               <div className="flex gap-1">
                 {[1, 2, 3, 4, 5].map(i => (
                   <div key={i} className="h-1 flex-1 rounded-full transition-colors"
-                    style={{ background: i <= strength.score ? strength.color : '#e2e8f0' }} />
+                    style={{ background: i <= strength.score ? strength.color : 'rgb(var(--slate-200))' }} />
                 ))}
               </div>
               {strength.label && <p className="mt-1 text-xs font-medium" style={{ color: strength.color }}>{strength.label}</p>}

@@ -1,6 +1,6 @@
 import StaticLayout from '../components/StaticLayout'
 
-const T = { blue: '#EA580C', muted: '#475569', faint: '#64748B', text: '#0F172A', border: '#E2E8F0', bg: '#FFF7ED' }
+const T = { blue: '#EA580C', muted: 'rgb(var(--slate-600))', faint: 'rgb(var(--slate-500))', text: 'rgb(var(--slate-900))', border: 'rgb(var(--slate-200))', bg: 'rgb(var(--orange-50))' }
 
 const sections = [
   {
@@ -82,7 +82,7 @@ export default function PrivacyPage() {
       <div style={{ maxWidth: '760px' }}>
         {sections.map(s => (
           <section key={s.title} style={{ marginBottom: '48px' }}>
-            <h2 style={{ fontWeight: 800, fontSize: '18px', color: T.text, margin: '0 0 16px', letterSpacing: '-0.02em' }}>{s.title}</h2>
+            <h2 style={{ fontWeight: 700, fontSize: '18px', color: T.text, margin: '0 0 16px', letterSpacing: '-0.02em' }}>{s.title}</h2>
             <ul style={{ margin: 0, padding: '0 0 0 20px', display: 'flex', flexDirection: 'column', gap: '10px' }}>
               {s.body.map((item, i) => (
                 <li key={i} style={{ fontSize: '14px', color: T.muted, lineHeight: 1.75 }}>{item}</li>
@@ -91,7 +91,7 @@ export default function PrivacyPage() {
           </section>
         ))}
 
-        <div style={{ background: '#FFF7ED', border: '1px solid #E2E8F0', borderRadius: '14px', padding: '24px', marginTop: '16px' }}>
+        <div style={{ background: 'rgb(var(--orange-50))', border: '1px solid rgb(var(--slate-200))', borderRadius: '14px', padding: '24px', marginTop: '16px' }}>
           <p style={{ fontSize: '13px', color: T.muted, margin: 0, lineHeight: 1.7 }}>
             This Privacy Policy is governed by the laws of India and complies with the Information Technology Act, 2000 and the Information Technology (Reasonable Security Practices and Procedures and Sensitive Personal Data or Information) Rules, 2011.
           </p>

@@ -15,10 +15,10 @@ import api from '../api'
 
 const CONFIG = {
   AUTHENTIC:           { label: 'Authentic',               desc: 'No deepfake or AI generation detected.',        bg: 'rgba(16,185,129,0.08)',  border: 'rgba(16,185,129,0.22)',  color: '#10b981',  iconColor: '#10b981' },
-  FAKE:                { label: 'AI / Deepfake Detected',  desc: 'This video is likely AI-generated or faked.',   bg: 'rgba(239,68,68,0.08)',   border: 'rgba(239,68,68,0.22)',   color: '#f87171',  iconColor: '#f87171' },
+  FAKE:                { label: 'AI / Deepfake Detected',  desc: 'This video is likely AI-generated or faked.',   bg: 'rgba(239,68,68,0.08)',   border: 'rgba(239,68,68,0.22)',   color: '#DC2626',  iconColor: '#DC2626' },
   SUSPICIOUS:          { label: 'Suspicious',              desc: 'Possible manipulation — review carefully.',     bg: 'rgba(245,158,11,0.08)',  border: 'rgba(245,158,11,0.22)',  color: '#f59e0b',  iconColor: '#f59e0b' },
-  NOT_APPLICABLE:      { label: 'Not Applicable',          desc: 'Video could not be evaluated (e.g. no faces).', bg: '#120a02',                border: 'rgba(255,104,3,0.08)',   color: '#6b5445',  iconColor: '#6b5445' },
-  UNABLE_TO_EVALUATE:  { label: 'Unable to Evaluate',      desc: 'Analysis failed — try re-uploading.',           bg: '#120a02',                border: 'rgba(255,104,3,0.08)',   color: '#6b5445',  iconColor: '#6b5445' },
+  NOT_APPLICABLE:      { label: 'Not Applicable',          desc: 'Video could not be evaluated (e.g. no faces).', bg: 'rgb(var(--surface))',                border: 'rgb(var(--slate-200))',   color: 'rgb(var(--slate-500))',  iconColor: 'rgb(var(--slate-500))' },
+  UNABLE_TO_EVALUATE:  { label: 'Unable to Evaluate',      desc: 'Analysis failed — try re-uploading.',           bg: 'rgb(var(--surface))',                border: 'rgb(var(--slate-200))',   color: 'rgb(var(--slate-500))',  iconColor: 'rgb(var(--slate-500))' },
 }
 
 function StatusIcon({ status, color }) {
@@ -110,14 +110,14 @@ export default function AiDetectionBadge({ milestoneId, initialStatus, initialSc
   if (status === 'PENDING') {
     return (
       <div className="flex items-center gap-3 px-4 py-3 rounded-xl"
-        style={{ background: '#120a02', border: '1px solid rgba(255,104,3,0.12)' }}>
+        style={{ background: 'rgb(var(--surface))', border: '1px solid rgb(var(--slate-200))' }}>
         <div className="relative flex-shrink-0 w-4 h-4">
-          <div className="absolute inset-0 border-2 rounded-full" style={{ borderColor: 'rgba(255,104,3,0.12)' }} />
-          <div className="absolute inset-0 border-2 border-t-[#FF6803] rounded-full animate-spin" style={{ borderColor: 'transparent', borderTopColor: '#FF6803' }} />
+          <div className="absolute inset-0 border-2 rounded-full" style={{ borderColor: 'rgb(var(--slate-200))' }} />
+          <div className="absolute inset-0 border-2 border-t-[#EA580C] rounded-full animate-spin" style={{ borderColor: 'transparent', borderTopColor: '#EA580C' }} />
         </div>
         <div>
-          <p className="text-xs font-semibold" style={{ color: '#F5EDE4' }}>Analysing video for deepfakes…</p>
-          <p className="text-[10px] mt-0.5" style={{ color: '#6b5445' }}>Powered by RealityDefender · checking authenticity</p>
+          <p className="text-xs font-semibold" style={{ color: 'rgb(var(--slate-900))' }}>Analysing video for deepfakes…</p>
+          <p className="text-[10px] mt-0.5" style={{ color: 'rgb(var(--slate-500))' }}>Powered by RealityDefender · checking authenticity</p>
         </div>
       </div>
     )
@@ -138,27 +138,27 @@ export default function AiDetectionBadge({ milestoneId, initialStatus, initialSc
               <p className="text-xs font-bold" style={{ color: cfg.color }}>{cfg.label}</p>
               {score !== null && (
                 <span className="text-[10px] font-mono px-1.5 py-0.5 rounded font-medium"
-                  style={{ background: 'rgba(255,104,3,0.10)', color: '#BFBFBF', border: '1px solid rgba(255,104,3,0.15)' }}>
+                  style={{ background: 'rgb(var(--orange-50))', color: 'rgb(var(--slate-600))', border: '1px solid rgb(var(--slate-200))' }}>
                   score {score}/100
                 </span>
               )}
               {simulated && (
                 <span className="text-[9px] px-1.5 py-0.5 rounded font-semibold uppercase tracking-wider"
-                  style={{ background: 'rgba(255,104,3,0.08)', color: '#6b5445', border: '1px solid rgba(255,104,3,0.12)' }}>
+                  style={{ background: 'rgb(var(--slate-100))', color: 'rgb(var(--slate-500))', border: '1px solid rgb(var(--slate-200))' }}>
                   Forensic Check
                 </span>
               )}
             </div>
-            <p className="text-[10px] mt-0.5" style={{ color: '#6b5445' }}>
+            <p className="text-[10px] mt-0.5" style={{ color: 'rgb(var(--slate-500))' }}>
               {simulated ? 'Metadata forensics + frame analysis' : cfg.desc}
             </p>
           </div>
         </div>
         <button onClick={handleRefresh} disabled={loading} title="Re-check"
           className="ml-3 flex-shrink-0 text-[10px] px-2.5 py-1.5 rounded-lg font-medium transition-colors disabled:opacity-40"
-          style={{ background: '#120a02', color: '#BFBFBF', border: '1px solid rgba(255,104,3,0.10)' }}
-          onMouseEnter={e => { if (!loading) e.currentTarget.style.background = 'rgba(255,104,3,0.06)' }}
-          onMouseLeave={e => e.currentTarget.style.background = '#120a02'}>
+          style={{ background: 'rgb(var(--surface))', color: 'rgb(var(--slate-600))', border: '1px solid rgb(var(--slate-200))' }}
+          onMouseEnter={e => { if (!loading) e.currentTarget.style.background = 'rgb(var(--slate-100))' }}
+          onMouseLeave={e => e.currentTarget.style.background = 'rgb(var(--surface))'}>
           {loading
             ? <span className="flex items-center gap-1">
                 <svg className="animate-spin w-3 h-3" fill="none" viewBox="0 0 24 24">
@@ -177,7 +177,7 @@ export default function AiDetectionBadge({ milestoneId, initialStatus, initialSc
       </div>
       {analyzedAt && (
         <div className="px-4 pb-3" style={{ borderTop: `1px solid ${cfg.border}` }}>
-          <p className="text-[10px] pt-2" style={{ color: '#6b5445' }}>
+          <p className="text-[10px] pt-2" style={{ color: 'rgb(var(--slate-500))' }}>
             Analysed {new Date(analyzedAt).toLocaleString()} · {simulated ? 'Forensic Analysis Engine' : 'RealityDefender API'}
           </p>
         </div>

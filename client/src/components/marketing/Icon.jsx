@@ -27,6 +27,11 @@ const PATHS = {
   menu: 'M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5',
   close: 'M6 18L18 6M6 6l12 12',
   plus: 'M12 4.5v15m7.5-7.5h-15',
+  bolt: 'M3.75 13.5l10.5-11.25L12 10.5h8.25L9.75 21.75 12 13.5H3.75z',
+  globe: 'M12 21a9 9 0 100-18 9 9 0 000 18zm0 0c2.5-2.4 3.75-5.4 3.75-9S14.5 5.4 12 3m0 18c-2.5-2.4-3.75-5.4-3.75-9S9.5 5.4 12 3M3.5 9h17M3.5 15h17',
+  key: 'M15.75 5.25a3 3 0 013 3m3 0a6 6 0 01-7.03 5.91c-.56-.1-1.16.03-1.56.43L10.5 17.25H8.25v2.25H6v2.25H2.25v-2.82c0-.6.24-1.17.66-1.59l6.4-6.4c.4-.4.53-1 .43-1.56A6 6 0 1121.75 8.25z',
+  database: 'M20.25 6.38c0 2.28-3.7 4.12-8.25 4.12S3.75 8.66 3.75 6.38m16.5 0C20.25 4.09 16.55 2.25 12 2.25S3.75 4.1 3.75 6.38m16.5 0v11.24c0 2.28-3.7 4.13-8.25 4.13s-8.25-1.85-8.25-4.13V6.38m16.5 0v3.75m-16.5-3.75v3.75m16.5 0v3.75C20.25 16.16 16.55 18 12 18s-8.25-1.84-8.25-4.12v-3.75m16.5 0c0 2.28-3.7 4.12-8.25 4.12s-8.25-1.84-8.25-4.12',
+  trophy: 'M16.5 18.75h-9m9 0a3 3 0 013 3h-15a3 3 0 013-3m9 0v-3.38c0-.62-.5-1.12-1.13-1.12h-.87m-6.5 4.5v-3.38c0-.62.5-1.12 1.12-1.12h.88m5.5 0a6.03 6.03 0 01-2.77-.9M8.62 14.25a6.03 6.03 0 002.77-.9m0 0a6.73 6.73 0 002.25-5.2V3.75m-4.5 9.6a6.73 6.73 0 01-2.25-5.2V3.75m6.75 0h-9.75m9.75 0h1.5a2.25 2.25 0 012.25 2.25v.25c0 1.6-1.13 2.96-2.69 3.27M7.88 3.75h-1.5A2.25 2.25 0 004.13 6v.25c0 1.6 1.12 2.96 2.68 3.27',
 }
 
 export default function Icon({ name, className = 'w-5 h-5', strokeWidth = 1.6 }) {
@@ -34,5 +39,23 @@ export default function Icon({ name, className = 'w-5 h-5', strokeWidth = 1.6 })
     <svg className={className} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={strokeWidth} aria-hidden="true">
       <path strokeLinecap="round" strokeLinejoin="round" d={PATHS[name]} />
     </svg>
+  )
+}
+
+const EMOJI = {
+  '🔐': 'lock', '🔒': 'lock', '🔗': 'fingerprint', '⚡': 'bolt', '🌍': 'globe', '🌐': 'globe', '🏆': 'trophy',
+  '🛡️': 'shield', '🛡': 'shield', '🔑': 'key', '🗄️': 'database', '🗄': 'database', '💬': 'chat', '⚖️': 'scale', '⚖': 'scale',
+  '📊': 'chart', '✅': 'check', '📜': 'doc', '📄': 'doc', '🧾': 'doc',
+}
+
+// Renders an icon tile in place of an emoji used as an icon in page data.
+export function EmojiIcon({ e, size = 'md' }) {
+  const name = EMOJI[e] || EMOJI[e?.replace('\uFE0F', '')] || 'check'
+  const box = size === 'sm' ? 'h-9 w-9' : size === 'lg' ? 'h-14 w-14' : 'h-11 w-11'
+  const ic = size === 'sm' ? 'h-5 w-5' : size === 'lg' ? 'h-7 w-7' : 'h-6 w-6'
+  return (
+    <span className={`inline-flex ${box} flex-none items-center justify-center rounded-lg bg-orange-50 text-orange-600`}>
+      <Icon name={name} className={ic} />
+    </span>
   )
 }

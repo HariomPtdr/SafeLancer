@@ -1,8 +1,9 @@
 import { useState } from 'react'
 import StaticLayout from '../components/StaticLayout'
+import { EmojiIcon } from '../components/marketing/Icon'
 import useIsMobile from '../utils/useIsMobile'
 
-const T = { blue: '#EA580C', muted: '#475569', faint: '#64748B', text: '#0F172A', border: '#E2E8F0', bg: '#FFF7ED', gradB: 'linear-gradient(135deg,#FF6803,#AE3A02)' }
+const T = { blue: '#EA580C', muted: 'rgb(var(--slate-600))', faint: 'rgb(var(--slate-500))', text: 'rgb(var(--slate-900))', border: 'rgb(var(--slate-200))', bg: 'rgb(var(--orange-50))', gradB: 'linear-gradient(135deg,#FF6803,#AE3A02)' }
 
 const channels = [
   { icon: '💬', title: 'General Enquiries', email: 'hello@safelancer.in', desc: 'Questions about the platform, how escrow works, or anything else.' },
@@ -11,8 +12,8 @@ const channels = [
 ]
 
 const inputStyle = {
-  width: '100%', background: 'rgba(15,23,42,0.03)', border: '1px solid #E2E8F0',
-  borderRadius: '10px', padding: '12px 16px', fontSize: '14px', color: '#0F172A',
+  width: '100%', background: 'rgba(15,23,42,0.03)', border: '1px solid rgb(var(--slate-200))',
+  borderRadius: '10px', padding: '12px 16px', fontSize: '14px', color: 'rgb(var(--slate-900))',
   outline: 'none', boxSizing: 'border-box', fontFamily: 'inherit',
 }
 
@@ -58,7 +59,7 @@ export default function ContactPage() {
             {channels.map(c => (
               <div key={c.title} style={{ background: T.bg, border: `1px solid ${T.border}`, borderRadius: '14px', padding: '22px 24px' }}>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '8px' }}>
-                  <span style={{ fontSize: '20px' }}>{c.icon}</span>
+                  <EmojiIcon e={c.icon} size="sm" />
                   <span style={{ fontWeight: 700, fontSize: '14px', color: T.text }}>{c.title}</span>
                 </div>
                 <p style={{ fontSize: '12px', color: T.muted, margin: '0 0 10px', lineHeight: 1.6 }}>{c.desc}</p>
@@ -73,8 +74,8 @@ export default function ContactPage() {
           <p style={{ fontSize: '11px', fontWeight: 700, letterSpacing: '0.16em', textTransform: 'uppercase', color: T.blue, marginBottom: '28px' }}>Send a Message</p>
           {sent ? (
             <div style={{ background: 'rgba(16,185,129,0.08)', border: '1px solid rgba(16,185,129,0.25)', borderRadius: '16px', padding: '40px', textAlign: 'center' }}>
-              <div style={{ fontSize: '40px', marginBottom: '16px' }}>✅</div>
-              <h3 style={{ fontWeight: 800, fontSize: '20px', color: T.text, margin: '0 0 10px' }}>Message sent!</h3>
+              <div style={{ marginBottom: '16px' }}><EmojiIcon e="✅" size="lg" /></div>
+              <h3 style={{ fontWeight: 700, fontSize: '20px', color: T.text, margin: '0 0 10px' }}>Message sent!</h3>
               <p style={{ fontSize: '14px', color: T.muted, margin: 0 }}>We'll get back to you within 1–2 business days.</p>
             </div>
           ) : (

@@ -1,6 +1,7 @@
 import StaticLayout from '../components/StaticLayout'
+import { EmojiIcon } from '../components/marketing/Icon'
 
-const T = { blue: '#EA580C', muted: '#475569', faint: '#64748B', text: '#0F172A', border: '#E2E8F0', bg: '#FFF7ED' }
+const T = { blue: '#EA580C', muted: 'rgb(var(--slate-600))', faint: 'rgb(var(--slate-500))', text: 'rgb(var(--slate-900))', border: 'rgb(var(--slate-200))', bg: 'rgb(var(--orange-50))' }
 
 const practices = [
   { icon: '🔐', title: 'SHA-256 Deliverable Hashing', body: 'Every file submitted through SafeLancer is cryptographically hashed using SHA-256. The hash is stored immutably — it\'s computationally infeasible to produce a collision. If a file changes even by one byte, the hash changes entirely.' },
@@ -23,8 +24,8 @@ export default function SecurityPage() {
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(300px,1fr))', gap: '20px' }}>
           {practices.map(p => (
             <div key={p.title} style={{ background: T.bg, border: `1px solid ${T.border}`, borderRadius: '16px', padding: '28px' }}>
-              <div style={{ fontSize: '28px', marginBottom: '14px' }}>{p.icon}</div>
-              <h3 style={{ fontWeight: 800, fontSize: '16px', color: T.text, margin: '0 0 10px', letterSpacing: '-0.02em' }}>{p.title}</h3>
+              <div style={{ marginBottom: '14px' }}><EmojiIcon e={p.icon} /></div>
+              <h3 style={{ fontWeight: 700, fontSize: '16px', color: T.text, margin: '0 0 10px', letterSpacing: '-0.02em' }}>{p.title}</h3>
               <p style={{ fontSize: '13px', color: T.muted, lineHeight: 1.7, margin: 0 }}>{p.body}</p>
             </div>
           ))}
@@ -44,7 +45,7 @@ export default function SecurityPage() {
               ['05', 'Client can verify anytime', 'The client can hash the received file and compare — any match confirms the file is exactly what was submitted.'],
             ].map(([n, title, body]) => (
               <div key={n} style={{ display: 'flex', gap: '20px', paddingBottom: '24px', marginBottom: '24px', borderBottom: `1px solid ${T.border}` }}>
-                <div style={{ width: '36px', height: '36px', borderRadius: '50%', background: 'linear-gradient(135deg,#FF6803,#AE3A02)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '11px', fontWeight: 800, color: '#fff', flexShrink: 0 }}>{n}</div>
+                <div style={{ width: '36px', height: '36px', borderRadius: '50%', background: 'linear-gradient(135deg,#FF6803,#AE3A02)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '11px', fontWeight: 700, color: '#fff', flexShrink: 0 }}>{n}</div>
                 <div>
                   <div style={{ fontWeight: 700, fontSize: '15px', color: T.text, marginBottom: '4px' }}>{title}</div>
                   <div style={{ fontSize: '13px', color: T.muted, lineHeight: 1.65 }}>{body}</div>
@@ -60,7 +61,7 @@ export default function SecurityPage() {
         <p style={{ fontSize: '11px', fontWeight: 700, letterSpacing: '0.16em', textTransform: 'uppercase', color: T.blue, marginBottom: '20px' }}>Responsible Disclosure</p>
         <div style={{ background: T.bg, border: `1px solid ${T.border}`, borderRadius: '16px', padding: '36px', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '24px' }}>
           <div style={{ maxWidth: '520px' }}>
-            <h3 style={{ fontWeight: 800, fontSize: '20px', color: T.text, margin: '0 0 12px', letterSpacing: '-0.03em' }}>Found a vulnerability?</h3>
+            <h3 style={{ fontWeight: 700, fontSize: '20px', color: T.text, margin: '0 0 12px', letterSpacing: '-0.03em' }}>Found a vulnerability?</h3>
             <p style={{ fontSize: '14px', color: T.muted, lineHeight: 1.75, margin: 0 }}>
               We take security seriously and appreciate responsible disclosure. If you find a security issue, please email us at security@safelancer.in. We will acknowledge your report within 24 hours, investigate within 7 days, and credit you publicly (with your permission) if you find a valid issue.
             </p>

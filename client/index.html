@@ -5,7 +5,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>SafeLancer</title>
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <meta name="theme-color" content="#0B0501" />
+    <meta name="theme-color" content="#ffffff" />
+    <script>
+      (function () {
+        try {
+          var t = localStorage.getItem('theme');
+          if (t !== 'light' && t !== 'dark') t = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+          if (t === 'dark') { document.documentElement.classList.add('dark'); document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0a0a0a'); }
+        } catch (e) {}
+      })();
+    </script>
     <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
   </head>
   <body>

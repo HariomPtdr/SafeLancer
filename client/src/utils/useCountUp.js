@@ -1,32 +1,7 @@
-import { useState, useEffect, useRef } from 'react'
-
-export function useCountUp(target, duration = 1200, prefix = '') {
-  const [display, setDisplay] = useState(prefix + '0')
-  const frame = useRef(null)
-
-  useEffect(() => {
-    if (frame.current) cancelAnimationFrame(frame.current)
-
-    const numeric = typeof target === 'number' ? target : parseFloat(String(target).replace(/[^0-9.]/g, '')) || 0
-    if (numeric === 0) {
-      setDisplay(prefix + '0')
-      return
-    }
-
-    const start = performance.now()
-    const tick = (now) => {
-      const elapsed = now - start
-      const progress = Math.min(elapsed / duration, 1)
-      const eased = 1 - Math.pow(1 - progress, 3)
-      const current = Math.round(eased * numeric)
-      setDisplay(prefix + current.toLocaleString())
-      if (progress < 1) {
-        frame.current = requestAnimationFrame(tick)
-      }
-    }
-    frame.current = requestAnimationFrame(tick)
-    return () => { if (frame.current) cancelAnimationFrame(frame.current) }
-  }, [target, duration, prefix])
-
-  return display
+// Previously animated numbers from 0, which made stats flash wrong values
+// (and used a different digit grouping than the final value). Now returns
+// the final value immediately, formatted for India.
+export function useCountUp(target, _duration, prefix = '') {
+  const numeric = typeof target === 'number' ? target : parseFloat(String(target).replace(/[^0-9.]/g, '')) || 0
+  return prefix + numeric.toLocaleString('en-IN')
 }

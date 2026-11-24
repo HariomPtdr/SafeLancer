@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import api from '../api'
 import Navbar from '../components/Navbar'
+import { PageHeader, Empty, Avatar, StatusPill, Chip, btn } from '../components/ui'
 
 const FILE_BASE = import.meta.env.VITE_API_URL || 'http://localhost:5001'
 const EMPTY = { search: '', skills: '', minRating: '', availability: '' }
@@ -44,128 +45,78 @@ export default function FreelancerBrowse() {
 
   const clearFilters = () => applyFilters(EMPTY)
 
-  return (
-    <div className="min-h-screen" style={{ background: 'transparent' }}>
-      <Navbar />
-      <div className="max-w-5xl mx-auto p-6">
-        <button onClick={() => navigate(-1)} className="flex items-center gap-1.5 text-sm font-medium mb-4 transition-colors" style={{ color: '#BFBFBF' }}
-          onMouseEnter={e => e.currentTarget.style.color = '#f4f4f5'}
-          onMouseLeave={e => e.currentTarget.style.color = '#BFBFBF'}>
-          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" /></svg>
-          Back
-        </button>
-        <h1 className="text-xl font-semibold text-white mb-5">Find Freelancers</h1>
+  const AVAIL = [['', 'Any'], ['full-time', 'Full-time'], ['part-time', 'Part-time']]
+  const RATINGS = [['', 'Any rating'], ['4', '4+ ★'], ['4.5', '4.5+ ★']]
+  const pill = (on) => `rounded-full border px-3 py-1.5 text-xs font-semibold transition-colors ${on ? 'border-orange-600 bg-orange-600 text-white' : 'border-slate-300 bg-surface text-slate-600 hover:border-slate-400'}`
+  const hasFilters = Object.values(filters).some(Boolean)
 
-        {/* Filters */}
-        <div className="dark-card p-4 mb-5">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-3 mb-3">
-            <input placeholder="Search by name..." value={filters.search}
-              onChange={e => handleTextChange('search', e.target.value)}
-              onKeyDown={handleEnter}
-              className="dark-input" />
-            <input placeholder="Skills (e.g. React, Node.js)" value={filters.skills}
-              onChange={e => handleTextChange('skills', e.target.value)}
-              onKeyDown={handleEnter}
-              className="dark-input" />
+  return (
+    <div className="min-h-screen bg-page">
+      <Navbar />
+      <main className="mx-auto max-w-6xl px-4 py-8 sm:px-6">
+        <PageHeader eyebrow="Find talent" title="Find the right freelancer" subtitle="Browse profiles, then invite someone to your job. Every contract is escrow-protected." />
+
+        <div className="mb-4 grid gap-3 md:grid-cols-[1fr_280px]">
+          <div className="relative">
+            <svg className="pointer-events-none absolute left-4 top-1/2 h-5 w-5 -translate-y-1/2 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" /></svg>
+            <input placeholder="Search by name" value={filters.search} aria-label="Search freelancers by name"
+              onChange={e => handleTextChange('search', e.target.value)} onKeyDown={handleEnter} className="dark-input w-full py-3 pl-12 text-[15px]" />
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-            <input placeholder="Min Rating (1–5)" type="number" min="1" max="5" value={filters.minRating}
-              onChange={e => handleTextChange('minRating', e.target.value)}
-              onKeyDown={handleEnter}
-              className="dark-input" />
-            <select value={filters.availability}
-              onChange={e => handleSelectChange('availability', e.target.value)}
-              className="dark-input">
-              <option value="">Any Availability</option>
-              <option value="full-time">Full-time</option>
-              <option value="part-time">Part-time</option>
-            </select>
-          </div>
-          <div className="flex gap-2 mt-3">
-            <button onClick={() => { clearTimeout(debounceRef.current); fetchFreelancers(filters) }}
-              className="btn-purple px-5 py-2 rounded-lg text-sm font-medium transition-colors">
-              Search
-            </button>
-            <button onClick={clearFilters}
-              className="px-4 py-2 rounded-lg text-sm font-medium transition-colors text-white"
-              style={{ border: '1px solid rgba(255,104,3,0.10)', background: '#120a02' }}
-              onMouseEnter={e => e.currentTarget.style.background = 'rgba(255,104,3,0.06)'}
-              onMouseLeave={e => e.currentTarget.style.background = '#120a02'}>
-              Clear
-            </button>
-          </div>
+          <input placeholder="Skills, e.g. React, Figma" value={filters.skills} aria-label="Skills"
+            onChange={e => handleTextChange('skills', e.target.value)} onKeyDown={handleEnter} className="dark-input w-full py-3 text-[15px]" />
+        </div>
+        <div className="mb-6 flex flex-wrap items-center gap-2">
+          <span className="mr-1 text-xs font-semibold uppercase tracking-wide text-slate-500">Availability</span>
+          {AVAIL.map(([v, l]) => <button key={l} onClick={() => handleSelectChange('availability', v)} className={pill(filters.availability === v)}>{l}</button>)}
+          <span className="ml-3 mr-1 text-xs font-semibold uppercase tracking-wide text-slate-500">Rating</span>
+          {RATINGS.map(([v, l]) => <button key={l} onClick={() => handleSelectChange('minRating', v)} className={pill(filters.minRating === v)}>{l}</button>)}
+          {hasFilters && <button onClick={clearFilters} className="ml-auto text-sm font-semibold text-orange-700 hover:underline">Clear filters</button>}
         </div>
 
-        {loading
-          ? <div className="flex justify-center py-12">
-              <div className="animate-spin h-6 w-6 border-2 border-[#FF6803] border-t-transparent rounded-full" />
-            </div>
-          : freelancers.length === 0
-          ? <div className="text-center py-12 text-sm" style={{ color: '#6b5445' }}>No freelancers found. Try different filters.</div>
-          : <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              {freelancers.map(f => {
-                const avatarUrl = f.avatarUrl
-                  ? (f.avatarUrl.startsWith('http') ? f.avatarUrl : `${FILE_BASE}${f.avatarUrl}`)
-                  : null
-                return (
-                  <div key={f._id} className="dark-card card-lift p-5 flex flex-col cursor-pointer">
-                    {/* Header */}
-                    <div className="flex items-start gap-3 mb-3">
-                      {avatarUrl
-                        ? <img src={avatarUrl} alt={f.user?.name} className="w-11 h-11 rounded-full object-cover flex-shrink-0" style={{ border: '1px solid rgba(255,104,3,0.10)' }} />
-                        : <div className="w-11 h-11 rounded-full flex items-center justify-center text-white font-semibold text-base flex-shrink-0" style={{ background: '#FF6803' }}>
-                            {f.user?.name?.[0]?.toUpperCase()}
-                          </div>
-                      }
-                      <div className="flex-1 min-w-0">
-                        <h2 className="font-semibold text-white text-sm leading-tight">{f.user?.name}</h2>
-                        <div className="flex items-center gap-2 mt-1 flex-wrap">
-                          {f.user?.rating > 0 && (
-                            <span className="text-sm font-medium" style={{ color: '#BFBFBF' }}>★ {f.user.rating.toFixed(1)}</span>
-                          )}
-                          {f.user?.totalJobsCompleted > 0 && (
-                            <span className="text-xs" style={{ color: '#6b5445' }}>{f.user.totalJobsCompleted} jobs</span>
-                          )}
-                          <span className="capitalize text-xs px-2 py-0.5 rounded-md font-medium" style={{ background: '#120a02', color: '#BFBFBF', border: '1px solid rgba(255,104,3,0.10)' }}>
-                            {f.availability || 'full-time'}
-                          </span>
-                        </div>
+        <p className="mb-3 text-sm text-slate-500">{loading ? 'Searching…' : `${freelancers.length} freelancer${freelancers.length === 1 ? '' : 's'}`}</p>
+        {loading ? (
+          <div className="grid gap-4 md:grid-cols-2">{[0, 1].map(i => <div key={i} className="h-56 shimmer-skeleton rounded-xl" />)}</div>
+        ) : freelancers.length === 0 ? (
+          <Empty title="No freelancers match" body="Try a different skill or remove a filter."
+            action={hasFilters ? <button onClick={clearFilters} className={btn.secondary}>Clear filters</button> : null} />
+        ) : (
+          <div className="grid gap-4 md:grid-cols-2">
+            {freelancers.map(f => {
+              const avatarUrl = f.avatarUrl ? (f.avatarUrl.startsWith('http') ? f.avatarUrl : `${FILE_BASE}${f.avatarUrl}`) : null
+              const avail = f.availability || 'full-time'
+              return (
+                <article key={f._id} className="flex flex-col rounded-xl border border-slate-200 bg-surface p-6 transition-shadow hover:shadow-md hover:shadow-slate-900/5">
+                  <div className="flex items-start gap-4">
+                    <Avatar src={avatarUrl} name={f.user?.name} size="h-14 w-14" textSize="text-xl" />
+                    <div className="min-w-0 flex-1">
+                      <Link to={`/freelancers/${f.user?._id}`} className="text-base font-semibold text-slate-900 no-underline hover:underline">{f.user?.name}</Link>
+                      {f.title && <p className="truncate text-sm text-slate-600">{f.title}</p>}
+                      <div className="mt-1.5 flex flex-wrap items-center gap-x-3 gap-y-1 text-sm">
+                        {f.user?.rating > 0 && <span className="font-semibold text-slate-900">★ {f.user.rating.toFixed(1)}</span>}
+                        {f.user?.totalJobsCompleted > 0 && <span className="text-slate-500">{f.user.totalJobsCompleted} jobs done</span>}
+                        <StatusPill tone={avail === 'full-time' ? 'green' : avail === 'part-time' ? 'blue' : 'gray'}>
+                          {avail === 'full-time' ? 'Full-time' : avail === 'part-time' ? 'Part-time' : 'Unavailable'}
+                        </StatusPill>
                       </div>
-                    </div>
-
-                    {/* Bio */}
-                    {f.bio && (
-                      <p className="text-xs leading-relaxed line-clamp-2 mb-3" style={{ color: '#BFBFBF' }}>{f.bio}</p>
-                    )}
-
-                    {/* Skills */}
-                    {f.skills?.length > 0 && (
-                      <div className="flex flex-wrap gap-1 mb-4">
-                        {f.skills.slice(0, 5).map(s => (
-                          <span key={s} className="px-2 py-0.5 rounded text-xs" style={{ background: 'rgba(255,104,3,0.10)', color: '#BFBFBF', border: '1px solid rgba(255,104,3,0.14)' }}>{s}</span>
-                        ))}
-                        {f.skills.length > 5 && (
-                          <span className="text-xs px-1" style={{ color: '#6b5445' }}>+{f.skills.length - 5} more</span>
-                        )}
-                      </div>
-                    )}
-
-                    {/* Actions */}
-                    <div className="mt-auto">
-                      <Link to={`/freelancers/${f.user?._id}`}
-                        className="block w-full px-3 py-2 rounded-lg text-xs font-medium text-center transition-colors text-white"
-                        style={{ border: '1px solid rgba(255,104,3,0.10)', background: '#120a02' }}
-                        onMouseEnter={e => e.currentTarget.style.background = 'rgba(255,104,3,0.06)'}
-                        onMouseLeave={e => e.currentTarget.style.background = '#120a02'}>
-                        View Profile
-                      </Link>
                     </div>
                   </div>
-                )
-              })}
-            </div>
-        }
-      </div>
+                  {f.bio && <p className="mt-4 line-clamp-2 text-sm leading-6 text-slate-600">{f.bio}</p>}
+                  {f.skills?.length > 0 && (
+                    <div className="mt-4 flex flex-wrap gap-1.5">
+                      {f.skills.slice(0, 5).map(s => <Chip key={s}>{s}</Chip>)}
+                      {f.skills.length > 5 && <span className="self-center text-xs text-slate-500">+{f.skills.length - 5} more</span>}
+                    </div>
+                  )}
+                  <div className="mt-auto grid grid-cols-2 gap-2 pt-5">
+                    <Link to={`/freelancers/${f.user?._id}`} className={btn.secondary}>View profile</Link>
+                    <Link to={`/jobs/post?freelancer=${f.user?._id}`} className={btn.primary}>Invite to job</Link>
+                  </div>
+                </article>
+              )
+            })}
+          </div>
+        )}
+      </main>
     </div>
   )
 }

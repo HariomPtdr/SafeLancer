@@ -1,7 +1,8 @@
 import { useState, useEffect } from 'react'
-import { useParams } from 'react-router-dom'
+import { useParams, useNavigate, Link } from 'react-router-dom'
 import api from '../api'
 import Navbar from '../components/Navbar'
+import { Avatar, StatusPill, Chip, BackLink, inr, timeAgo } from '../components/ui'
 import toast from 'react-hot-toast'
 import { computeBadges, BADGE_COLORS } from '../utils/badges'
 
@@ -70,25 +71,18 @@ const COMM_LABELS = {
   flexible: 'Flexible (mix of both)',
 }
 
-function InfoRow({ icon, label, value }) {
-  return (
-    <div className="flex items-center gap-4 rounded-xl px-4 py-3" style={{ background: '#120a02', border: '1px solid rgba(255,104,3,0.06)' }}>
-      <div className="w-10 h-10 rounded-xl flex items-center justify-center text-white flex-shrink-0" style={{ background: 'linear-gradient(135deg, #FF6803, #AE3A02)' }}>
-        {icon}
-      </div>
-      <div className="min-w-0">
-        <p className="text-xs mb-0.5" style={{ color: '#6b5445' }}>{label}</p>
-        <p className="text-sm font-semibold text-white truncate">{value}</p>
-      </div>
-    </div>
-  )
-}
-
 export default function ClientProfile() {
   const { userId } = useParams()
   const [profile, setProfile] = useState(null)
   const [ratings, setRatings] = useState([])
   const [loading, setLoading] = useState(true)
+  const [openJobs, setOpenJobs] = useState([])
+  const navigate = useNavigate()
+  const me = JSON.parse(localStorage.getItem('user') || '{}')
+
+  useEffect(() => {
+    api.get('/api/jobs').then(({ data }) => setOpenJobs((Array.isArray(data) ? data : []).filter(j => (j.client?._id || j.client) === userId))).catch(() => {})
+  }, [userId])
 
   useEffect(() => {
     const load = async () => {
@@ -108,13 +102,13 @@ export default function ClientProfile() {
   if (loading) return (
     <div className="min-h-screen" style={{ background: 'transparent' }}><Navbar />
       <div className="flex justify-center py-20">
-        <div className="animate-spin h-6 w-6 border-2 border-[#FF6803] border-t-transparent rounded-full" />
+        <div className="animate-spin h-6 w-6 border-2 border-[#EA580C] border-t-transparent rounded-full" />
       </div>
     </div>
   )
   if (!profile) return (
     <div className="min-h-screen" style={{ background: 'transparent' }}><Navbar />
-      <p className="text-center py-12 text-sm" style={{ color: '#6b5445' }}>Profile not found</p>
+      <p className="text-center py-12 text-sm" style={{ color: 'rgb(var(--slate-500))' }}>Profile not found</p>
     </div>
   )
 
@@ -128,173 +122,190 @@ export default function ClientProfile() {
 
   const { earned: earnedBadges, total: totalBadges } = computeBadges(profile.user?.role || 'client', profile.user, profile)
 
+  // Prefer the average of loaded reviews; fall back to the rating stored on the user.
   const avgRating = ratings.length > 0
     ? (ratings.reduce((s, r) => s + r.stars, 0) / ratings.length).toFixed(1)
-    : null
+    : profile.user?.rating > 0 ? Number(profile.user.rating).toFixed(1) : null
+
+  const isMe = me.id === userId
+  const card = 'rounded-xl border border-slate-200 bg-surface'
+  const details = [
+    profile.location && [Icons.location, 'Location', profile.location],
+    isBusiness && profile.industry && [Icons.industry, 'Industry', profile.industry],
+    isBusiness && profile.companySize && [Icons.users, 'Company size', `${profile.companySize} people`],
+    profile.yearsHiring && [Icons.clock, 'Hiring experience', YEARS_HIRING_LABELS[profile.yearsHiring] || profile.yearsHiring],
+    profile.preferredComm && [Icons.chat, 'Prefers', COMM_LABELS[profile.preferredComm] || profile.preferredComm],
+  ].filter(Boolean)
+  const links = [
+    profile.websiteUrl && [Icons.globe, 'Website', profile.websiteUrl],
+    profile.linkedinUrl && [Icons.linkedin, 'LinkedIn', profile.linkedinUrl],
+  ].filter(Boolean)
+  const name = isBusiness && profile.companyName ? profile.companyName : profile.user?.name
 
   return (
-    <div className="min-h-screen" style={{ background: 'transparent' }}>
+    <div className="min-h-screen bg-page">
       <Navbar />
+      <main className="mx-auto max-w-6xl px-4 py-8 sm:px-6">
+        <BackLink onClick={() => navigate(-1)} />
 
-      {/* Cover */}
-      <div className="h-36" style={{ background: 'linear-gradient(135deg, #120a02 0%, #120a02 50%, #1c1008 100%)' }} />
-
-      <div className="max-w-4xl mx-auto px-6 pb-16">
-
-        {/* ── Hero card ── */}
-        <div className="dark-card p-6 -mt-12 mb-4">
-          <div className="flex items-start justify-between gap-4 flex-wrap">
+        {/* Header */}
+        <section className={`${card} mb-6 overflow-hidden`}>
+          <div className="cover-wash h-24 border-b border-slate-200" />
+          <div className="flex flex-col gap-5 px-6 pb-6 sm:flex-row sm:items-end sm:justify-between">
             <div className="flex items-end gap-5">
-              {/* Avatar */}
               {avatarUrl
-                ? <img src={avatarUrl} alt={profile.user?.name}
-                    className={`w-20 h-20 object-cover -mt-14 flex-shrink-0 ${avatarShape}`}
-                    style={{ border: '4px solid #111113', boxShadow: '0 4px 20px rgba(0,0,0,0.5)' }} />
-                : <div className={`w-20 h-20 -mt-14 flex items-center justify-center text-white text-2xl font-bold flex-shrink-0 select-none ${avatarShape}`}
-                    style={{ background: 'linear-gradient(135deg, #FF6803, #AE3A02)', border: '4px solid #111113', boxShadow: '0 4px 20px rgba(0,0,0,0.5)' }}>
-                    {profile.user?.name?.[0]?.toUpperCase()}
-                  </div>
-              }
-              <div className="pb-0.5">
-                <h1 className="text-xl font-bold text-white">{profile.user?.name}</h1>
-                {isBusiness && profile.companyName && (
-                  <p className="text-sm mt-0.5" style={{ color: '#BFBFBF' }}>{profile.companyName}</p>
-                )}
-                <div className="flex flex-wrap items-center gap-2 mt-1.5">
-                  {profile.clientType && (
-                    <span className="text-xs px-2.5 py-1 rounded-full font-medium" style={{ background: '#120a02', color: '#BFBFBF', border: '1px solid rgba(255,104,3,0.10)' }}>
-                      {isIndividual ? 'Individual' : 'Business'}
-                    </span>
-                  )}
-                  {isBusiness && profile.industry && (
-                    <span className="text-xs px-2.5 py-1 rounded-full font-medium" style={{ background: '#120a02', color: '#BFBFBF', border: '1px solid rgba(255,104,3,0.10)' }}>
-                      {profile.industry}
-                    </span>
-                  )}
-                  {profile.paymentVerified && (
-                    <span className="text-xs px-2.5 py-1 rounded-full font-medium flex items-center gap-1.5" style={{ background: 'rgba(255,104,3,0.10)', color: '#BFBFBF', border: '1px solid rgba(255,104,3,0.14)' }}>
-                      {Icons.shield}
-                      Payment Verified
-                    </span>
-                  )}
-                  {avgRating && (
-                    <span className="flex items-center gap-1 font-semibold text-sm" style={{ color: '#BFBFBF' }}>
-                      <svg className="w-3.5 h-3.5 fill-current" viewBox="0 0 20 20">
-                        <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-                      </svg>
-                      {avgRating}
-                      <span className="font-normal text-xs" style={{ color: '#6b5445' }}>({ratings.length})</span>
-                    </span>
-                  )}
+                ? <img src={avatarUrl} alt={name} className={`-mt-12 h-24 w-24 flex-none object-cover ring-4 ring-surface ${avatarShape}`} />
+                : <div className={`-mt-12 flex h-24 w-24 flex-none items-center justify-center bg-orange-100 text-3xl font-semibold text-orange-700 ring-4 ring-surface ${avatarShape}`}>{name?.[0]?.toUpperCase()}</div>}
+              <div className="min-w-0 pb-1">
+                <h1 className="text-2xl font-bold tracking-tight text-slate-900">{name}</h1>
+                <p className="mt-0.5 text-sm text-slate-600">
+                  {isBusiness && profile.companyName ? <>Represented by {profile.user?.name}</> : (isIndividual ? 'Individual client' : 'Client')}
+                  {profile.location && <> · {profile.location}</>}
+                </p>
+                <div className="mt-2 flex flex-wrap items-center gap-2 text-sm">
+                  {profile.paymentVerified
+                    ? <StatusPill tone="green">Payment verified</StatusPill>
+                    : <StatusPill tone="gray">Payment not verified</StatusPill>}
+                  {profile.clientType && <StatusPill tone="blue">{isBusiness ? 'Business' : 'Individual'}</StatusPill>}
+                  {avgRating && <span className="font-semibold text-slate-900">★ {avgRating}<span className="font-normal text-slate-500">{ratings.length > 0 && ` (${ratings.length})`}</span></span>}
                 </div>
               </div>
             </div>
+            {isMe && <Link to="/profile/setup" className="inline-flex items-center justify-center rounded-lg border border-slate-300 bg-surface px-4 py-2 text-sm font-semibold text-slate-800 no-underline hover:bg-slate-50">Edit profile</Link>}
           </div>
+        </section>
 
-          {/* Bio */}
-          {profile.bio && (
-            <p className="mt-5 text-sm leading-relaxed pt-4" style={{ color: '#BFBFBF', borderTop: '1px solid rgba(255,104,3,0.06)' }}>{profile.bio}</p>
-          )}
+        <div className="grid gap-6 lg:grid-cols-[1fr_300px]">
+          {/* Main */}
+          <div className="min-w-0 space-y-6">
+            <section className={`${card} p-6`}>
+              <h2 className="text-lg font-semibold text-slate-900">About</h2>
+              <p className="mt-3 whitespace-pre-line text-[15px] leading-7 text-slate-700">{profile.bio || `${name} hasn't added a description yet.`}</p>
+            </section>
 
-          {/* Links */}
-          {(profile.linkedinUrl || profile.websiteUrl) && (
-            <div className="flex flex-wrap items-center gap-3 mt-4 pt-4" style={{ borderTop: '1px solid rgba(255,104,3,0.06)' }}>
-              {profile.linkedinUrl && (
-                <a href={profile.linkedinUrl} target="_blank" rel="noreferrer"
-                  className="inline-flex items-center gap-2 text-sm font-medium transition-colors rounded-lg px-3 py-1.5"
-                  style={{ color: '#BFBFBF', border: '1px solid rgba(255,104,3,0.10)', background: '#120a02' }}
-                  onMouseEnter={e => { e.currentTarget.style.color = '#f4f4f5'; e.currentTarget.style.borderColor = 'rgba(255,255,255,0.2)' }}
-                  onMouseLeave={e => { e.currentTarget.style.color = '#BFBFBF'; e.currentTarget.style.borderColor = 'rgba(255,104,3,0.10)' }}>
-                  {Icons.linkedin} LinkedIn
-                </a>
-              )}
-              {profile.websiteUrl && (
-                <a href={profile.websiteUrl} target="_blank" rel="noreferrer"
-                  className="inline-flex items-center gap-2 text-sm font-medium transition-colors rounded-lg px-3 py-1.5"
-                  style={{ color: '#BFBFBF', border: '1px solid rgba(255,104,3,0.10)', background: '#120a02' }}
-                  onMouseEnter={e => { e.currentTarget.style.color = '#f4f4f5'; e.currentTarget.style.borderColor = 'rgba(255,255,255,0.2)' }}
-                  onMouseLeave={e => { e.currentTarget.style.color = '#BFBFBF'; e.currentTarget.style.borderColor = 'rgba(255,104,3,0.10)' }}>
-                  {Icons.globe} Website
-                </a>
-              )}
-            </div>
-          )}
-
-        </div>
-
-        {/* ── Stats ── */}
-        <div className="dark-card mb-4">
-          <div className="grid grid-cols-4" style={{ borderBottom: 'none' }}>
-            {[
-              { value: avgRating ? `${avgRating}` : '—', label: 'Avg Rating' },
-              { value: profile.projectsPosted || 0, label: 'Jobs Posted' },
-              { value: profile.projectsCompleted || 0, label: 'Completed' },
-              { value: profile.avgBudget > 0 ? `₹${Math.round(profile.avgBudget / 1000)}k` : '—', label: 'Avg Budget' },
-            ].map((stat, idx) => (
-              <div key={stat.label} className="py-4 px-2 text-center" style={idx > 0 ? { borderLeft: '1px solid rgba(255,104,3,0.06)' } : {}}>
-                <div className="text-xl font-bold text-white">{stat.value}</div>
-                <div className="text-xs mt-0.5 leading-tight" style={{ color: '#6b5445' }}>{stat.label}</div>
+            <section className={`${card}`}>
+              <div className="flex items-baseline justify-between px-6 pt-6">
+                <h2 className="text-lg font-semibold text-slate-900">Open jobs</h2>
+                <span className="text-sm text-slate-500">{openJobs.length}</span>
               </div>
-            ))}
+              {openJobs.length === 0 ? (
+                <p className="px-6 pb-6 pt-3 text-sm text-slate-500">No open jobs right now.</p>
+              ) : (
+                <ul className="mt-3 divide-y divide-slate-100 border-t border-slate-200 p-0">
+                  {openJobs.map(j => (
+                    <li key={j._id} className="list-none">
+                      <Link to={`/jobs/${j._id}`} className="group flex items-start justify-between gap-4 px-6 py-4 no-underline hover:bg-slate-50">
+                        <div className="min-w-0">
+                          <p className="truncate text-sm font-semibold text-slate-900 group-hover:text-orange-700">{j.title}</p>
+                          <p className="mt-0.5 text-xs text-slate-500">Posted {timeAgo(j.createdAt)} · {j.phases?.length || 0} milestones · {(j.bids?.length || 0)} proposals</p>
+                          {j.skills?.length > 0 && <div className="mt-2 flex flex-wrap gap-1.5">{j.skills.slice(0, 4).map(sk => <Chip key={sk}>{sk}</Chip>)}</div>}
+                        </div>
+                        <p className="flex-none text-sm font-semibold text-slate-900">{inr(j.budget)}</p>
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </section>
+
+            <section className={`${card} p-6`}>
+              <div className="flex items-baseline justify-between">
+                <h2 className="text-lg font-semibold text-slate-900">Reviews from freelancers</h2>
+                {ratings.length > 0 && <span className="text-sm text-slate-500">{ratings.length}</span>}
+              </div>
+              {ratings.length === 0 ? (
+                <p className="mt-3 text-sm text-slate-500">No reviews yet. Freelancers can review a client after a contract is completed.</p>
+              ) : (
+                <ul className="mt-3 divide-y divide-slate-100 p-0">
+                  {ratings.map((r, i) => (
+                    <li key={i} className="list-none py-4 first:pt-0 last:pb-0">
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-center gap-2.5"><Avatar name={r.ratedBy?.name || 'F'} size="h-8 w-8" textSize="text-xs" /><span className="text-sm font-semibold text-slate-900">{r.ratedBy?.name || 'Freelancer'}</span></div>
+                        <span className="text-sm font-semibold text-orange-600">{'★'.repeat(r.stars)}<span className="text-slate-300">{'★'.repeat(5 - r.stars)}</span></span>
+                      </div>
+                      {r.review && <p className="mt-2 text-sm leading-6 text-slate-700">{r.review}</p>}
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </section>
           </div>
+
+          {/* Sidebar */}
+          <aside className="space-y-6">
+            <section className={`${card} p-5`}>
+              <h2 className="text-sm font-semibold text-slate-900">Hiring activity</h2>
+              <dl className="mt-4 grid grid-cols-2 gap-4">
+                {[
+                  ['Jobs posted', profile.projectsPosted || 0],
+                  ['Completed', profile.projectsCompleted || 0],
+                  ['Avg budget', profile.avgBudget > 0 ? inr(Math.round(profile.avgBudget)) : '—'],
+                  ['Rating', avgRating ? `★ ${avgRating}` : '—'],
+                ].map(([k, v]) => (
+                  <div key={k}><dt className="text-xs text-slate-500">{k}</dt><dd className="mt-0.5 text-lg font-semibold text-slate-900">{v}</dd></div>
+                ))}
+              </dl>
+              {profile.paymentVerified && (
+                <p className="mt-4 flex items-start gap-2 border-t border-slate-100 pt-4 text-xs leading-5 text-slate-500">
+                  <span className="mt-0.5 text-emerald-600">{Icons.shield}</span>
+                  Payment method verified. Milestones are funded into escrow before work starts.
+                </p>
+              )}
+            </section>
+
+            {details.length > 0 && (
+              <section className={`${card} p-5`}>
+                <h2 className="text-sm font-semibold text-slate-900">Details</h2>
+                <ul className="mt-3 space-y-3 p-0">
+                  {details.map(([icon, label, value]) => (
+                    <li key={label} className="flex list-none items-start gap-3">
+                      <span className="mt-0.5 text-slate-400">{icon}</span>
+                      <div className="min-w-0"><p className="text-xs text-slate-500">{label}</p><p className="text-sm font-medium text-slate-900">{value}</p></div>
+                    </li>
+                  ))}
+                </ul>
+              </section>
+            )}
+
+            {links.length > 0 && (
+              <section className={`${card} p-5`}>
+                <h2 className="text-sm font-semibold text-slate-900">Links</h2>
+                <ul className="mt-3 space-y-1 p-0">
+                  {links.map(([icon, label, href]) => (
+                    <li key={label} className="list-none">
+                      <a href={href} target="_blank" rel="noreferrer" className="flex items-center gap-2.5 rounded-lg px-2 py-2 text-sm text-slate-700 no-underline hover:bg-slate-50 hover:text-slate-900">
+                        <span className="text-slate-500">{icon}</span>{label}
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+              </section>
+            )}
+
+            {totalBadges > 0 && (
+              <section className={`${card} p-5`}>
+                <div className="flex items-baseline justify-between">
+                  <h2 className="text-sm font-semibold text-slate-900">Badges</h2>
+                  <span className="text-xs text-slate-500">{earnedBadges.length} of {totalBadges}</span>
+                </div>
+                {earnedBadges.length === 0 ? <p className="mt-3 text-sm text-slate-500">No badges earned yet.</p> : (
+                  <ul className="mt-3 space-y-2 p-0">
+                    {earnedBadges.map(b => {
+                      const c = BADGE_COLORS[b.color]
+                      return (
+                        <li key={b.id} className="flex list-none items-center gap-2.5" title={b.description}>
+                          <span className={`flex h-7 w-7 flex-none items-center justify-center rounded-md ${c.icon}`}>{b.icon}</span>
+                          <span className="text-sm font-medium text-slate-800">{b.title}</span>
+                        </li>
+                      )
+                    })}
+                  </ul>
+                )}
+              </section>
+            )}
+          </aside>
         </div>
-
-        {/* ── Details ── */}
-        {(profile.location || profile.yearsHiring || profile.preferredComm || (isBusiness && profile.companySize) || (isBusiness && profile.industry)) && (
-          <div className="dark-card p-5 mb-4">
-            <h2 className="text-sm font-semibold text-white mb-4">Details</h2>
-            <div className="flex flex-col gap-3">
-              {profile.location && (
-                <InfoRow icon={Icons.location} label="Location" value={profile.location} />
-              )}
-              {profile.yearsHiring && (
-                <InfoRow icon={Icons.clock} label="Hiring Experience" value={YEARS_HIRING_LABELS[profile.yearsHiring] || profile.yearsHiring} />
-              )}
-              {profile.preferredComm && (
-                <InfoRow icon={Icons.chat} label="Communication Style" value={COMM_LABELS[profile.preferredComm] || profile.preferredComm} />
-              )}
-              {isBusiness && profile.companySize && (
-                <InfoRow icon={Icons.users} label="Company Size" value={`${profile.companySize} people`} />
-              )}
-              {isBusiness && profile.industry && (
-                <InfoRow icon={Icons.industry} label="Industry" value={profile.industry} />
-              )}
-            </div>
-          </div>
-        )}
-
-        {/* ── Badges ── */}
-        <div className="dark-card p-5 mb-4">
-          <div className="flex items-center justify-between mb-3">
-            <h2 className="text-sm font-semibold text-white">Badges & Achievements</h2>
-            <span className="text-xs" style={{ color: '#6b5445' }}>{earnedBadges.length} / {totalBadges} earned</span>
-          </div>
-
-          {earnedBadges.length === 0 && (
-            <p className="text-sm italic" style={{ color: '#6b5445' }}>No badges earned yet.</p>
-          )}
-
-          {earnedBadges.length > 0 && (
-            <div className="flex flex-col gap-1.5">
-              {earnedBadges.map(badge => {
-                const c = BADGE_COLORS[badge.color]
-                return (
-                  <div key={badge.id} className={`flex items-start gap-2 border rounded-lg px-2.5 py-2 ${c.earned}`}>
-                    <div className={`w-6 h-6 rounded-md flex items-center justify-center flex-shrink-0 mt-0.5 ${c.icon}`}>
-                      {badge.icon}
-                    </div>
-                    <div className="min-w-0">
-                      <p className="text-[11px] font-semibold leading-tight truncate">{badge.title}</p>
-                      <p className="text-[10px] opacity-60 mt-0.5 leading-tight line-clamp-2">{badge.description}</p>
-                    </div>
-                  </div>
-                )
-              })}
-            </div>
-          )}
-        </div>
-
-      </div>
+      </main>
     </div>
   )
 }

@@ -164,7 +164,7 @@ export default function PaymentGate() {
 
         {/* Page Header */}
         <div className="mb-6">
-          <Link to="/dashboard/client" className="text-xs text-zinc-400 hover:text-zinc-600 font-medium flex items-center gap-1 mb-4 transition-colors">
+          <Link to="/dashboard/client" className="text-xs text-slate-500 hover:text-zinc-600 font-medium flex items-center gap-1 mb-4 transition-colors">
             <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
             </svg>
@@ -188,7 +188,7 @@ export default function PaymentGate() {
                     </svg>
                   ) : step.id}
                 </div>
-                <span className={`text-xs font-medium ${step.id === 2 ? 'text-zinc-900' : step.id < 2 ? 'text-emerald-600' : 'text-zinc-400'}`}>
+                <span className={`text-xs font-medium ${step.id === 2 ? 'text-zinc-900' : step.id < 2 ? 'text-emerald-600' : 'text-slate-500'}`}>
                   {step.label}
                 </span>
               </div>
@@ -202,25 +202,25 @@ export default function PaymentGate() {
         {/* Escrow Header Card */}
         <div className="bg-zinc-900 rounded-t-xl px-6 py-4 flex items-center gap-3">
           <div className="w-10 h-10 bg-white/10 rounded-xl flex items-center justify-center flex-shrink-0">
-            <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg className="w-5 h-5 text-slate-900" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
             </svg>
           </div>
           <div>
-            <p className="text-white font-semibold text-sm">Secure Escrow Payment</p>
-            <p className="text-zinc-400 text-xs mt-0.5">Funds locked until work is approved — protected for both parties</p>
+            <p className="text-slate-900 font-semibold text-sm">Secure Escrow Payment</p>
+            <p className="text-slate-500 text-xs mt-0.5">Funds locked until work is approved — protected for both parties</p>
           </div>
-          <span className="ml-auto text-xs bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 px-2.5 py-1 rounded-full font-medium">
+          <span className="ml-auto text-xs bg-emerald-500/20 text-emerald-600 border border-emerald-500/30 px-2.5 py-1 rounded-full font-medium">
             🔒 Escrow Protected
           </span>
         </div>
 
         {/* Main Card */}
-        <div className="bg-white rounded-b-xl border border-zinc-200 border-t-0 p-6 space-y-6">
+        <div className="bg-surface rounded-b-xl border border-zinc-200 border-t-0 p-6 space-y-6">
 
           {/* Job Summary */}
           <div>
-            <h2 className="text-xs font-semibold text-zinc-400 uppercase tracking-wider mb-3">Job Details</h2>
+            <h2 className="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-3">Job Details</h2>
             <div className="p-4 bg-zinc-50 rounded-xl border border-zinc-100 space-y-3">
               <div className="flex justify-between items-start">
                 <div>
@@ -234,15 +234,15 @@ export default function PaymentGate() {
               <div className="h-px bg-zinc-200" />
               <div className="grid grid-cols-3 gap-3 text-sm">
                 <div>
-                  <p className="text-xs text-zinc-400 mb-0.5">Total Budget</p>
+                  <p className="text-xs text-slate-500 mb-0.5">Total Budget</p>
                   <p className="font-semibold text-zinc-900">₹{job.budget?.toLocaleString()}</p>
                 </div>
                 <div>
-                  <p className="text-xs text-zinc-400 mb-0.5">Advance ({job.advancePercent || 10}%)</p>
+                  <p className="text-xs text-slate-500 mb-0.5">Advance ({job.advancePercent || 10}%)</p>
                   <p className="font-bold text-zinc-900 text-base">₹{advanceAmount.toLocaleString()}</p>
                 </div>
                 <div>
-                  <p className="text-xs text-zinc-400 mb-0.5">Released Later</p>
+                  <p className="text-xs text-slate-500 mb-0.5">Released Later</p>
                   <p className="font-semibold text-zinc-500">₹{remaining.toLocaleString()}</p>
                 </div>
               </div>
@@ -257,14 +257,14 @@ export default function PaymentGate() {
           {/* Phase Summary */}
           {job.phases?.length > 0 && (
             <div>
-              <h2 className="text-xs font-semibold text-zinc-400 uppercase tracking-wider mb-3">Payment Schedule</h2>
+              <h2 className="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-3">Payment Schedule</h2>
               <div className="space-y-2">
                 <div className="flex justify-between items-center p-3 bg-zinc-900 rounded-lg">
                   <div className="flex items-center gap-2">
-                    <span className="w-5 h-5 bg-white/10 rounded text-white text-[10px] font-bold flex items-center justify-center">A</span>
-                    <span className="text-sm text-white font-medium">Advance (Pay Now)</span>
+                    <span className="w-5 h-5 bg-white/10 rounded text-slate-900 text-[10px] font-bold flex items-center justify-center">A</span>
+                    <span className="text-sm text-slate-900 font-medium">Advance (Pay Now)</span>
                   </div>
-                  <span className="text-sm font-bold text-white">₹{advanceAmount.toLocaleString()}</span>
+                  <span className="text-sm font-bold text-slate-900">₹{advanceAmount.toLocaleString()}</span>
                 </div>
                 {job.phases.map((phase, i) => {
                   const phaseAmt = Math.round(remaining * phase.budgetPercent / 100)
@@ -284,13 +284,13 @@ export default function PaymentGate() {
 
           {/* Payment Method */}
           <div>
-            <h2 className="text-xs font-semibold text-zinc-400 uppercase tracking-wider mb-3">Payment Method</h2>
+            <h2 className="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-3">Payment Method</h2>
             <div className="space-y-3">
               {/* Razorpay */}
               <label className={`flex items-center gap-4 p-4 border-2 rounded-xl cursor-pointer transition-all ${
                 paymentMethod === 'razorpay'
                   ? 'border-zinc-900 bg-zinc-50 shadow-sm'
-                  : 'border-zinc-200 hover:border-zinc-300 bg-white'
+                  : 'border-zinc-200 hover:border-zinc-300 bg-surface'
               }`}>
                 <input
                   type="radio"
@@ -308,7 +308,7 @@ export default function PaymentGate() {
                 </div>
                 <div className="flex gap-1.5 flex-shrink-0">
                   {['UPI', 'Card', 'IMPS'].map(m => (
-                    <span key={m} className="text-[10px] text-zinc-400 bg-zinc-100 px-1.5 py-0.5 rounded font-medium">{m}</span>
+                    <span key={m} className="text-[10px] text-slate-500 bg-zinc-100 px-1.5 py-0.5 rounded font-medium">{m}</span>
                   ))}
                 </div>
               </label>
@@ -317,7 +317,7 @@ export default function PaymentGate() {
               <label className={`flex items-center gap-4 p-4 border-2 rounded-xl cursor-pointer transition-all ${
                 paymentMethod === 'simulated'
                   ? 'border-blue-500 bg-blue-50 shadow-sm'
-                  : 'border-zinc-200 hover:border-zinc-300 bg-white'
+                  : 'border-zinc-200 hover:border-zinc-300 bg-surface'
               }`}>
                 <input
                   type="radio"
@@ -383,7 +383,7 @@ export default function PaymentGate() {
             )}
           </button>
 
-          <p className="text-xs text-zinc-400 text-center">
+          <p className="text-xs text-slate-500 text-center">
             Your job draft is saved. You can safely leave and return to pay later.
           </p>
         </div>

@@ -4,45 +4,9 @@ import api from '../api'
 import Navbar from '../components/Navbar'
 import toast from 'react-hot-toast'
 import { calcCompletion } from '../utils/profileCompletion'
-import { useCountUp } from '../utils/useCountUp'
+import { PageHeader, Stat, Section, Empty, Avatar, StatusPill, btn, inr } from '../components/ui'
 
 const FILE_BASE = import.meta.env.VITE_API_URL || 'http://localhost:5001'
-
-function StatCard({ label, value, accent }) {
-  const numeric = typeof value === 'number' ? value : parseFloat(String(value).replace(/[^0-9.]/g, '')) || 0
-  const prefix = typeof value === 'string' && value.startsWith('₹') ? '₹' : ''
-  const animated = useCountUp(numeric, 1200, prefix)
-
-  return (
-    <div
-      className="card-lift p-4 rounded-2xl"
-      style={{
-        background: accent
-          ? 'linear-gradient(135deg, rgba(255,104,3,0.18) 0%, rgba(174,58,2,0.12) 100%)'
-          : 'rgba(18,10,2,0.60)',
-        border: accent ? '1px solid rgba(255,104,3,0.35)' : '1px solid rgba(255,104,3,0.10)',
-        backdropFilter: 'blur(16px)',
-        boxShadow: accent ? '0 0 24px rgba(255,104,3,0.15), inset 0 1px 0 rgba(255,255,255,0.06)' : 'inset 0 1px 0 rgba(255,255,255,0.04)',
-      }}
-    >
-      <div
-        className="text-2xl font-bold stat-number mb-0.5"
-        style={{ color: accent ? '#FF6803' : '#F5EDE4', textShadow: accent ? '0 0 20px rgba(255,104,3,0.4)' : 'none' }}
-      >
-        {animated}
-      </div>
-      <div className="text-xs font-medium" style={{ color: '#6b5445' }}>{label}</div>
-    </div>
-  )
-}
-
-const sectionLabel = (text) => (
-  <div className="flex items-center gap-3 mb-4">
-    <div className="h-px flex-1" style={{ background: 'rgba(255,104,3,0.12)' }} />
-    <h2 className="text-[10px] font-bold uppercase tracking-[0.15em]" style={{ color: '#BFBFBF' }}>{text}</h2>
-    <div className="h-px flex-1" style={{ background: 'rgba(255,104,3,0.12)' }} />
-  </div>
-)
 
 export default function ClientDashboard() {
   const [contracts, setContracts] = useState([])
@@ -50,8 +14,13 @@ export default function ClientDashboard() {
   const [portfolio, setPortfolio] = useState(null)
   const [loading, setLoading] = useState(true)
   const [actionLoading, setActionLoading] = useState(null)
+  const [talent, setTalent] = useState([])
   const user = JSON.parse(localStorage.getItem('user') || '{}')
   const navigate = useNavigate()
+
+  useEffect(() => {
+    api.get('/api/jobs/freelancers/browse').then(({ data }) => setTalent(Array.isArray(data) ? data : [])).catch(() => {})
+  }, [])
 
   useEffect(() => {
     let done = 0
@@ -107,7 +76,7 @@ export default function ClientDashboard() {
           } catch { toast.error('Payment verification failed.') }
         },
         prefill: { name: user.name, email: user.email },
-        theme: { color: '#FF6803' },
+        theme: { color: '#EA580C' },
         modal: { ondismiss: () => toast('Payment cancelled. Go to the contract to complete advance payment.') }
       }
       const rzp = new window.Razorpay(options)
@@ -135,221 +104,181 @@ export default function ClientDashboard() {
     } finally { setActionLoading(null) }
   }
 
+  const avatarSrc = portfolio?.avatarUrl
+    ? (portfolio.avatarUrl.startsWith('http') ? portfolio.avatarUrl : `${FILE_BASE}${portfolio.avatarUrl}`)
+    : null
+  const completion = portfolio ? calcCompletion('client', portfolio) : 0
+
   if (loading) return (
-    <div className="min-h-screen" style={{ background: 'transparent' }}>
+    <div className="min-h-screen bg-page">
       <Navbar />
-      <div className="flex items-center justify-center h-64 flex-col gap-4">
-        <div className="w-48 h-4 shimmer-skeleton" />
-        <div className="w-32 h-3 shimmer-skeleton" />
-        <div className="grid grid-cols-4 gap-3 mt-4 w-full max-w-2xl px-6">
-          {[...Array(4)].map((_, i) => (
-            <div key={i} className="h-20 shimmer-skeleton rounded-xl" />
-          ))}
+      <div className="mx-auto max-w-6xl px-4 py-8 sm:px-6">
+        <div className="h-8 w-64 shimmer-skeleton" />
+        <div className="mt-8 grid grid-cols-2 gap-4 lg:grid-cols-4">
+          {[...Array(4)].map((_, i) => <div key={i} className="h-24 shimmer-skeleton rounded-xl" />)}
         </div>
+        <div className="mt-8 h-40 shimmer-skeleton rounded-xl" />
       </div>
     </div>
   )
 
   return (
-    <div className="min-h-screen" style={{ background: 'transparent' }}>
+    <div className="min-h-screen bg-page">
       <Navbar />
-      <div className="max-w-5xl mx-auto p-6">
+      <main className="mx-auto max-w-6xl px-4 py-8 sm:px-6">
+        <PageHeader
+          eyebrow="Client dashboard"
+          title={`Welcome back, ${user.name?.split(' ')[0] || ''}`}
+          subtitle="Track your jobs, applicants and escrow-protected contracts."
+        />
 
-        {/* Dashboard header */}
-        <div style={{ marginBottom: '32px', padding: '28px 32px', borderRadius: '20px', background: 'linear-gradient(135deg, rgba(18,10,2,0.90) 0%, rgba(28,16,8,0.85) 100%)', border: '1px solid rgba(255,104,3,0.18)', backdropFilter: 'blur(24px)', boxShadow: '0 0 60px rgba(255,104,3,0.08), inset 0 1px 0 rgba(255,255,255,0.06)', position: 'relative', overflow: 'hidden' }}>
-          <div style={{ position: 'absolute', top: -60, right: -60, width: 200, height: 200, background: 'radial-gradient(circle, rgba(255,104,3,0.12) 0%, transparent 70%)', borderRadius: '50%', pointerEvents: 'none' }} />
-          <p style={{ fontSize: '10px', fontWeight: 700, color: '#BFBFBF', letterSpacing: '0.18em', textTransform: 'uppercase', marginBottom: '8px', opacity: 0.9 }}>Client Portal</p>
-          <h1 style={{ fontSize: '28px', fontWeight: 800, color: '#F5EDE4', marginBottom: '6px', lineHeight: 1.2 }}>
-            Welcome back, <span style={{ background: 'linear-gradient(135deg,#FF6803,#AE3A02)', WebkitBackgroundClip: 'text', WebkitTextFillColor: "transparent" }}>{user.name}</span>
-          </h1>
-          <p style={{ fontSize: '13px', color: '#6b5445' }}>Manage your contracts, jobs, and team</p>
-          <button onClick={() => navigate('/jobs/post')} className="btn-purple" style={{ marginTop: '18px', padding: '10px 24px', fontSize: '13px', boxShadow: '0 4px 20px rgba(255,104,3,0.30)' }}>+ Post Job</button>
-        </div>
-
-        {/* Profile card */}
-        {portfolio !== null && (
-          <div className="dark-card p-4 mb-6 flex items-center gap-4 animate-fade-in-up" style={{ animationDelay: '0.05s' }}>
-            {portfolio?.avatarUrl
-              ? <img
-                  src={portfolio.avatarUrl.startsWith('http') ? portfolio.avatarUrl : `${FILE_BASE}${portfolio.avatarUrl}`}
-                  alt="avatar"
-                  className="w-12 h-12 rounded-xl object-cover flex-shrink-0"
-                  style={{ border: '1px solid rgba(255,104,3,0.10)' }}
-                />
-              : <div className="w-12 h-12 rounded-xl flex items-center justify-center text-white text-lg font-bold flex-shrink-0"
-                  style={{ background: 'linear-gradient(135deg, #FF6803, #AE3A02)' }}>
-                  {user.name?.[0]?.toUpperCase()}
-                </div>
-            }
-            <div className="flex-1 min-w-0">
-              <div className="flex items-center gap-2 mb-0.5">
-                <span className="text-sm font-semibold text-white">{user.name}</span>
-                {portfolio?.clientType && (
-                  <span className="badge badge-purple capitalize">{portfolio.clientType}</span>
-                )}
-              </div>
-              {portfolio?.bio
-                ? <p className="text-xs line-clamp-1" style={{ color: '#BFBFBF' }}>{portfolio.bio}</p>
-                : <p className="text-xs italic" style={{ color: '#6b5445' }}>No bio yet — complete your profile</p>
-              }
-              <div className="flex items-center gap-2 mt-1.5">
-                <div className="flex-1 rounded-full h-1 overflow-hidden" style={{ background: 'rgba(255,104,3,0.06)' }}>
-                  <div
-                    className="h-1 rounded-full transition-all"
-                    style={{ width: `${calcCompletion('client', portfolio)}%`, background: 'linear-gradient(90deg, #FF6803, #AE3A02)' }}
-                  />
-                </div>
-                <span className="text-[10px] font-medium flex-shrink-0" style={{ color: '#6b5445' }}>
-                  {calcCompletion('client', portfolio)}% complete
-                </span>
-              </div>
+        <div className="grid gap-8 lg:grid-cols-[1fr_300px]">
+          <div className="min-w-0">
+            <div className="mb-8 grid grid-cols-2 gap-4 xl:grid-cols-4">
+              <Stat label="Active contracts" value={activeContracts.length} highlight />
+              <Stat label="Total contract value" value={inr(totalValue)} />
+              <Stat label="Open jobs" value={openJobs.length} />
+              <Stat label="Shortlisted" value={awaitingDecision.length} />
             </div>
-            <Link
-              to="/profile/setup"
-              className="btn-purple text-xs font-medium px-3 py-1.5 flex-shrink-0"
-            >
-              Edit Profile
-            </Link>
+
+            {awaitingDecision.length > 0 && (
+              <Section title="Shortlisted — awaiting your decision">
+                <div className="divide-y divide-slate-100 rounded-xl border border-slate-200 bg-surface">
+                  {awaitingDecision.map(b => {
+                    const isLoading = (suf) => actionLoading === b._id + suf
+                    return (
+                      <div key={b._id} className="flex flex-col gap-3 p-4 sm:flex-row sm:items-center">
+                        <Avatar name={b.freelancer?.name} />
+                        <div className="min-w-0 flex-1">
+                          <p className="text-sm font-semibold text-slate-900">{b.freelancer?.name}</p>
+                          <p className="mt-0.5 truncate text-sm text-slate-500">
+                            {b.job.title} · {inr(b.job.budget)}{b.freelancer?.rating > 0 && ` · ★ ${b.freelancer.rating}`}
+                          </p>
+                        </div>
+                        <div className="flex gap-2">
+                          <button onClick={() => quickAction(b.job._id, b._id, 'hire')} disabled={isLoading('hire')} className={btn.primary}>
+                            {isLoading('hire') ? 'Hiring…' : 'Hire'}
+                          </button>
+                          <button onClick={() => quickAction(b.job._id, b._id, 'reject')} disabled={isLoading('reject')} className={btn.secondary}>
+                            {isLoading('reject') ? '…' : 'Reject'}
+                          </button>
+                        </div>
+                      </div>
+                    )
+                  })}
+                </div>
+              </Section>
+            )}
+
+            <Section title="Active contracts">
+              {activeContracts.length === 0 ? (
+                <Empty title="No active contracts yet" body="Hire a freelancer from one of your jobs to start a contract." />
+              ) : (
+                <div className="divide-y divide-slate-100 rounded-xl border border-slate-200 bg-surface">
+                  {activeContracts.map(c => (
+                    <Link key={c._id} to={`/contracts/${c._id}`} className="flex items-center gap-4 p-4 no-underline transition-colors hover:bg-slate-50">
+                      <Avatar name={c.freelancer?.name} />
+                      <div className="min-w-0 flex-1">
+                        <p className="truncate text-sm font-semibold text-slate-900">{c.job?.title || 'Contract'}</p>
+                        <p className="mt-0.5 text-sm text-slate-500">with {c.freelancer?.name} · {c.milestoneCount} milestones</p>
+                      </div>
+                      <div className="hidden text-right sm:block">
+                        <p className="text-sm font-semibold text-slate-900">{inr(c.amount)}</p>
+                        <div className="mt-1"><StatusPill status={c.status} /></div>
+                      </div>
+                      <svg className="h-5 w-5 flex-none text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.8}><path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" /></svg>
+                    </Link>
+                  ))}
+                </div>
+              )}
+            </Section>
+
+            <Section title="My posted jobs" action={<Link to="/jobs/post" className="text-sm font-semibold text-orange-700 no-underline hover:underline">Post a job</Link>}>
+              {jobs.length === 0 ? (
+                <Empty title="You haven't posted a job yet" body="Describe what you need and freelancers will start applying."
+                  action={<Link to="/jobs/post" className={btn.primary}>Post your first job</Link>} />
+              ) : (
+                <div className="divide-y divide-slate-100 rounded-xl border border-slate-200 bg-surface">
+                  {jobs.map(j => {
+                    const bids = j.bids || []
+                    const applied = bids.filter(b => b.status === 'applied').length
+                    const shortlisted = bids.filter(b => b.status === 'shortlisted').length
+                    const hired = bids.filter(b => b.status === 'hired').length
+                    return (
+                      <div key={j._id} className="flex flex-col gap-3 p-4 sm:flex-row sm:items-center">
+                        <div className="min-w-0 flex-1">
+                          <div className="flex flex-wrap items-center gap-2">
+                            <p className="text-sm font-semibold text-slate-900">{j.title}</p>
+                            <StatusPill status={j.status} />
+                          </div>
+                          <p className="mt-1 text-sm text-slate-500">
+                            {inr(j.budget)} budget ·{' '}
+                            {bids.length === 0 ? 'No applications yet'
+                              : [applied && `${applied} new`, shortlisted && `${shortlisted} shortlisted`, hired && `${hired} hired`].filter(Boolean).join(' · ') || `${bids.length} applications`}
+                          </p>
+                        </div>
+                        <Link to={`/jobs/${j._id}`} className={btn.secondary}>Manage</Link>
+                      </div>
+                    )
+                  })}
+                </div>
+              )}
+            </Section>
           </div>
-        )}
 
-        {/* Stats */}
-        <div className="grid grid-cols-4 gap-3 mb-6">
-          <StatCard label="Active Contracts" value={activeContracts.length} accent />
-          <StatCard label="Total Value" value={`₹${totalValue.toLocaleString('en-IN')}`} />
-          <StatCard label="Open Jobs" value={openJobs.length} />
-          <StatCard label="Shortlisted" value={awaitingDecision.length} />
+          <aside className="space-y-4">
+            {portfolio !== null && (
+              <div className="rounded-xl border border-slate-200 bg-surface p-5">
+                <div className="flex items-center gap-3">
+                  <Avatar src={avatarSrc} name={user.name} size="h-12 w-12" textSize="text-lg" />
+                  <div className="min-w-0">
+                    <p className="truncate font-semibold text-slate-900">{user.name}</p>
+                    <p className="text-xs capitalize text-slate-500">{portfolio?.clientType || 'Client'}</p>
+                  </div>
+                </div>
+                <p className="mt-3 line-clamp-3 text-sm text-slate-600">{portfolio?.bio || 'Add a short bio so freelancers know who they will work with.'}</p>
+                <div className="mt-4">
+                  <div className="flex justify-between text-xs"><span className="font-medium text-slate-700">Profile strength</span><span className="text-slate-500">{completion}%</span></div>
+                  <div className="mt-1.5 h-1.5 overflow-hidden rounded-full bg-slate-100">
+                    <div className="h-full rounded-full bg-orange-500" style={{ width: `${completion}%` }} />
+                  </div>
+                </div>
+                <Link to="/profile/setup" className={`${btn.secondary} mt-4 w-full`}>{completion < 100 ? 'Complete profile' : 'Edit profile'}</Link>
+              </div>
+            )}
+            {talent.length > 0 && (
+              <div className="rounded-xl border border-slate-200 bg-surface p-5">
+                <div className="flex items-center justify-between">
+                  <p className="text-sm font-semibold text-slate-900">Freelancers you might like</p>
+                  <Link to="/freelancers" className="text-xs font-semibold text-orange-700 no-underline hover:underline">Browse</Link>
+                </div>
+                <ul className="mt-3 space-y-3 p-0">
+                  {[...talent].sort((a, b) => (b.user?.rating || 0) - (a.user?.rating || 0)).slice(0, 3).map(f => (
+                    <li key={f._id} className="list-none">
+                      <Link to={`/freelancers/${f.user?._id}`} className="flex items-center gap-3 rounded-lg p-1.5 no-underline transition-colors hover:bg-slate-50">
+                        <Avatar name={f.user?.name} size="h-9 w-9" />
+                        <div className="min-w-0 flex-1">
+                          <p className="truncate text-sm font-semibold text-slate-900">{f.user?.name}</p>
+                          <p className="truncate text-xs text-slate-500">{(f.skills || []).slice(0, 3).join(' · ') || 'Freelancer'}</p>
+                        </div>
+                        {f.user?.rating > 0 && <span className="text-xs font-semibold text-slate-700">★ {f.user.rating.toFixed(1)}</span>}
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
+            <div className="rounded-xl border border-slate-200 bg-surface p-5">
+              <p className="text-sm font-semibold text-slate-900">How escrow protects you</p>
+              <ul className="mt-3 space-y-2.5 p-0 text-sm text-slate-600">
+                {['Fund one milestone at a time', 'Review the SHA-256 verified delivery', 'Approve to release, or raise a dispute'].map((t, i) => (
+                  <li key={t} className="flex list-none gap-2.5"><span className="flex h-5 w-5 flex-none items-center justify-center rounded-full bg-slate-100 text-[11px] font-semibold text-slate-600">{i + 1}</span>{t}</li>
+                ))}
+              </ul>
+            </div>
+          </aside>
         </div>
-
-        {/* Awaiting Decision */}
-        {awaitingDecision.length > 0 && (
-          <section className="mb-6">
-            {sectionLabel('Shortlisted — Awaiting Decision')}
-            {awaitingDecision.map(b => {
-              const isLoading = (suf) => actionLoading === b._id + suf
-              return (
-                <div key={b._id} className="dark-card card-lift p-4 mb-2 flex items-center gap-4">
-                  <div className="w-10 h-10 rounded-xl flex items-center justify-center text-white flex-shrink-0"
-                    style={{ background: 'rgba(255,104,3,0.14)', border: '1px solid rgba(255,104,3,0.25)' }}>
-                    <svg className="w-5 h-5" fill="none" stroke="#BFBFBF" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-                    </svg>
-                  </div>
-                  <div className="flex-1 min-w-0">
-                    <div className="font-semibold text-sm text-white">{b.freelancer?.name}</div>
-                    <div className="text-sm mt-0.5" style={{ color: '#BFBFBF' }}>
-                      {b.job.title} · ₹{b.job.budget?.toLocaleString()}
-                      {b.freelancer?.rating > 0 && ` · ★ ${b.freelancer.rating}`}
-                    </div>
-                  </div>
-                  <div className="flex gap-2 flex-shrink-0">
-                    <button
-                      onClick={() => quickAction(b.job._id, b._id, 'hire')}
-                      disabled={isLoading('hire')}
-                      className="btn-purple px-3 py-1.5 text-sm"
-                    >
-                      {isLoading('hire') ? '…' : 'Hire'}
-                    </button>
-                    <button
-                      onClick={() => quickAction(b.job._id, b._id, 'reject')}
-                      disabled={isLoading('reject')}
-                      className="px-3 py-1.5 rounded-lg text-sm font-medium transition-all disabled:opacity-50"
-                      style={{ background: 'rgba(255,104,3,0.06)', border: '1px solid rgba(255,104,3,0.10)', color: '#BFBFBF' }}
-                    >
-                      Reject
-                    </button>
-                  </div>
-                </div>
-              )
-            })}
-          </section>
-        )}
-
-        {/* Active Contracts */}
-        <section className="mb-6">
-          {sectionLabel('Active Contracts')}
-          {activeContracts.length === 0
-            ? <div className="dark-card p-6 text-center text-sm" style={{ color: '#6b5445' }}>
-                No active contracts yet
-              </div>
-            : activeContracts.map(c => (
-              <div key={c._id} className="dark-card card-lift p-4 mb-2 flex items-center gap-4">
-                <div className="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0"
-                  style={{ background: 'rgba(255,104,3,0.12)', border: '1px solid rgba(255,104,3,0.20)' }}>
-                  <svg className="w-5 h-5" fill="none" stroke="#FF6803" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-                  </svg>
-                </div>
-                <div className="flex-1 min-w-0">
-                  <div className="font-semibold text-sm text-white">{c.job?.title || 'Contract'}</div>
-                  <div className="text-sm mt-0.5" style={{ color: '#BFBFBF' }}>
-                    with {c.freelancer?.name} · ₹{c.amount?.toLocaleString()} · {c.milestoneCount} phases
-                  </div>
-                </div>
-                <Link
-                  to={`/contracts/${c._id}`} data-cursor="contract"
-                  className="px-4 py-1.5 rounded-lg text-sm font-medium transition-all flex-shrink-0"
-                  style={{ background: 'rgba(255,104,3,0.12)', border: '1px solid rgba(255,104,3,0.20)', color: '#BFBFBF' }}
-                  onMouseEnter={e => { e.currentTarget.style.background = 'rgba(255,104,3,0.20)' }}
-                  onMouseLeave={e => { e.currentTarget.style.background = 'rgba(255,104,3,0.12)' }}
-                >
-                  View Contract
-                </Link>
-              </div>
-            ))
-          }
-        </section>
-
-        {/* Posted Jobs */}
-        <section>
-          {sectionLabel('My Posted Jobs')}
-          {jobs.length === 0
-            ? <div className="dark-card p-6 text-center text-sm" style={{ color: '#6b5445' }}>
-                No jobs yet.{' '}
-                <Link to="/jobs/post" className="font-medium" style={{ color: '#BFBFBF' }}>Post your first job</Link>
-              </div>
-            : jobs.map(j => {
-              const bids = j.bids || []
-              const counts = {
-                applied: bids.filter(b => b.status === 'applied').length,
-                shortlisted: bids.filter(b => b.status === 'shortlisted').length,
-                hired: bids.filter(b => b.status === 'hired').length,
-              }
-              return (
-                <div key={j._id} className="dark-card card-lift p-4 mb-2 flex items-center gap-4">
-                  <div className="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0"
-                    style={{ background: '#120a02', border: '1px solid rgba(255,104,3,0.10)' }}>
-                    <svg className="w-5 h-5" fill="none" stroke="#BFBFBF" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                    </svg>
-                  </div>
-                  <div className="flex-1 min-w-0">
-                    <div className="font-semibold text-sm text-white">{j.title}</div>
-                    <div className="text-sm mt-0.5" style={{ color: '#BFBFBF' }}>
-                      ₹{j.budget?.toLocaleString()} · <span className="capitalize">{j.status}</span>
-                    </div>
-                    <div className="flex gap-3 mt-1.5 text-xs" style={{ color: '#6b5445' }}>
-                      {counts.applied > 0 && <span>{counts.applied} applied</span>}
-                      {counts.shortlisted > 0 && <span style={{ color: '#BFBFBF' }}>{counts.shortlisted} shortlisted</span>}
-                      {counts.hired > 0 && <span style={{ color: '#22c55e' }}>{counts.hired} hired</span>}
-                      {bids.length === 0 && <span>No applications yet</span>}
-                    </div>
-                  </div>
-                  <Link
-                    to={`/jobs/${j._id}`}
-                    className="px-4 py-1.5 rounded-lg text-sm font-medium transition-all flex-shrink-0"
-                    style={{ background: 'rgba(255,104,3,0.06)', border: '1px solid rgba(255,104,3,0.10)', color: '#BFBFBF' }}
-                    onMouseEnter={e => { e.currentTarget.style.background = 'rgba(255,104,3,0.10)' }}
-                    onMouseLeave={e => { e.currentTarget.style.background = 'rgba(255,104,3,0.06)' }}
-                  >
-                    Manage
-                  </Link>
-                </div>
-              )
-            })
-          }
-        </section>
-      </div>
+      </main>
     </div>
   )
 }

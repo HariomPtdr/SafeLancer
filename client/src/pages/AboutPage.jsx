@@ -1,7 +1,8 @@
 import StaticLayout from '../components/StaticLayout'
+import { EmojiIcon } from '../components/marketing/Icon'
 import useIsMobile from '../utils/useIsMobile'
 
-const T = { blue: '#EA580C', muted: '#475569', faint: '#64748B', text: '#0F172A', border: '#E2E8F0', bg: '#FFF7ED' }
+const T = { blue: '#EA580C', muted: 'rgb(var(--slate-600))', faint: 'rgb(var(--slate-500))', text: 'rgb(var(--slate-900))', border: 'rgb(var(--slate-200))', bg: 'rgb(var(--orange-50))' }
 
 const values = [
   { icon: '🔐', title: 'Trust First', body: 'Every transaction on SafeLancer is backed by cryptographic escrow. Funds are locked before work begins — neither party can be cheated.' },
@@ -28,8 +29,8 @@ export default function AboutPage() {
     >
       {/* Hackathon notice */}
       <section style={{ marginBottom: '64px' }}>
-        <div style={{ background: 'rgba(255,104,3,0.06)', border: `1px solid ${T.blue}40`, borderRadius: '16px', padding: '24px 28px', display: 'flex', alignItems: 'flex-start', gap: '16px' }}>
-          <span style={{ fontSize: '24px', flexShrink: 0 }}>🏆</span>
+        <div style={{ background: 'rgb(var(--slate-100))', border: `1px solid ${T.blue}40`, borderRadius: '16px', padding: '24px 28px', display: 'flex', alignItems: 'flex-start', gap: '16px' }}>
+          <EmojiIcon e="🏆" />
           <div>
             <div style={{ fontWeight: 700, fontSize: '15px', color: T.text, marginBottom: '6px' }}>Hackathon Project</div>
             <p style={{ fontSize: '13px', color: T.muted, lineHeight: 1.7, margin: 0 }}>
@@ -46,7 +47,7 @@ export default function AboutPage() {
         <p style={{ fontSize: '11px', fontWeight: 700, letterSpacing: '0.16em', textTransform: 'uppercase', color: T.blue, marginBottom: '16px' }}>Our Mission</p>
         <div style={{ display: 'grid', gridTemplateColumns: isMobile ? '1fr' : '1fr 1fr', gap: isMobile ? '28px' : '48px', alignItems: 'start' }}>
           <div>
-            <h2 style={{ fontWeight: 900, fontSize: 'clamp(28px,4vw,52px)', letterSpacing: '-0.05em', lineHeight: 1, color: T.text, margin: '0 0 24px' }}>
+            <h2 style={{ fontWeight: 700, fontSize: 'clamp(28px,4vw,52px)', letterSpacing: '-0.02em', lineHeight: 1, color: T.text, margin: '0 0 24px' }}>
               Freelance without fear.
             </h2>
             <p style={{ fontSize: '15px', color: T.muted, lineHeight: 1.75, margin: '0 0 16px' }}>
@@ -59,13 +60,13 @@ export default function AboutPage() {
           {/* What we built */}
           <div style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
             {[
-              ['🔒', 'Cryptographic Escrow', 'Funds locked on-chain before any work begins'],
+              ['🔒', 'Cryptographic Escrow', 'Funds locked in escrow before any work begins'],
               ['🧾', 'SHA-256 Deliverables', 'Every file submission is hashed and timestamped'],
               ['⚖️', 'Dispute Resolution', 'Transparent, admin-mediated resolution system'],
               ['📊', 'Milestone Payments', 'Break projects into stages — pay as work progresses'],
             ].map(([icon, title, desc]) => (
               <div key={title} style={{ background: T.bg, border: `1px solid ${T.border}`, borderRadius: '12px', padding: '16px 20px', display: 'flex', alignItems: 'center', gap: '14px' }}>
-                <span style={{ fontSize: '22px', flexShrink: 0 }}>{icon}</span>
+                <EmojiIcon e={icon} size="sm" />
                 <div>
                   <div style={{ fontWeight: 700, fontSize: '14px', color: T.text }}>{title}</div>
                   <div style={{ fontSize: '12px', color: T.muted, marginTop: '2px' }}>{desc}</div>
@@ -82,8 +83,8 @@ export default function AboutPage() {
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(260px,1fr))', gap: '20px' }}>
           {values.map(v => (
             <div key={v.title} style={{ background: T.bg, border: `1px solid ${T.border}`, borderRadius: '16px', padding: '32px 28px' }}>
-              <div style={{ fontSize: '28px', marginBottom: '16px' }}>{v.icon}</div>
-              <h3 style={{ fontWeight: 800, fontSize: '18px', letterSpacing: '-0.03em', color: T.text, margin: '0 0 10px' }}>{v.title}</h3>
+              <div style={{ marginBottom: '16px' }}><EmojiIcon e={v.icon} /></div>
+              <h3 style={{ fontWeight: 700, fontSize: '18px', letterSpacing: '-0.03em', color: T.text, margin: '0 0 10px' }}>{v.title}</h3>
               <p style={{ fontSize: '13px', color: T.muted, lineHeight: 1.7, margin: 0 }}>{v.body}</p>
             </div>
           ))}
@@ -97,7 +98,7 @@ export default function AboutPage() {
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(200px,1fr))', gap: '14px' }}>
           {contributors.map(name => (
             <div key={name} style={{ background: T.bg, border: `1px solid ${T.border}`, borderRadius: '14px', padding: '20px 24px', display: 'flex', alignItems: 'center', gap: '14px' }}>
-              <div style={{ width: '40px', height: '40px', borderRadius: '50%', background: 'linear-gradient(135deg,#FF6803,#AE3A02)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 800, fontSize: '16px', color: '#fff', flexShrink: 0 }}>
+              <div style={{ width: '40px', height: '40px', borderRadius: '50%', background: 'linear-gradient(135deg,#FF6803,#AE3A02)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 700, fontSize: '16px', color: '#fff', flexShrink: 0 }}>
                 {name[0]}
               </div>
               <div>

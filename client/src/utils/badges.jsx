@@ -190,11 +190,11 @@ export const CLIENT_BADGES = [
 ]
 
 export const BADGE_COLORS = {
-  amber:   { earned: 'bg-[rgba(255,104,3,0.10)] border-[rgba(255,104,3,0.32)] text-[#F5EDE4]',    icon: 'bg-[rgba(255,104,3,0.20)] text-[#FF6803]' },
-  blue:    { earned: 'bg-[rgba(59,130,246,0.08)] border-[rgba(59,130,246,0.32)] text-[#F5EDE4]',  icon: 'bg-[rgba(59,130,246,0.18)] text-[#93c5fd]' },
-  green:   { earned: 'bg-[rgba(34,197,94,0.08)] border-[rgba(34,197,94,0.32)] text-[#F5EDE4]',   icon: 'bg-[rgba(34,197,94,0.18)] text-[#86efac]' },
-  violet:  { earned: 'bg-[rgba(139,92,246,0.08)] border-[rgba(139,92,246,0.32)] text-[#F5EDE4]', icon: 'bg-[rgba(139,92,246,0.18)] text-[#c4b5fd]' },
-  emerald: { earned: 'bg-[rgba(16,185,129,0.08)] border-[rgba(16,185,129,0.32)] text-[#F5EDE4]', icon: 'bg-[rgba(16,185,129,0.18)] text-[#6ee7b7]' },
+  amber:   { earned: 'bg-orange-50 border-orange-200 dark:border-orange-100 text-slate-900',   icon: 'bg-orange-100 text-orange-700' },
+  blue:    { earned: 'bg-blue-50 border-blue-200 dark:border-blue-100 text-slate-900',       icon: 'bg-blue-100 text-blue-700' },
+  green:   { earned: 'bg-green-50 border-green-200 dark:border-green-100 text-slate-900',     icon: 'bg-green-100 text-green-700' },
+  violet:  { earned: 'bg-violet-50 border-violet-200 dark:border-violet-100 text-slate-900',   icon: 'bg-violet-100 text-violet-700' },
+  emerald: { earned: 'bg-emerald-50 border-emerald-200 dark:border-emerald-100 text-slate-900', icon: 'bg-emerald-100 text-emerald-700' },
 }
 
 /**

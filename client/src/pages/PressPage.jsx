@@ -1,6 +1,6 @@
 import StaticLayout from '../components/StaticLayout'
 
-const T = { blue: '#EA580C', muted: '#475569', faint: '#64748B', text: '#0F172A', border: '#E2E8F0', bg: '#FFF7ED' }
+const T = { blue: '#EA580C', muted: 'rgb(var(--slate-600))', faint: 'rgb(var(--slate-500))', text: 'rgb(var(--slate-900))', border: 'rgb(var(--slate-200))', bg: 'rgb(var(--orange-50))' }
 
 const coverage = [
   { outlet: 'YourStory', date: 'Mar 2025', title: 'SafeLancer brings cryptographic escrow to India\'s ₹50,000 Crore freelance market' },
@@ -43,7 +43,7 @@ export default function PressPage() {
           ].map(([k, v]) => (
             <div key={k} style={{ background: T.bg, border: `1px solid ${T.border}`, borderRadius: '12px', padding: '20px 22px' }}>
               <div style={{ fontSize: '11px', color: T.faint, marginBottom: '6px', fontWeight: 600, letterSpacing: '0.06em', textTransform: 'uppercase' }}>{k}</div>
-              <div style={{ fontSize: '18px', fontWeight: 800, color: T.text, letterSpacing: '-0.03em' }}>{v}</div>
+              <div style={{ fontSize: '18px', fontWeight: 700, color: T.text, letterSpacing: '-0.03em' }}>{v}</div>
             </div>
           ))}
         </div>

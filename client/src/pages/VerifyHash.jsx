@@ -16,15 +16,15 @@ export default function VerifyHash() {
 
   if (loading) return (
     <div className="min-h-screen flex items-center justify-center" style={{ background: 'transparent' }}>
-      <div className="animate-spin h-6 w-6 border-2 border-[#FF6803] border-t-transparent rounded-full" />
+      <div className="animate-spin h-6 w-6 border-2 border-[#EA580C] border-t-transparent rounded-full" />
     </div>
   )
 
   return (
     <div className="min-h-screen flex flex-col items-center justify-center p-4" style={{ background: 'transparent' }}>
       <div className="mb-8 text-center">
-        <div className="text-xl font-bold text-white tracking-tight">SafeLancer</div>
-        <div className="text-sm mt-1" style={{ color: '#BFBFBF' }}>Delivery Verification</div>
+        <div className="text-xl font-bold text-slate-900 tracking-tight">SafeLancer</div>
+        <div className="text-sm mt-1" style={{ color: 'rgb(var(--slate-600))' }}>Delivery Verification</div>
       </div>
 
       <div className="dark-card p-8 w-full max-w-lg text-center">
@@ -34,10 +34,10 @@ export default function VerifyHash() {
             : { background: 'rgba(239,68,68,0.1)', color: '#ef4444' }}>
           {result?.verified ? '✓' : '✗'}
         </div>
-        <h1 className={`text-xl font-semibold mb-2 ${result?.verified ? 'text-emerald-400' : 'text-red-400'}`}>
+        <h1 className={`text-xl font-semibold mb-2 ${result?.verified ? 'text-emerald-600' : 'text-red-600'}`}>
           {result?.verified ? 'Delivery Verified' : 'Hash Not Found'}
         </h1>
-        <p className="text-sm mb-6" style={{ color: '#BFBFBF' }}>
+        <p className="text-sm mb-6" style={{ color: 'rgb(var(--slate-600))' }}>
           {result?.verified
             ? 'This file was cryptographically recorded as delivered on SafeLancer.'
             : 'This hash does not match any recorded delivery on the platform.'}
@@ -45,7 +45,7 @@ export default function VerifyHash() {
 
         {result?.verified && (
           <>
-            <div className="rounded-xl p-4 text-left text-sm mb-5 space-y-2.5" style={{ background: '#120a02', border: '1px solid rgba(255,104,3,0.10)' }}>
+            <div className="rounded-xl p-4 text-left text-sm mb-5 space-y-2.5" style={{ background: 'rgb(var(--surface))', border: '1px solid rgb(var(--slate-200))' }}>
               {[
                 ['Client', result.client],
                 ['Freelancer', result.freelancer],
@@ -55,14 +55,14 @@ export default function VerifyHash() {
                 ['Submitted', result.submittedAt ? new Date(result.submittedAt).toLocaleDateString() : 'N/A'],
               ].map(([label, value]) => (
                 <div key={label} className="flex justify-between">
-                  <span style={{ color: '#BFBFBF' }}>{label}</span>
-                  <span className="font-medium text-white capitalize">{value}</span>
+                  <span style={{ color: 'rgb(var(--slate-600))' }}>{label}</span>
+                  <span className="font-medium text-slate-900 capitalize">{value}</span>
                 </div>
               ))}
             </div>
-            <div className="rounded-xl p-4 text-left mb-5" style={{ background: '#120a02', border: '1px solid rgba(255,104,3,0.25)' }}>
-              <p className="text-xs mb-1.5" style={{ color: '#BFBFBF' }}>SHA-256 Hash</p>
-              <p className="text-emerald-400 font-mono text-xs break-all">{hash}</p>
+            <div className="rounded-xl p-4 text-left mb-5" style={{ background: 'rgb(var(--surface))', border: '1px solid rgb(var(--orange-200))' }}>
+              <p className="text-xs mb-1.5" style={{ color: 'rgb(var(--slate-600))' }}>SHA-256 Hash</p>
+              <p className="text-emerald-600 font-mono text-xs break-all">{hash}</p>
             </div>
             <a href={`${import.meta.env.VITE_API_URL || 'http://localhost:5001'}/api/files/certificate/${hash}`} target="_blank" rel="noreferrer"
               className="btn-purple inline-block px-6 py-2.5 rounded-lg text-sm font-medium transition-colors">
@@ -71,7 +71,7 @@ export default function VerifyHash() {
           </>
         )}
         <div className="mt-6">
-          <a href="/" style={{ color: '#BFBFBF' }} className="hover:text-white text-sm underline underline-offset-2 transition-colors">← Back to SafeLancer</a>
+          <a href="/" style={{ color: 'rgb(var(--slate-600))' }} className="hover:text-slate-900 text-sm underline underline-offset-2 transition-colors">← Back to SafeLancer</a>
         </div>
       </div>
     </div>

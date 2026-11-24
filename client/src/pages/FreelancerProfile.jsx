@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import { useParams, Link, useNavigate } from 'react-router-dom'
 import api from '../api'
 import Navbar from '../components/Navbar'
+import { Avatar, StatusPill, Chip, BackLink, btn } from '../components/ui'
 import toast from 'react-hot-toast'
 import { computeBadges, BADGE_COLORS } from '../utils/badges'
 
@@ -36,13 +37,9 @@ const Icons = {
 }
 
 const SectionLabel = ({ text, sub }) => (
-  <div className="flex items-center gap-3 mb-4">
-    <div className="h-px flex-1" style={{ background: 'rgba(255,104,3,0.12)' }} />
-    <div className="text-center">
-      <h2 className="text-[10px] font-bold uppercase tracking-[0.15em]" style={{ color: '#BFBFBF' }}>{text}</h2>
-      {sub && <p className="text-[10px] mt-0.5" style={{ color: '#6b5445' }}>{sub}</p>}
-    </div>
-    <div className="h-px flex-1" style={{ background: 'rgba(255,104,3,0.12)' }} />
+  <div className="mb-4 flex items-baseline justify-between gap-3">
+    <h2 className="text-lg font-semibold text-slate-900">{text}</h2>
+    {sub && <p className="text-sm text-slate-500">{sub}</p>}
   </div>
 )
 
@@ -74,8 +71,8 @@ export default function FreelancerProfile() {
       <Navbar />
       <div className="flex justify-center py-20">
         <div className="relative w-8 h-8">
-          <div className="absolute inset-0 border-2 rounded-full" style={{ borderColor: 'rgba(255,104,3,0.12)' }} />
-          <div className="absolute inset-0 border-2 rounded-full animate-spin" style={{ borderColor: 'transparent', borderTopColor: '#FF6803' }} />
+          <div className="absolute inset-0 border-2 rounded-full" style={{ borderColor: 'rgb(var(--slate-200))' }} />
+          <div className="absolute inset-0 border-2 rounded-full animate-spin" style={{ borderColor: 'transparent', borderTopColor: '#EA580C' }} />
         </div>
       </div>
     </div>
@@ -84,13 +81,14 @@ export default function FreelancerProfile() {
   if (!profile) return (
     <div className="min-h-screen">
       <Navbar />
-      <p className="text-center py-12 text-sm" style={{ color: '#6b5445' }}>Profile not found</p>
+      <p className="text-center py-12 text-sm" style={{ color: 'rgb(var(--slate-500))' }}>Profile not found</p>
     </div>
   )
 
+  // Prefer the average of loaded reviews; fall back to the rating stored on the user.
   const avgRating = ratings.length > 0
     ? (ratings.reduce((s, r) => s + r.stars, 0) / ratings.length).toFixed(1)
-    : null
+    : profile.user?.rating > 0 ? Number(profile.user.rating).toFixed(1) : null
 
   const avatarUrl = profile.avatarUrl
     ? (profile.avatarUrl.startsWith('http') ? profile.avatarUrl : `${FILE_BASE}${profile.avatarUrl}`)
@@ -98,291 +96,187 @@ export default function FreelancerProfile() {
 
   const { earned: earnedBadges, total: totalBadges } = computeBadges('freelancer', profile.user, profile)
 
+  const isMe = me.id === userId
+  const verified = profile.user?.verificationStatus === 'approved'
+  const avail = profile.availability || 'full-time'
+  const fileHref = (u) => (u?.startsWith('http') ? u : `${FILE_BASE}${u}`)
+  const card = 'rounded-xl border border-slate-200 bg-surface'
+  const links = [
+    profile.githubUrl && { href: profile.githubUrl, icon: Icons.github, label: 'GitHub' },
+    profile.linkedinUrl && { href: profile.linkedinUrl, icon: Icons.linkedin, label: 'LinkedIn' },
+    profile.portfolioUrl && { href: profile.portfolioUrl, icon: Icons.globe, label: 'Portfolio website' },
+  ].filter(Boolean)
+  const Stars = ({ n }) => (
+    <span className="inline-flex gap-0.5">{[1, 2, 3, 4, 5].map(i => (
+      <svg key={i} className={`h-3.5 w-3.5 ${i <= n ? 'text-orange-500' : 'text-slate-300'}`} fill="currentColor" viewBox="0 0 20 20"><path d="M9.05 2.93c.3-.92 1.6-.92 1.9 0l1.07 3.29a1 1 0 00.95.69h3.46c.97 0 1.37 1.24.59 1.81l-2.8 2.03a1 1 0 00-.36 1.12l1.07 3.29c.3.92-.76 1.69-1.54 1.12l-2.8-2.03a1 1 0 00-1.18 0l-2.8 2.03c-.78.57-1.84-.2-1.54-1.12l1.07-3.29a1 1 0 00-.36-1.12L2.98 8.72c-.78-.57-.38-1.81.59-1.81h3.46a1 1 0 00.95-.69l1.07-3.29z" /></svg>
+    ))}</span>
+  )
+
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen bg-page">
       <Navbar />
+      <main className="mx-auto max-w-6xl px-4 py-8 sm:px-6">
+        <BackLink onClick={() => navigate(-1)} />
 
-      {/* Back button */}
-      <div className="max-w-4xl mx-auto px-6 pt-4">
-        <button onClick={() => navigate(-1)}
-          className="flex items-center gap-1.5 text-sm font-medium transition-colors"
-          style={{ color: '#6b5445' }}
-          onMouseEnter={e => e.currentTarget.style.color = '#F5EDE4'}
-          onMouseLeave={e => e.currentTarget.style.color = '#6b5445'}>
-          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
-          </svg>
-          Back
-        </button>
-      </div>
-
-      {/* Cover banner */}
-      <div className="h-36 relative overflow-hidden" style={{ background: 'linear-gradient(135deg, #120a02 0%, #1c1008 50%, #120a02 100%)' }}>
-        <div className="absolute inset-0" style={{ background: 'radial-gradient(ellipse at 30% 50%, rgba(255,104,3,0.18) 0%, transparent 60%)' }} />
-        <div className="absolute inset-0" style={{ background: 'radial-gradient(ellipse at 75% 40%, rgba(174,58,2,0.10) 0%, transparent 50%)' }} />
-        <div className="absolute bottom-0 left-0 right-0 h-px" style={{ background: 'rgba(255,104,3,0.15)' }} />
-      </div>
-
-      <div className="max-w-4xl mx-auto px-6 pb-16">
-
-        {/* Hero card */}
-        <div className="rounded-2xl p-6 -mt-12 mb-5" style={{ background: 'linear-gradient(135deg, rgba(18,10,2,0.96) 0%, rgba(28,16,8,0.92) 100%)', border: '1px solid rgba(255,104,3,0.18)', backdropFilter: 'blur(24px)', boxShadow: '0 0 40px rgba(255,104,3,0.06), inset 0 1px 0 rgba(255,255,255,0.04)' }}>
-          <div className="flex items-start justify-between gap-4 flex-wrap">
+        {/* Header */}
+        <section className={`${card} mb-6 overflow-hidden`}>
+          <div className="cover-wash h-24 border-b border-slate-200" />
+          <div className="flex flex-col gap-5 px-6 pb-6 sm:flex-row sm:items-end sm:justify-between">
             <div className="flex items-end gap-5">
-              {/* Avatar */}
-              {avatarUrl
-                ? <img src={avatarUrl} alt={profile.user?.name}
-                    className="w-20 h-20 rounded-xl object-cover -mt-14 flex-shrink-0"
-                    style={{ border: '3px solid #120a02', boxShadow: '0 0 0 1px rgba(255,104,3,0.30), 0 0 20px rgba(255,104,3,0.15)' }} />
-                : <div className="w-20 h-20 rounded-xl -mt-14 flex items-center justify-center text-white text-2xl font-bold flex-shrink-0 select-none"
-                    style={{ background: 'linear-gradient(135deg, #FF6803, #AE3A02)', border: '3px solid #120a02', boxShadow: '0 0 0 1px rgba(255,104,3,0.30), 0 0 20px rgba(255,104,3,0.20)' }}>
-                    {profile.user?.name?.[0]?.toUpperCase()}
-                  </div>
-              }
-              <div className="pb-0.5">
-                <h1 className="text-xl font-bold" style={{ color: '#F5EDE4' }}>{profile.user?.name}</h1>
-                <div className="flex items-center gap-2 mt-1.5 flex-wrap">
-                  {profile.user?.verificationStatus === 'approved' && (
-                    <span className="flex items-center gap-1 text-[10px] font-semibold px-2 py-0.5 rounded-full"
-                      style={{ background: 'rgba(16,185,129,0.12)', color: '#10b981', border: '1px solid rgba(16,185,129,0.25)' }}>
-                      <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
-                      </svg>
-                      Verified
-                    </span>
-                  )}
-                  {avgRating && (
-                    <span className="flex items-center gap-1 font-bold text-sm" style={{ color: '#FF6803' }}>
-                      <svg className="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 20 20">
-                        <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-                      </svg>
-                      {avgRating}
-                      <span className="font-normal text-xs" style={{ color: '#6b5445' }}>({ratings.length})</span>
-                    </span>
-                  )}
-                  {profile.user?.totalJobsCompleted > 0 && (
-                    <span className="text-xs" style={{ color: '#6b5445' }}>{profile.user.totalJobsCompleted} jobs completed</span>
-                  )}
-                  {profile.hourlyRate > 0 && (
-                    <span className="text-xs font-semibold" style={{ color: '#BFBFBF' }}>₹{profile.hourlyRate}/hr</span>
-                  )}
-                  <span className="text-xs px-2.5 py-1 rounded-full font-medium" style={
-                    profile.availability === 'full-time'
-                      ? { background: 'rgba(16,185,129,0.08)', color: '#10b981', border: '1px solid rgba(16,185,129,0.2)' }
-                      : profile.availability === 'part-time'
-                      ? { background: 'rgba(245,158,11,0.08)', color: '#f59e0b', border: '1px solid rgba(245,158,11,0.2)' }
-                      : { background: '#120a02', color: '#6b5445', border: '1px solid rgba(255,104,3,0.08)' }
-                  }>
-                    {profile.availability === 'full-time' ? 'Available full-time'
-                      : profile.availability === 'part-time' ? 'Available part-time'
-                      : 'Not available'}
-                  </span>
+              <Avatar src={avatarUrl} name={profile.user?.name} size="h-24 w-24 -mt-12 ring-4 ring-surface" textSize="text-3xl" />
+              <div className="min-w-0 pb-1">
+                <div className="flex flex-wrap items-center gap-2">
+                  <h1 className="text-2xl font-bold tracking-tight text-slate-900">{profile.user?.name}</h1>
+                  {verified && <StatusPill tone="green">Verified</StatusPill>}
+                </div>
+                <p className="mt-0.5 text-sm text-slate-600">{profile.title || (profile.skills?.slice(0, 3).join(' · ')) || 'Freelancer'}</p>
+                <div className="mt-2 flex flex-wrap items-center gap-x-4 gap-y-1 text-sm text-slate-600">
+                  {avgRating && <span className="inline-flex items-center gap-1.5"><Stars n={Math.round(avgRating)} /><span className="font-semibold text-slate-900">{avgRating}</span>{ratings.length > 0 && <span className="text-slate-500">({ratings.length})</span>}</span>}
+                  {profile.user?.totalJobsCompleted > 0 && <span>{profile.user.totalJobsCompleted} jobs completed</span>}
+                  {profile.hourlyRate > 0 && <span className="font-semibold text-slate-900">₹{profile.hourlyRate}/hr</span>}
+                  <StatusPill tone={avail === 'full-time' ? 'green' : avail === 'part-time' ? 'blue' : 'gray'}>
+                    {avail === 'full-time' ? 'Available full-time' : avail === 'part-time' ? 'Available part-time' : 'Not available'}
+                  </StatusPill>
                 </div>
               </div>
             </div>
-
-            {/* CTA — only shown to clients */}
-            {me.role === 'client' && (
-              <Link to={`/jobs/post?freelancer=${userId}`}
-                className="btn-purple text-sm font-semibold px-4 py-2 rounded-xl flex-shrink-0">
-                Hire
-              </Link>
-            )}
-          </div>
-
-          {/* Bio */}
-          {profile.bio && (
-            <p className="mt-5 text-sm leading-relaxed pt-4" style={{ color: '#BFBFBF', borderTop: '1px solid rgba(255,104,3,0.10)' }}>
-              {profile.bio}
-            </p>
-          )}
-
-          {/* Skills */}
-          {profile.skills?.length > 0 && (
-            <div className="flex flex-wrap gap-1.5 mt-4">
-              {profile.skills.map(s => (
-                <span key={s} className="px-2.5 py-1 rounded-lg text-xs font-medium"
-                  style={{ background: 'rgba(255,104,3,0.10)', color: '#BFBFBF', border: '1px solid rgba(255,104,3,0.18)' }}>
-                  {s}
-                </span>
-              ))}
+            <div className="flex flex-none gap-2">
+              {me.role === 'client' && <Link to={`/jobs/post?freelancer=${userId}`} className={btn.primary}>Invite to job</Link>}
+              {isMe && <Link to="/profile/setup" className={btn.secondary}>Edit profile</Link>}
             </div>
-          )}
-
-          {/* Links */}
-          {(profile.githubUrl || profile.linkedinUrl || profile.portfolioUrl) && (
-            <div className="flex flex-wrap items-center gap-2 mt-4 pt-4" style={{ borderTop: '1px solid rgba(255,104,3,0.10)' }}>
-              {profile.githubUrl && (
-                <a href={profile.githubUrl} target="_blank" rel="noreferrer"
-                  className="inline-flex items-center gap-2 text-sm font-medium transition-colors px-3 py-1.5 rounded-lg"
-                  style={{ color: '#BFBFBF', border: '1px solid rgba(255,104,3,0.12)' }}
-                  onMouseEnter={e => { e.currentTarget.style.color = '#F5EDE4'; e.currentTarget.style.borderColor = 'rgba(255,104,3,0.35)' }}
-                  onMouseLeave={e => { e.currentTarget.style.color = '#BFBFBF'; e.currentTarget.style.borderColor = 'rgba(255,104,3,0.12)' }}>
-                  {Icons.github} GitHub
-                </a>
-              )}
-              {profile.linkedinUrl && (
-                <a href={profile.linkedinUrl} target="_blank" rel="noreferrer"
-                  className="inline-flex items-center gap-2 text-sm font-medium transition-colors px-3 py-1.5 rounded-lg"
-                  style={{ color: '#BFBFBF', border: '1px solid rgba(255,104,3,0.12)' }}
-                  onMouseEnter={e => { e.currentTarget.style.color = '#F5EDE4'; e.currentTarget.style.borderColor = 'rgba(255,104,3,0.35)' }}
-                  onMouseLeave={e => { e.currentTarget.style.color = '#BFBFBF'; e.currentTarget.style.borderColor = 'rgba(255,104,3,0.12)' }}>
-                  {Icons.linkedin} LinkedIn
-                </a>
-              )}
-              {profile.portfolioUrl && (
-                <a href={profile.portfolioUrl} target="_blank" rel="noreferrer"
-                  className="inline-flex items-center gap-2 text-sm font-medium transition-colors px-3 py-1.5 rounded-lg"
-                  style={{ color: '#BFBFBF', border: '1px solid rgba(255,104,3,0.12)' }}
-                  onMouseEnter={e => { e.currentTarget.style.color = '#F5EDE4'; e.currentTarget.style.borderColor = 'rgba(255,104,3,0.35)' }}
-                  onMouseLeave={e => { e.currentTarget.style.color = '#BFBFBF'; e.currentTarget.style.borderColor = 'rgba(255,104,3,0.12)' }}>
-                  {Icons.globe} Portfolio
-                </a>
-              )}
-            </div>
-          )}
-        </div>
-
-        {/* Stats */}
-        <div className="dark-card mb-5">
-          <div className="grid grid-cols-4" style={{ borderBottom: '1px solid rgba(255,104,3,0.08)' }}>
-            {[
-              { value: avgRating ? `${avgRating}` : '—', label: 'Avg Rating' },
-              { value: profile.user?.totalJobsCompleted || 0, label: 'Jobs Done' },
-              { value: `${profile.user?.onTimeDeliveryRate?.toFixed(0) || 0}%`, label: 'On-time' },
-              { value: `${profile.user?.disputeRate?.toFixed(0) || 0}%`, label: 'Disputes' },
-            ].map((stat, idx) => (
-              <div key={stat.label} className="py-4 px-2 text-center"
-                style={idx > 0 ? { borderLeft: '1px solid rgba(255,104,3,0.08)' } : {}}>
-                <div className="text-xl font-bold" style={{ color: stat.label === 'Avg Rating' && avgRating ? '#FF6803' : '#F5EDE4' }}>{stat.value}</div>
-                <div className="text-xs mt-0.5 leading-tight" style={{ color: '#6b5445' }}>{stat.label}</div>
-              </div>
-            ))}
           </div>
-        </div>
+        </section>
 
-        {/* Badges */}
-        {(earnedBadges.length > 0 || totalBadges > 0) && (
-          <div className="dark-card p-5 mb-5">
-            <SectionLabel text="Badges & Achievements" sub={`${earnedBadges.length} / ${totalBadges} earned`} />
-            {earnedBadges.length === 0 ? (
-              <p className="text-sm italic text-center py-2" style={{ color: '#6b5445' }}>No badges earned yet.</p>
-            ) : (
-              <div className="flex flex-col gap-1.5">
-                {earnedBadges.map(badge => {
-                  const c = BADGE_COLORS[badge.color]
-                  return (
-                    <div key={badge.id} className={`flex items-start gap-2 border rounded-xl px-3 py-2.5 ${c.earned}`}>
-                      <div className={`w-6 h-6 rounded-md flex items-center justify-center flex-shrink-0 mt-0.5 ${c.icon}`}>
-                        {badge.icon}
-                      </div>
-                      <div className="min-w-0">
-                        <p className="text-[11px] font-semibold leading-tight truncate">{badge.title}</p>
-                        <p className="text-[10px] opacity-60 mt-0.5 leading-tight line-clamp-2">{badge.description}</p>
-                      </div>
-                    </div>
-                  )
-                })}
-              </div>
+        <div className="grid gap-6 lg:grid-cols-[300px_1fr]">
+          {/* Sidebar */}
+          <aside className="space-y-6">
+            <section className={`${card} p-5`}>
+              <h2 className="text-sm font-semibold text-slate-900">Track record</h2>
+              <dl className="mt-4 grid grid-cols-2 gap-4">
+                {[
+                  ['Rating', avgRating ? `★ ${avgRating}` : '—'],
+                  ['Jobs done', profile.user?.totalJobsCompleted || 0],
+                  ['On time', profile.user?.onTimeDeliveryRate > 0 ? `${profile.user.onTimeDeliveryRate.toFixed(0)}%` : '—'],
+                  ['Disputes', `${profile.user?.disputeRate?.toFixed(0) || 0}%`],
+                ].map(([k, v]) => (
+                  <div key={k}><dt className="text-xs text-slate-500">{k}</dt><dd className="mt-0.5 text-lg font-semibold text-slate-900">{v}</dd></div>
+                ))}
+              </dl>
+              <p className="mt-4 flex items-start gap-2 border-t border-slate-100 pt-4 text-xs leading-5 text-slate-500">
+                <span className="mt-0.5 text-emerald-600">{Icons.shield}</span>
+                Work with {profile.user?.name?.split(' ')[0]} is paid through SafeLancer escrow, milestone by milestone.
+              </p>
+            </section>
+
+            {links.length > 0 && (
+              <section className={`${card} p-5`}>
+                <h2 className="text-sm font-semibold text-slate-900">Links</h2>
+                <ul className="mt-3 space-y-1 p-0">
+                  {links.map(l => (
+                    <li key={l.label} className="list-none">
+                      <a href={l.href} target="_blank" rel="noreferrer" className="flex items-center gap-2.5 rounded-lg px-2 py-2 text-sm text-slate-700 no-underline transition-colors hover:bg-slate-50 hover:text-slate-900">
+                        <span className="text-slate-500">{l.icon}</span>{l.label}
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+              </section>
             )}
-          </div>
-        )}
 
-        {/* Portfolio Samples */}
-        {profile.projectSamples?.length > 0 && (
-          <div className="dark-card p-5 mb-5">
-            <SectionLabel text="Portfolio Samples" sub={`${profile.projectSamples.length} project${profile.projectSamples.length !== 1 ? 's' : ''}`} />
-            <div className="flex flex-col gap-2">
-              {profile.projectSamples.map((sample, i) => (
-                <div key={i}
-                  className="flex items-center gap-3 rounded-xl px-4 py-3 transition-colors"
-                  style={{ border: '1px solid rgba(255,104,3,0.10)', background: '#120a02' }}
-                  onMouseEnter={e => e.currentTarget.style.borderColor = 'rgba(255,104,3,0.30)'}
-                  onMouseLeave={e => e.currentTarget.style.borderColor = 'rgba(255,104,3,0.10)'}>
-                  <div className="w-10 h-10 rounded-xl flex items-center justify-center text-white flex-shrink-0"
-                    style={{ background: 'linear-gradient(135deg, #FF6803, #AE3A02)', boxShadow: '0 0 10px rgba(255,104,3,0.25)' }}>
-                    {Icons.paperclip}
-                  </div>
-                  <div className="flex-1 min-w-0">
-                    <p className="text-sm font-semibold truncate" style={{ color: '#F5EDE4' }}>{sample.title}</p>
-                    {sample.description
-                      ? <p className="text-xs mt-0.5 truncate" style={{ color: '#6b5445' }}>{sample.description}</p>
-                      : sample.fileUrl && (
-                        <a href={sample.fileUrl.startsWith('http') ? sample.fileUrl : `${FILE_BASE}${sample.fileUrl}`}
-                          target="_blank" rel="noreferrer"
-                          className="text-xs mt-0.5 truncate block transition-colors" style={{ color: '#6b5445' }}
-                          onMouseEnter={e => e.currentTarget.style.color = '#FF6803'}
-                          onMouseLeave={e => e.currentTarget.style.color = '#6b5445'}>
-                          View / Download
-                        </a>
+            {totalBadges > 0 && (
+              <section className={`${card} p-5`}>
+                <div className="flex items-baseline justify-between">
+                  <h2 className="text-sm font-semibold text-slate-900">Badges</h2>
+                  <span className="text-xs text-slate-500">{earnedBadges.length} of {totalBadges}</span>
+                </div>
+                {earnedBadges.length === 0 ? (
+                  <p className="mt-3 text-sm text-slate-500">No badges earned yet.</p>
+                ) : (
+                  <ul className="mt-3 space-y-2 p-0">
+                    {earnedBadges.map(badge => {
+                      const c = BADGE_COLORS[badge.color]
+                      return (
+                        <li key={badge.id} className="flex list-none items-center gap-2.5" title={badge.description}>
+                          <span className={`flex h-7 w-7 flex-none items-center justify-center rounded-md ${c.icon}`}>{badge.icon}</span>
+                          <span className="text-sm font-medium text-slate-800">{badge.title}</span>
+                        </li>
                       )
-                    }
-                  </div>
-                  <div className="flex items-center gap-2 flex-shrink-0">
-                    {sample.description && sample.fileUrl && (
-                      <a href={sample.fileUrl.startsWith('http') ? sample.fileUrl : `${FILE_BASE}${sample.fileUrl}`}
-                        target="_blank" rel="noreferrer"
-                        className="text-xs font-semibold transition-colors" style={{ color: '#6b5445' }}
-                        onMouseEnter={e => e.currentTarget.style.color = '#FF6803'}
-                        onMouseLeave={e => e.currentTarget.style.color = '#6b5445'}>
-                        Download
-                      </a>
-                    )}
-                    {sample.fileHash && (
-                      <a href={`/verify/${sample.fileHash}`} target="_blank" rel="noreferrer"
-                        className="inline-flex items-center gap-1 text-xs px-2.5 py-1 rounded-lg font-medium transition-colors"
-                        style={{ background: 'rgba(255,104,3,0.10)', color: '#BFBFBF', border: '1px solid rgba(255,104,3,0.20)' }}
-                        onMouseEnter={e => { e.currentTarget.style.background = 'rgba(255,104,3,0.18)'; e.currentTarget.style.color = '#F5EDE4' }}
-                        onMouseLeave={e => { e.currentTarget.style.background = 'rgba(255,104,3,0.10)'; e.currentTarget.style.color = '#BFBFBF' }}>
-                        {Icons.shield}
-                        SHA-256
-                      </a>
-                    )}
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-        )}
+                    })}
+                  </ul>
+                )}
+              </section>
+            )}
+          </aside>
 
-        {/* Ratings */}
-        {ratings.length > 0 && (
-          <div className="dark-card p-5 mb-5">
-            <SectionLabel text="Client Reviews" sub={`${ratings.length} review${ratings.length !== 1 ? 's' : ''}`} />
-            <div className="flex flex-col gap-3">
-              {ratings.map((r, i) => (
-                <div key={i} className="rounded-xl p-4" style={{ background: '#120a02', border: '1px solid rgba(255,104,3,0.10)' }}>
-                  <div className="flex items-center justify-between mb-2">
-                    <div className="flex items-center gap-2">
-                      <div className="w-7 h-7 rounded-lg flex items-center justify-center text-white text-xs font-bold flex-shrink-0"
-                        style={{ background: 'linear-gradient(135deg, #FF6803, #AE3A02)' }}>
-                        {r.ratedBy?.name?.[0]?.toUpperCase() || 'C'}
+          {/* Main */}
+          <div className="min-w-0 space-y-6">
+            <section className={`${card} p-6`}>
+              <h2 className="text-lg font-semibold text-slate-900">About</h2>
+              <p className="mt-3 whitespace-pre-line text-[15px] leading-7 text-slate-700">{profile.bio || `${profile.user?.name} hasn't written a bio yet.`}</p>
+              {profile.skills?.length > 0 && (
+                <>
+                  <h3 className="mt-6 text-sm font-semibold text-slate-900">Skills</h3>
+                  <div className="mt-2 flex flex-wrap gap-1.5">{profile.skills.map(sk => <Chip key={sk}>{sk}</Chip>)}</div>
+                </>
+              )}
+            </section>
+
+            <section className={`${card} p-6`}>
+              <SectionLabel text="Portfolio" sub={profile.projectSamples?.length ? `${profile.projectSamples.length} project${profile.projectSamples.length !== 1 ? 's' : ''}` : null} />
+              {!profile.projectSamples?.length ? (
+                <p className="text-sm text-slate-500">No portfolio samples yet.</p>
+              ) : (
+                <div className="grid gap-3 sm:grid-cols-2">
+                  {profile.projectSamples.map((sample, i) => (
+                    <article key={i} className="flex flex-col rounded-lg border border-slate-200 p-4 transition-colors hover:border-slate-300">
+                      <div className="flex items-start gap-3">
+                        <span className="flex h-9 w-9 flex-none items-center justify-center rounded-lg bg-orange-50 text-orange-600">{Icons.paperclip}</span>
+                        <div className="min-w-0">
+                          <p className="truncate text-sm font-semibold text-slate-900">{sample.title}</p>
+                          {sample.description && <p className="mt-0.5 line-clamp-2 text-xs leading-5 text-slate-500">{sample.description}</p>}
+                        </div>
                       </div>
-                      <span className="text-sm font-semibold" style={{ color: '#F5EDE4' }}>{r.ratedBy?.name || 'Client'}</span>
-                    </div>
-                    <div className="flex items-center gap-0.5">
-                      {[1,2,3,4,5].map(n => (
-                        <svg key={n} className="w-3.5 h-3.5" fill={n <= r.stars ? '#FF6803' : 'none'} stroke={n <= r.stars ? '#FF6803' : '#6b5445'} viewBox="0 0 20 20">
-                          <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-                        </svg>
-                      ))}
-                    </div>
-                  </div>
-                  {r.review && <p className="text-sm leading-relaxed" style={{ color: '#BFBFBF' }}>{r.review}</p>}
-                  {(r.communication || r.quality || r.timeliness) && (
-                    <div className="flex flex-wrap gap-2 mt-2">
-                      {r.communication && <span className="text-[10px] px-2 py-0.5 rounded-md" style={{ background: 'rgba(255,104,3,0.08)', color: '#6b5445', border: '1px solid rgba(255,104,3,0.10)' }}>Communication {r.communication}/5</span>}
-                      {r.quality && <span className="text-[10px] px-2 py-0.5 rounded-md" style={{ background: 'rgba(255,104,3,0.08)', color: '#6b5445', border: '1px solid rgba(255,104,3,0.10)' }}>Quality {r.quality}/5</span>}
-                      {r.timeliness && <span className="text-[10px] px-2 py-0.5 rounded-md" style={{ background: 'rgba(255,104,3,0.08)', color: '#6b5445', border: '1px solid rgba(255,104,3,0.10)' }}>Timeliness {r.timeliness}/5</span>}
-                    </div>
-                  )}
+                      <div className="mt-auto flex items-center gap-3 pt-3 text-xs font-semibold">
+                        {sample.fileUrl && <a href={fileHref(sample.fileUrl)} target="_blank" rel="noreferrer" className="text-orange-700 no-underline hover:underline">View file</a>}
+                        {sample.fileHash && <a href={`/verify/${sample.fileHash}`} target="_blank" rel="noreferrer" className="inline-flex items-center gap-1 text-emerald-700 no-underline hover:underline">{Icons.shield}Verify SHA-256</a>}
+                      </div>
+                    </article>
+                  ))}
                 </div>
-              ))}
-            </div>
-          </div>
-        )}
+              )}
+            </section>
 
-      </div>
+            <section className={`${card} p-6`}>
+              <SectionLabel text="Client reviews" sub={ratings.length ? `${ratings.length} review${ratings.length !== 1 ? 's' : ''}` : null} />
+              {ratings.length === 0 ? (
+                <p className="text-sm text-slate-500">No reviews yet. Reviews appear after a client completes a contract.</p>
+              ) : (
+                <ul className="divide-y divide-slate-100 p-0">
+                  {ratings.map((r, i) => (
+                    <li key={i} className="list-none py-4 first:pt-0 last:pb-0">
+                      <div className="flex items-center justify-between gap-3">
+                        <div className="flex items-center gap-2.5">
+                          <Avatar name={r.ratedBy?.name || 'C'} size="h-8 w-8" textSize="text-xs" />
+                          <span className="text-sm font-semibold text-slate-900">{r.ratedBy?.name || 'Client'}</span>
+                        </div>
+                        <Stars n={r.stars} />
+                      </div>
+                      {r.review && <p className="mt-2 text-sm leading-6 text-slate-700">{r.review}</p>}
+                      {(r.communication || r.quality || r.timeliness) && (
+                        <div className="mt-2 flex flex-wrap gap-1.5">
+                          {r.communication && <Chip>Communication {r.communication}/5</Chip>}
+                          {r.quality && <Chip>Quality {r.quality}/5</Chip>}
+                          {r.timeliness && <Chip>Timeliness {r.timeliness}/5</Chip>}
+                        </div>
+                      )}
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </section>
+          </div>
+        </div>
+      </main>
     </div>
   )
 }

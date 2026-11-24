@@ -1,6 +1,6 @@
 import StaticLayout from '../components/StaticLayout'
 
-const T = { blue: '#EA580C', muted: '#475569', faint: '#64748B', text: '#0F172A', border: '#E2E8F0', bg: '#FFF7ED' }
+const T = { blue: '#EA580C', muted: 'rgb(var(--slate-600))', faint: 'rgb(var(--slate-500))', text: 'rgb(var(--slate-900))', border: 'rgb(var(--slate-200))', bg: 'rgb(var(--orange-50))' }
 
 const sections = [
   {
@@ -52,15 +52,15 @@ export default function TermsPage() {
       subtitle="Last updated: April 2025. Please read these terms carefully before using SafeLancer."
     >
       <div style={{ maxWidth: '760px' }}>
-        <div style={{ background: 'rgba(255,104,3,0.06)', border: '1px solid rgba(255,104,3,0.20)', borderRadius: '14px', padding: '20px 24px', marginBottom: '48px' }}>
-          <p style={{ fontSize: '13px', color: '#475569', margin: 0, lineHeight: 1.7 }}>
+        <div style={{ background: 'rgb(var(--slate-100))', border: '1px solid rgba(255,104,3,0.20)', borderRadius: '14px', padding: '20px 24px', marginBottom: '48px' }}>
+          <p style={{ fontSize: '13px', color: 'rgb(var(--slate-600))', margin: 0, lineHeight: 1.7 }}>
             <strong style={{ color: '#EA580C' }}>Summary:</strong> SafeLancer holds payments in escrow until work is approved. We charge a 5% fee on successful transactions. Disputes are resolved by our team within 5 business days. Don't use the platform for fraud — we will terminate your account and involve authorities.
           </p>
         </div>
 
         {sections.map(s => (
           <section key={s.title} style={{ marginBottom: '40px' }}>
-            <h2 style={{ fontWeight: 800, fontSize: '18px', color: T.text, margin: '0 0 12px', letterSpacing: '-0.02em' }}>{s.title}</h2>
+            <h2 style={{ fontWeight: 700, fontSize: '18px', color: T.text, margin: '0 0 12px', letterSpacing: '-0.02em' }}>{s.title}</h2>
             <p style={{ fontSize: '14px', color: T.muted, lineHeight: 1.8, margin: 0 }}>{s.body}</p>
           </section>
         ))}

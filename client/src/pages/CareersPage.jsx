@@ -1,7 +1,7 @@
 import StaticLayout from '../components/StaticLayout'
 import useIsMobile from '../utils/useIsMobile'
 
-const T = { blue: '#EA580C', muted: '#475569', faint: '#64748B', text: '#0F172A', border: '#E2E8F0', bg: '#FFF7ED' }
+const T = { blue: '#EA580C', muted: 'rgb(var(--slate-600))', faint: 'rgb(var(--slate-500))', text: 'rgb(var(--slate-900))', border: 'rgb(var(--slate-200))', bg: 'rgb(var(--orange-50))' }
 
 const perks = [
   { icon: '🌍', title: 'Fully Remote', body: 'Work from anywhere. We operate async-first and trust you to manage your time.' },
@@ -32,7 +32,7 @@ export default function CareersPage() {
         <div style={{ display: 'grid', gridTemplateColumns: isMobile ? '1fr' : '1fr 1fr', gap: isMobile ? '28px' : '48px', alignItems: 'center' }}>
           <div>
             <p style={{ fontSize: '11px', fontWeight: 700, letterSpacing: '0.16em', textTransform: 'uppercase', color: T.blue, marginBottom: '16px' }}>Our Culture</p>
-            <h2 style={{ fontWeight: 900, fontSize: 'clamp(26px,3.5vw,44px)', letterSpacing: '-0.05em', color: T.text, margin: '0 0 20px', lineHeight: 1.1 }}>We ship fast.<br />We think deep.</h2>
+            <h2 style={{ fontWeight: 700, fontSize: 'clamp(26px,3.5vw,44px)', letterSpacing: '-0.02em', color: T.text, margin: '0 0 20px', lineHeight: 1.1 }}>We ship fast.<br />We think deep.</h2>
             <p style={{ fontSize: '14px', color: T.muted, lineHeight: 1.75, margin: '0 0 14px' }}>SafeLancer is not a 9-to-5. We're a mission-driven team obsessed with solving a real problem: making freelance work trustworthy for everyone, everywhere.</p>
             <p style={{ fontSize: '14px', color: T.muted, lineHeight: 1.75, margin: 0 }}>We value clear thinking, direct communication, and radical ownership. We don't have layers of management — everyone builds, everyone ships.</p>
           </div>

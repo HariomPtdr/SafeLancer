@@ -1,7 +1,7 @@
 import StaticLayout from '../components/StaticLayout'
 import { useNavigate } from 'react-router-dom'
 
-const T = { blue: '#EA580C', muted: '#475569', faint: '#64748B', text: '#0F172A', border: '#E2E8F0', bg: '#FFF7ED' }
+const T = { blue: '#EA580C', muted: 'rgb(var(--slate-600))', faint: 'rgb(var(--slate-500))', text: 'rgb(var(--slate-900))', border: 'rgb(var(--slate-200))', bg: 'rgb(var(--orange-50))' }
 
 const posts = [
   {
@@ -36,7 +36,7 @@ const posts = [
   },
 ]
 
-const tagColors = { Product: '#EA580C', Guide: '#10B981', Industry: '#AE3A02', Engineering: '#475569' }
+const tagColors = { Product: '#EA580C', Guide: '#10B981', Industry: '#AE3A02', Engineering: 'rgb(var(--slate-600))' }
 
 export default function BlogPage() {
   const nav = useNavigate()
@@ -53,7 +53,7 @@ export default function BlogPage() {
           <span style={{ fontSize: '10px', fontWeight: 700, letterSpacing: '0.12em', textTransform: 'uppercase', color: T.blue, background: `${T.blue}18`, padding: '4px 10px', borderRadius: '999px', border: `1px solid ${T.blue}30` }}>Featured</span>
           <span style={{ fontSize: '12px', color: T.faint }}>{posts[0].date} · {posts[0].readTime}</span>
         </div>
-        <h2 style={{ fontWeight: 900, fontSize: 'clamp(24px,3.5vw,42px)', letterSpacing: '-0.05em', color: T.text, margin: '0 0 16px', lineHeight: 1.1 }}>{posts[0].title}</h2>
+        <h2 style={{ fontWeight: 700, fontSize: 'clamp(24px,3.5vw,42px)', letterSpacing: '-0.02em', color: T.text, margin: '0 0 16px', lineHeight: 1.1 }}>{posts[0].title}</h2>
         <p style={{ fontSize: '15px', color: T.muted, lineHeight: 1.7, margin: '0 0 24px', maxWidth: '640px' }}>{posts[0].excerpt}</p>
         <span style={{ fontSize: '13px', color: T.blue, fontWeight: 600 }}>Read article →</span>
       </div>
@@ -68,7 +68,7 @@ export default function BlogPage() {
               <span style={{ fontSize: '10px', fontWeight: 700, letterSpacing: '0.1em', textTransform: 'uppercase', color: tagColors[p.tag], background: `${tagColors[p.tag]}18`, padding: '3px 9px', borderRadius: '999px', border: `1px solid ${tagColors[p.tag]}30` }}>{p.tag}</span>
               <span style={{ fontSize: '11px', color: T.faint }}>{p.date} · {p.readTime}</span>
             </div>
-            <h3 style={{ fontWeight: 800, fontSize: '16px', letterSpacing: '-0.03em', color: T.text, margin: '0 0 10px', lineHeight: 1.3 }}>{p.title}</h3>
+            <h3 style={{ fontWeight: 700, fontSize: '16px', letterSpacing: '-0.03em', color: T.text, margin: '0 0 10px', lineHeight: 1.3 }}>{p.title}</h3>
             <p style={{ fontSize: '13px', color: T.muted, lineHeight: 1.65, margin: '0 0 18px' }}>{p.excerpt}</p>
             <span style={{ fontSize: '12px', color: T.blue, fontWeight: 600 }}>Read →</span>
           </div>
@@ -76,8 +76,8 @@ export default function BlogPage() {
       </div>
 
       {/* Newsletter */}
-      <div style={{ marginTop: '64px', background: `linear-gradient(135deg, rgba(255,104,3,0.08), rgba(174,58,2,0.05))`, border: `1px solid ${T.border}`, borderRadius: '20px', padding: '48px', textAlign: 'center' }}>
-        <h3 style={{ fontWeight: 900, fontSize: '28px', letterSpacing: '-0.05em', color: T.text, margin: '0 0 10px' }}>Stay in the loop.</h3>
+      <div style={{ marginTop: '64px', background: `linear-gradient(135deg, rgb(var(--slate-100)), rgb(var(--orange-50)))`, border: `1px solid ${T.border}`, borderRadius: '20px', padding: '48px', textAlign: 'center' }}>
+        <h3 style={{ fontWeight: 700, fontSize: '28px', letterSpacing: '-0.02em', color: T.text, margin: '0 0 10px' }}>Stay in the loop.</h3>
         <p style={{ fontSize: '14px', color: T.muted, margin: '0 0 28px' }}>Get new articles on freelancing and escrow delivered to your inbox.</p>
         <div style={{ display: 'flex', gap: '10px', justifyContent: 'center', maxWidth: '420px', margin: '0 auto' }}>
           <input type="email" placeholder="you@email.com" style={{ flex: 1, background: 'rgba(15,23,42,0.04)', border: `1px solid ${T.border}`, borderRadius: '10px', padding: '11px 16px', fontSize: '13px', color: T.text, outline: 'none' }} />
